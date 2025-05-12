@@ -19,17 +19,24 @@ This file tracks development decisions and progress for the RSVP System project.
 - Implement basic type definitions
 - Set up Redux store structure
 
-## 2025-05-12: Frontend Architecture
+## 2025-05-11: Store Configuration and Custom Hooks Implementation
 
-**Decisions made:**
-- Using feature-based folder structure
-- Implementing custom hooks for business logic
-- Using Tailwind CSS for styling
+**Implemented:**
+- Created TypeScript interfaces for store and reservation
+- Set up API configuration and services
+- Implemented Redux Toolkit store and slices
+- Added custom hooks for store access
+- Added proper error handling and loading states
 
-**Technical challenges:**
-- Solved date manipulation challenges using date-fns library
-- Implemented time slot filtering based on store hours
+**Technical Decisions:**
+- Used Redux Toolkit for state management
+- Implemented proper TypeScript types
+- Created custom hooks for better code organization
+- Added proper error handling
 
-**Next steps:**
-- Implement UI components
-- Connect Redux store
+**Next Steps:**
+- Implement error handling middleware
+- Add proper error handling in components
+- Create form validation
+
+git add CONTRIBUTING.md DEVJOURNAL.md 

@@ -51,3 +51,36 @@ chore: update dependencies
 3. Test thoroughly
 4. Commit with descriptive message
 5. Update documentation if necessary
+
+## TypeScript Guidelines
+
+- All new code must be written in TypeScript
+- Use interfaces for type definitions
+- Keep type definitions in the types directory
+- Follow naming conventions: PascalCase for interfaces
+- Document complex type structures
+
+## API Configuration Guidelines
+
+- Place API configuration in services directory
+- Use environment variables for base URL
+- Configure CORS and credentials properly
+- Implement proper error handling
+- Use interceptors for common request/response handling
+
+## Redux Slice Guidelines
+
+- Use createAsyncThunk for API calls
+- Implement proper error handling
+- Add loading states for better UX
+- Use TypeScript for type safety
+- Keep slices focused and single-purpose
+- Add state reset functionality when needed
+
+## Custom Hooks Guidelines
+
+- Create typed hooks for Redux store access
+- Implement proper error handling in hooks
+- Keep hooks focused and single-purpose
+- Use TypeScript for type safety
+- Document complex hook logic
