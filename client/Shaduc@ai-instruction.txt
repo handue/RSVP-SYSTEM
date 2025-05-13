@@ -1,2 +1,32 @@
+How to setup: 
+
+1. npm install class-variance-authority clsx tailwind-merge
+
+2. src/lib/utils.ts creation
+
+import { type ClassValue, clsx } from "clsx";
+import { twMerge } from "tailwind-merge";
+
+export function cn(...inputs: ClassValue[]) {
+  return twMerge(clsx(inputs));
+}
+
+
+3. vite.config.ts update
+
+export default defineConfig({
+  
+  plugins: [react()],
+  resolve: {
+    alias: {
+      '@': path.resolve(__dirname, './src'),
+    },
+  },
+    
+})
+
+
+execute: 
+
 npx @shadcn/ui@latest add
 

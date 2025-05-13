@@ -13,6 +13,10 @@ export const useStoreHours = () => {
   const dispatch = useAppDispatch();
   const { hours, status, error } = useAppSelector((state) => state.storeHours);
 
+  // 메모이제이션: 이 함수는 dispatch가 변경될 때만 재생성됩니다.
+  // 이는 불필요한 함수 재생성을 방지하고 성능을 최적화합니다.
+  // Memoization: This function is recreated only when dispatch changes.
+  // This prevents unnecessary function recreation and optimizes performance.
   const getStoreHours = useCallback(async () => {
     try {
       await dispatch(fetchStoreHours()).unwrap();

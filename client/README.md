@@ -1,54 +1,114 @@
-# React + TypeScript + Vite
+# RSVP System - Frontend
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+The frontend application for the RSVP System, built with React, TypeScript, and Redux Toolkit.
 
-Currently, two official plugins are available:
+## Technology Stack
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- React 18
+- TypeScript
+- Redux Toolkit
+- React Router
+- Tailwind CSS
+- React Datepicker
+- Lucide React (icons)
+- Axios for API requests
+- Vite (build tool)
 
-## Expanding the ESLint configuration
+## Project Structure
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
-
-```js
-export default tseslint.config({
-  extends: [
-    // Remove ...tseslint.configs.recommended and replace with this
-    ...tseslint.configs.recommendedTypeChecked,
-    // Alternatively, use this for stricter rules
-    ...tseslint.configs.strictTypeChecked,
-    // Optionally, add this for stylistic rules
-    ...tseslint.configs.stylisticTypeChecked,
-  ],
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
+```
+src/
+├── components/          # Reusable UI components
+│   ├── ui/              # Basic UI elements
+│   ├── reservation/     # Reservation specific components
+│   └── store-hours/     # Store hours management components
+├── features/            # Feature-based Redux modules
+│   ├── reservation/     # Reservation feature with Redux slice
+│   └── store-hours/     # Store hours feature with Redux slice
+├── hooks/               # Custom hooks
+├── services/            # API service functions
+├── store/               # Redux Toolkit setup
+├── types/               # TypeScript type definitions
+└── utils/               # Utility functions
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+## Getting Started
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+### Prerequisites
 
-export default tseslint.config({
-  plugins: {
-    // Add the react-x and react-dom plugins
-    'react-x': reactX,
-    'react-dom': reactDom,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended typescript rules
-    ...reactX.configs['recommended-typescript'].rules,
-    ...reactDom.configs.recommended.rules,
-  },
-})
+- Node.js 16+ and npm
+
+### Installation
+
+1. Clone the repository and navigate to the client directory
+```bash
+cd client
 ```
+
+2. Install dependencies
+```bash
+npm install
+```
+
+3. Create a `.env` file in the client directory with the following variables
+```
+VITE_API_URL=http://localhost:5173/api
+```
+
+4. Start the development server
+```bash
+npm run dev
+```
+
+The application will be available at `http://localhost:5173`.
+
+## Available Scripts
+
+- `npm run dev` - Start the development server
+- `npm run build` - Build the app for production
+- `npm run preview` - Preview the production build locally
+- `npm run lint` - Run ESLint
+- `npm run type-check` - Run TypeScript type checking
+
+## Features
+
+### User Reservation Flow
+- Store selection
+- Service type selection
+- Date and time slot selection
+- Form validation
+- Confirmation system
+
+### Admin Management
+- Store hours configuration
+- Special dates management
+- Regular hours scheduling
+
+## API Integration
+
+The frontend communicates with the backend through the following endpoints:
+
+- Store Hours:
+  - `GET /api/store-hours`
+  - `PUT /api/store-hours/regular-hours/:storeId`
+  - `PUT /api/store-hours/special-date/:storeId`
+  - `DELETE /api/store-hours/special-date/:storeId/:date`
+
+- Reservations:
+  - `POST /api/reservation/calendar`
+  - `POST /api/reservation/send`
+
+## Contributing
+
+1. Create a feature branch from `main`
+2. Make your changes
+3. Commit with meaningful commit messages following the semantic format
+4. Push and create a pull request
+
+## Building for Production
+
+```bash
+npm run build
+```
+
+The build artifacts will be stored in the `dist/` directory.

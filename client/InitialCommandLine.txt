@@ -1,11 +1,11 @@
 1. Create a new Vite project with React and TypeScript:
 
-bashnpm create vite@latest client -- --template react-ts
+npm create vite@latest client -- --template react-ts
 cd client
 
 2. Install required dependencies:
 
-bash# Core dependencies
+# Core dependencies
 npm install react-router-dom @reduxjs/toolkit react-redux axios date-fns
 
 # UI components
@@ -13,6 +13,7 @@ npm install lucide-react react-datepicker
 
 # Type definitions
 npm install -D @types/react-datepicker
+npm i --save-dev @types/node
 
 3. Create the folder structure:
 

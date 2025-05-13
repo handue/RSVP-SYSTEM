@@ -1,66 +1,71 @@
 // src/store/reservationSlice.ts
-import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import { ReservationData, ReservationResponse } from '../types/reservation';
-import { api } from '../services/api/config';
-
+import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import { ReservationData, ReservationResponse } from "../types/reservation";
+import { api } from "../services/api/config";
+import { useNotification } from "../hooks/useNotification";
 interface ReservationState {
-  status: 'idle' | 'loading' | 'succeeded' | 'failed';
+  status: "idle" | "loading" | "succeeded" | "failed";
   error: string | null;
   response: ReservationResponse | null;
 }
 
 const initialState: ReservationState = {
-  status: 'idle',
+  status: "idle",
   error: null,
-  response: null
+  response: null,
 };
 
 export const reserveSchedule = createAsyncThunk(
-  'reservation/reserveSchedule',
+  "reservation/reserveSchedule",
   async (reservationData: { reservationData: ReservationData }) => {
-    const response = await api.post('/reservation/calendar', reservationData);
+    const response = await api.post("/reservation/calendar", reservationData);
     return response;
   }
 );
 
 export const sendEmail = createAsyncThunk(
-  'reservation/sendEmail',
-  async (emailData: { email: string; name: string; reservationDetails: any }) => {
-    const response = await api.post('/reservation/send', emailData);
+  "reservation/sendEmail",
+  async (emailData: {
+    email: string;
+    name: string;
+    reservationDetails: any;
+  }) => {
+    const response = await api.post("/reservation/send", emailData);
     return response.status;
   }
 );
 
 const reservationSlice = createSlice({
-  name: 'reservation',
+  name: "reservation",
   initialState,
   reducers: {
     resetReservationState: (state) => {
-      state.status = 'idle';
+      state.status = "idle";
       state.error = null;
       state.response = null;
-    }
+    },
   },
   extraReducers: (builder) => {
     builder
       .addCase(reserveSchedule.pending, (state) => {
-        state.status = 'loading';
+        state.status = "loading";
         state.error = null;
       })
       .addCase(reserveSchedule.fulfilled, (state, action) => {
-        state.status = 'succeeded';
+        state.status = "succeeded";
         state.response = action.payload;
       })
       .addCase(reserveSchedule.rejected, (state, action) => {
-        state.status = 'failed';
-        state.error = action.error.message || 'Failed to make reservation';
+        state.status = "failed";
+
+        state.error = action.error.message || "Failed to make reservation";
       })
       .addCase(sendEmail.fulfilled, (state) => {
         // todo: 이메일 전송 성공 시 추가 처리
         // todo: Add additional processing when email is sent successfully
       })
       .addCase(sendEmail.rejected, (state, action) => {
-        state.error = action.error.message || 'Failed to send email';
+        state.error = action.error.message || "Failed to send email";
       });
   },
 });
