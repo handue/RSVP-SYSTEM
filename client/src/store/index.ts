@@ -5,12 +5,15 @@ import reservationReducer from "./reservationSlice";
 import uiReducer from "./uiSlice"; // 추가 필요
 import { errorMiddleware } from "../middleware/errorMiddleware";
 import notificationReducer from "./notificationSlice";
+import dashboardReducer from "./dashboardSlice";
+
 export const store = configureStore({
   reducer: {
     storeHours: storeHoursReducer,
     reservation: reservationReducer,
     ui: uiReducer,
     notification: notificationReducer,
+    dashboard: dashboardReducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({

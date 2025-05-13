@@ -15,6 +15,7 @@ interface ReservationFormProps {
 export function ReservationForm({ storeId, storeName, storeEmail, onSuccess }: ReservationFormProps) {
   const { makeReservation, status } = useReservation();
   const [formData, setFormData] = useState<Partial<ReservationData>>({
+    
     store: storeName,
     store_id: storeId,
     store_email: storeEmail,
