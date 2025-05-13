@@ -22,9 +22,9 @@ src/
 │   ├── ui/              # Basic UI elements
 │   ├── reservation/     # Reservation specific components
 │   └── store-hours/     # Store hours management components
-├── features/            # Feature-based Redux modules
+├── pages/               # Page components for different routes
 │   ├── reservation/     # Reservation feature with Redux slice
-│   └── store-hours/     # Store hours feature with Redux slice
+│   └── admin/           # Admin dashboard and reservation management
 ├── hooks/               # Custom hooks
 ├── services/            # API service functions
 ├── store/               # Redux Toolkit setup
