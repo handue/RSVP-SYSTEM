@@ -47,7 +47,6 @@ The project is being developed in phases:
 ### Backend (Planned)
 
 - Spring Boot
-- Spring Data MongoDB
 - PostgreSQL or MySql
 - Spring Security (JWT)
 - Lombok
