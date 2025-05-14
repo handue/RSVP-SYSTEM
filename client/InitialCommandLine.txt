@@ -24,6 +24,26 @@ mkdir -p src/components/ui
 
 4. Tailwind CSS Implementation
 
+index.css -> /src/styles(new create)/index.css
+
+
+npx tailwindcss init -p -> not working, should create tailwind.config.js manually in client folder
+
+npm uninstall tailwindcss @tailwindcss/postcss postcss autoprefixer
+
+(If error occured on postcss, try = npm install -D @tailwindcss/postcss)
+
+create postcss.config.js in src folder. Refer below
+
+export default {
+    plugins: {
+      '@tailwindcss/postcss': {},
+      'autoprefixer': {},
+    },
+  }
+
+
+
 
 5. Project Structure (Frontend)
 
