@@ -2,6 +2,7 @@ import { useEffect } from "react";
 import { useReservation } from "../../../hooks/useReservation";
 import { Button } from "../common/button";
 
+// todo: reservation List의 존재 의의가 뭐지 지금, 이런거 보여주는게 아니라 예약 몇시몇시 있는지 체크하는거 아닌가, 그러면 이름,스토어,시간, 서비스 이것만 보여줘야 할거 같은데.
 interface Reservation {
   id: string;
   name: string;
@@ -69,23 +70,22 @@ export function ReservationList({ storeId, onEdit }: ReservationListProps) {
                   <Button
                     variant="outline"
                     size="sm"
-                    onClick={() => onEdit?.({
-                      id: "1",
-                      name: "John Doe",
-                      email: "john@example.com",
-                      phone: "123-456-7890",
-                      service: "haircut",
-                      reservation_date: "2024-03-20",
-                      reservation_time: "14:00",
-                      status: "pending"
-                    })}
+                    onClick={() =>
+                      onEdit?.({
+                        id: "1",
+                        name: "John Doe",
+                        email: "john@example.com",
+                        phone: "123-456-7890",
+                        service: "haircut",
+                        reservation_date: "2024-03-20",
+                        reservation_time: "14:00",
+                        status: "pending",
+                      })
+                    }
                   >
                     Edit
                   </Button>
-                  <Button
-                    variant="destructive"
-                    size="sm"
-                  >
+                  <Button variant="destructive" size="sm">
                     Cancel
                   </Button>
                 </div>
@@ -96,4 +96,4 @@ export function ReservationList({ storeId, onEdit }: ReservationListProps) {
       </div>
     </div>
   );
-} 
+}

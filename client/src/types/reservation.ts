@@ -10,7 +10,8 @@ export interface ReservationData {
   reservation_time: string;
   comments?: string;
   agreedToTerms: boolean;
-  isAdvertisement: boolean;
+  // isAdvertisement?: boolean;
+  status: "pending" | "confirmed" | "cancelled";
 }
 
 export interface ReservationResponse {

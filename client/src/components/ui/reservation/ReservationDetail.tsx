@@ -1,25 +1,26 @@
 import { Button } from "../common/button";
+import { ReservationData } from "../../../types/reservation";
 
-interface Reservation {
-  id: string;
-  name: string;
-  email: string;
-  phone: string;
-  service: string;
-  reservation_date: string;
-  reservation_time: string;
-  status: "pending" | "confirmed" | "cancelled";
-  comments?: string;
-}
+// interface Reservation {
+//   id: string;
+//   name: string;
+//   email: string;
+//   phone: string;
+//   service: string;
+//   reservation_date: string;
+//   reservation_time: string;
+//   status: "pending" | "confirmed" | "cancelled";
+//   comments?: string;
+// }
 
 interface ReservationDetailProps {
-  reservation: Reservation;
+  reservation: ReservationData;
   onEdit?: () => void;
   onCancel?: () => void;
 }
 
 export function ReservationDetail({ reservation, onEdit, onCancel }: ReservationDetailProps) {
-  const getStatusColor = (status: Reservation["status"]) => {
+  const getStatusColor = (status: ReservationData["status"]) => {
     switch (status) {
       case "pending":
         return "bg-yellow-100 text-yellow-800";

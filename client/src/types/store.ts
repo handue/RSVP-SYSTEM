@@ -11,5 +11,7 @@ export interface StoreHours {
 export interface Store {
   id: string;
   name: string;
-  email: string;
+  storeEmail: string;
+  location: string;
+  image?: string;
 }

@@ -3,24 +3,42 @@ import { useReservation } from "../../../hooks/useReservation";
 import { ReservationData } from "../../../types/reservation";
 import { Button } from "../common/button";
 import { Input } from "../common/input";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../common/select";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "../common/select";
+import { Store } from "../../../types/store";
+import { Service } from "../../../types/service";
 
 interface ReservationFormProps {
-  storeId: string;
-  storeName: string;
-  storeEmail: string;
+  storeId: Store["id"];
+  storeName: Store["name"];
+  storeEmail: Store["storeEmail"];
+  serviceId: Service["id"];
+  serviceName: Service["name"];
   onSuccess?: () => void;
+  onBack?: () => void;
 }
 
-export function ReservationForm({ storeId, storeName, storeEmail, onSuccess }: ReservationFormProps) {
+export function ReservationForm({
+  storeId,
+  storeName,
+  storeEmail,
+  serviceId,
+  serviceName,
+  onBack,
+  onSuccess,
+}: ReservationFormProps) {
   const { makeReservation, status } = useReservation();
+  //   Partial = make every field in type to optional type
   const [formData, setFormData] = useState<Partial<ReservationData>>({
-    
     store: storeName,
     store_id: storeId,
     store_email: storeEmail,
     agreedToTerms: false,
-    isAdvertisement: false,
   });
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -159,23 +177,7 @@ export function ReservationForm({ storeId, storeName, storeEmail, onSuccess }: R
         </label>
       </div>
 
-      <div className="space-y-2">
-        <label className="flex items-center space-x-2">
-          <input
-            type="checkbox"
-            name="isAdvertisement"
-            checked={formData.isAdvertisement}
-            onChange={handleInputChange}
-          />
-          <span className="text-sm">I agree to receive promotional information</span>
-        </label>
-      </div>
-
-      <Button
-        type="submit"
-        disabled={status === "loading"}
-        className="w-full"
-      >
+      <Button type="submit" disabled={status === "loading"} className="w-full">
         {status === "loading" ? "Reserving..." : "Make Reservation"}
       </Button>
     </form>
