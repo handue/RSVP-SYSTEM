@@ -1,13 +1,20 @@
 import { useState } from "react";
 import { Steps } from "../../components/ui/common/steps";
-import { StoreSelection } from "../../components/ui/reservation/StoreSelection";
-import { ServiceSelection } from "../../components/ui/reservation/ServiceSelection";
-import { ReservationForm } from "../../components/ui/reservation/ReservationForm";
+import { StoreSelection } from "../../components/reservation/StoreSelection";
+import { ServiceSelection } from "../../components/reservation/ServiceSelection";
+import { ReservationForm } from "../../components/reservation/ReservationForm";
 import { Store } from "../../types/store";
 import { Service } from "../../types/service";
 
 export const ReservationPage = () => {
   const [step, setStep] = useState<"store" | "service" | "details">("store");
+  const [completedSteps, setCompletedSteps] = useState<Record<string, boolean>>(
+    {
+      store: false,
+      service: false,
+      details: false,
+    }
+  );
   const [selectedStore, setSelectedStore] = useState<Store | null>(null);
   const [selectedService, setSelectedService] = useState<Service | null>(null);
 
@@ -15,20 +22,35 @@ export const ReservationPage = () => {
     <div className="container mx-auto p-4">
       <h1 className="text-2xl font-bold mb-4">Make a Reservation</h1>
 
-      <div className="mb-8">
+      <div className="mb-8 flex items-center">
         <Steps
           steps={[
             {
               title: "Store",
-              status: step === "store" ? "current" : "complete",
+              status:
+                step === "store"
+                  ? "current"
+                  : completedSteps.store
+                  ? "complete"
+                  : "upcoming",
             },
             {
               title: "Service",
-              status: step === "service" ? "current" : "upcoming",
+              status:
+                step === "service"
+                  ? "current"
+                  : completedSteps.service
+                  ? "complete"
+                  : "upcoming",
             },
             {
               title: "Details",
-              status: step === "details" ? "current" : "upcoming",
+              status:
+                step === "details"
+                  ? "current"
+                  : completedSteps.details
+                  ? "complete"
+                  : "upcoming",
             },
           ]}
         />
@@ -39,6 +61,10 @@ export const ReservationPage = () => {
           onSelect={(store) => {
             setSelectedStore(store);
             setStep("service");
+            setCompletedSteps({
+              ...completedSteps,
+              store: true,
+            });
           }}
         />
       )}
@@ -49,8 +75,18 @@ export const ReservationPage = () => {
           onSelect={(service) => {
             setSelectedService(service);
             setStep("details");
+            setCompletedSteps({
+              ...completedSteps,
+              service: true,
+            });
           }}
-          onBack={() => setStep("store")}
+          onBack={() => {
+            setStep("store");
+            setCompletedSteps({
+              ...completedSteps,
+              store: false,
+            });
+          }}
         />
       )}
 
@@ -61,7 +97,13 @@ export const ReservationPage = () => {
           storeEmail={selectedStore.storeEmail}
           serviceId={selectedService.id}
           serviceName={selectedService.name}
-          onBack={() => setStep("service")}
+          onBack={() => {
+            setStep("service");
+            setCompletedSteps({
+              ...completedSteps,
+              service: false,
+            });
+          }}
         />
       )}
     </div>

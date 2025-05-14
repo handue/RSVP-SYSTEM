@@ -4,7 +4,7 @@ import viteLogo from "/vite.svg";
 import { Route, Routes } from "react-router-dom";
 import { BrowserRouter } from "react-router-dom";
 import { Notifications } from "./components/ui/notification/Notification";
-import { ReservationList } from "./components/ui/reservation/ReservationList";
+import { ReservationList } from "./components/reservation/ReservationList";
 import { ReservationPage } from "./pages/reservation/ReservationPage";
 import { ReservationListPage } from "./pages/reservation/ReservationListPage";
 import ReservationDetailPage from "./pages/reservation/ReservationDetailPage";
