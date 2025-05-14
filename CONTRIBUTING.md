@@ -42,6 +42,11 @@ chore: update dependencies
 ## Project Organization
 
 - `/client`: Frontend React application
+  - `/src/components/ui`: Reusable UI components
+  - `/src/pages`: Page components
+  - `/src/types`: TypeScript type definitions
+  - `/src/services`: API services
+  - `/src/store`: Redux store configuration
 - `/spring-server`: Backend Spring application (planned)
 
 ## Development Process

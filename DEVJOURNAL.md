@@ -69,3 +69,25 @@ This file tracks development decisions and progress for the RSVP System project.
 - Add date and time validation
 - Implement store hours integration
 - Add email notification system
+
+## 2025-05-13: Reservation System Structure Implementation
+
+**Implemented:**
+- Created Steps component for reservation progress tracking
+- Implemented StoreSelection and ServiceSelection components
+- Set up reservation pages structure (ReservationPage, ReservationListPage, ReservationDetailPage)
+- Added service type definitions
+- Updated existing reservation components (ReservationForm, ReservationList, ReservationDetail)
+
+**Technical Decisions:**
+- Used shadcn/ui components for consistent UI
+- Implemented 3-step reservation process (Store → Service → Details)
+- Separated page components from UI components
+- Used TypeScript for type safety
+- Maintained English for all component names and UI text
+
+**Next Steps:**
+- Implement API integration for reservation system
+- Add date and time validation
+- Implement store hours integration
+- Add email notification system
