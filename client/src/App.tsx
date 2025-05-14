@@ -1,7 +1,6 @@
 import { useState } from "react";
 import reactLogo from "./assets/react.svg";
 import viteLogo from "/vite.svg";
-import "./App.css";
 import { Route, Routes } from "react-router-dom";
 import { BrowserRouter } from "react-router-dom";
 import { Notifications } from "./components/ui/notification/Notification";
@@ -12,23 +11,31 @@ import ReservationDetailPage from "./pages/reservation/ReservationDetailPage";
 import { Provider } from "react-redux";
 import { store } from "./store";
 
-function App() {
-  const [count, setCount] = useState(0);
+const CenteredLayout = ({ children }: { children: React.ReactNode }) => {
+  return (
+    <div className="flex flex-col  min-h-screen ">
+      <div className="container mx-auto px-4 py-8 md:py-12">
+        <div className="max-w-3xl mx-auto">{children}</div>
+      </div>
+    </div>
+  );
+};
 
+function App() {
   return (
     <Provider store={store}>
       <BrowserRouter>
         <Notifications />
-        <Routes>
-          <Route path="/" element={<ReservationPage />} />
-          <Route path="/list" element={<ReservationListPage />} />
-          <Route path="/detail" element={<ReservationDetailPage />} />
-        </Routes>
+        <CenteredLayout>
+          <Routes>
+            <Route path="/" element={<ReservationPage />} />
+            <Route path="/list" element={<ReservationListPage />} />
+            <Route path="/detail" element={<ReservationDetailPage />} />
+          </Routes>
+        </CenteredLayout>
       </BrowserRouter>
     </Provider>
   );
 }
 
 export default App;
-
-// todo: 다 준비됐는데, tailwind css 적용 안돼서 확인해봐야함.

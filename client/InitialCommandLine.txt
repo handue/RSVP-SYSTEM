@@ -43,22 +43,14 @@ export default {
   }
 
 
+  * Bug fix
+
+   - Dependency conflicts occurred
+    
+    solution : Version Downgrade 
+    npm install -D tailwindcss@3.3.6 postcss@8.4.32 autoprefixer@10.4.16
 
 
-5. Project Structure (Frontend)
 
-src/
-├── components/          # Reusable UI components
-│   ├── ui/              # Basic UI elements
-│   └── Reservation/     # Reservation specific components
-├── features/            # Feature-based modules
-│   ├── reservation/     # Reservation feature
-│   └── store-hours/     # Store hours feature
-├── hooks/               # Custom hooks
-├── services/            # API service functions
-├── store/               # Redux Toolkit setup
-│   ├── index.ts         # Store configuration
-│   └── rootReducer.ts   # Root reducer
-├── types/               # TypeScript type definitions
-└── utils/               # Utility functions
+
 
