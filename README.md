@@ -21,6 +21,9 @@ The project is being developed in phases:
 ### Current Features (Frontend)
 
 - User-friendly reservation interface
+  - 3-step reservation process (Store → Service → Details)
+  - Progress tracking with Steps component
+  - Store and service selection interface
 - Date and time slot selection
 - Store hours management
 - Admin dashboard for reservation management
@@ -74,11 +77,19 @@ The frontend will be available at `http://localhost:5173`.
 
 The client application follows a feature-based architecture:
 
-- **Components**: Reusable UI components organized by feature
-- **Features**: Feature modules containing Redux slices and related logic
+- **Components**: 
+  - `/components/ui/common`: Common UI components (Steps, Button, etc.)
+  - `/components/ui/reservation`: Reservation-related components
+  - `/components/ui/admin`: Admin dashboard components
+- **Pages**: 
+  - `/pages/reservation`: Reservation-related pages
+  - `/pages/admin`: Admin dashboard pages
 - **Services**: API service functions for data fetching
 - **Hooks**: Custom React hooks for shared logic
 - **Types**: TypeScript type definitions
+  - Reservation types
+  - Store types
+  - Service types
 - **Utils**: Utility functions for common operations
 
 ## Development Workflow
