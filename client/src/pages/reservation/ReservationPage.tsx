@@ -71,7 +71,7 @@ export const ReservationPage = () => {
 
       {step === "service" && selectedStore && (
         <ServiceSelection
-          storeId={selectedStore.id}
+          storeId={selectedStore.storeId}
           onSelect={(service) => {
             setSelectedService(service);
             setStep("details");
@@ -92,10 +92,10 @@ export const ReservationPage = () => {
 
       {step === "details" && selectedStore && selectedService && (
         <ReservationForm
-          storeId={selectedStore.id}
+          storeId={selectedStore.storeId}
           storeName={selectedStore.name}
           storeEmail={selectedStore.storeEmail}
-          serviceId={selectedService.id}
+          serviceId={selectedService.serviceId}
           serviceName={selectedService.name}
           onBack={() => {
             setStep("service");

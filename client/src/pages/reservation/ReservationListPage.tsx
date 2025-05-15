@@ -28,7 +28,7 @@ export const ReservationListPage = () => {
       {selectedStore && (
         <div className="bg-white rounded-lg shadow-md p-6 md:p-8">
           <ReservationList
-            storeId={selectedStore.id}
+            storeId={selectedStore.storeId}
             storeName={selectedStore.name}
           />
         </div>

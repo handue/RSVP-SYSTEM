@@ -20,7 +20,7 @@ export const login = createAsyncThunk(
     // TODO: API 연동
     // 임시로 mock 데이터 반환
     return {
-      id: "1",
+      id: 1,
       email: credentials.email,
       name: "Admin User",
       role: "admin",
