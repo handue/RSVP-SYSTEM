@@ -22,7 +22,7 @@ export const Dashboard = () => {
   const [selectedStore, setSelectedStore] = useState<Store | null>(null);
   const [storeHours, setStoreHours] = useState<StoreHours[]>(
     stores.map((store) => ({
-      storeId: store.id,
+      storeId: store.storeId,
       regularHours: days.map((day) => ({
         day,
         open: "09:00",
@@ -157,9 +157,9 @@ export const Dashboard = () => {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
             {stores.map((store) => (
               <div
-                key={store.id}
+                key={store.storeId}
                 className={`p-4 border rounded-lg cursor-pointer transition-colors ${
-                  selectedStore?.id === store.id
+                  selectedStore?.storeId === store.storeId
                     ? "border-indigo-500 bg-indigo-50"
                     : "border-gray-200 hover:border-indigo-300"
                 }`}
@@ -193,7 +193,7 @@ export const Dashboard = () => {
                       // ! If I set storeId as number, it would be more convenient, but I chose to set it as a string to maintain flexibility for future extensions.
 
                       value={
-                        storeHours.find((sh) => sh.storeId === selectedStore.id)
+                        storeHours.find((sh) => sh.storeId === selectedStore.storeId)
                           ?.regularHours[index].open || ""
                       }
                       className="border-2 flex-1 rounded-md p-2"
@@ -202,13 +202,13 @@ export const Dashboard = () => {
                     <input
                       type="time"
                       value={
-                        storeHours.find((sh) => sh.storeId === selectedStore.id)
+                        storeHours.find((sh) => sh.storeId === selectedStore.storeId)
                           ?.regularHours[index].close || ""
                       }
                       onChange={(e) =>
                         handleRegularHoursChange(
                           storeHours.find(
-                            (sh) => sh.storeId === selectedStore.id
+                            (sh) => sh.storeId === selectedStore.storeId
                           )?.regularHours[index].day || "",
                           "close",
                           e.target.value

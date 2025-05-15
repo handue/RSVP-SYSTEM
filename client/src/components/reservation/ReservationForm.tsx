@@ -14,10 +14,10 @@ import { Store } from "../../types/store";
 import { Service } from "../../types/service";
 
 interface ReservationFormProps {
-  storeId: Store["id"];
+  storeId: Store["storeId"];
   storeName: Store["name"];
   storeEmail: Store["storeEmail"];
-  serviceId: Service["id"];
+  serviceId: Service["serviceId"];
   serviceName: Service["name"];
   onSuccess?: () => void;
   onBack?: () => void;

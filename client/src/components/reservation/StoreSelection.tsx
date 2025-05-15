@@ -7,19 +7,19 @@ interface StoreSelectionProps {
 
 export const stores: Store[] = [
   {
-    id: "store-1",
+    storeId: "store-1",
     name: "Hair Salon A",
     location: "Los Angeles",
     storeEmail: "hairsalon@example.com",
   },
   {
-    id: "store-2",
+    storeId: "store-2",
     name: "Hair Salon B",
     location: "Texas",
     storeEmail: "hairsalon@example.com",
   },
   {
-    id: "store-3",
+    storeId: "store-3",
     name: "Hair Salon C",
     location: "New York",
     storeEmail: "hairsalon@example.com",
@@ -38,7 +38,7 @@ export const StoreSelection = ({ onSelect }: StoreSelectionProps) => {
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
         {stores.map((store) => (
           <div
-            key={store.id}
+            key={store.storeId}
             className="p-6 border border-gray-200 rounded-lg shadow-sm cursor-pointer 
                      hover:border-indigo-500 hover:shadow-md transition-all duration-200
                      bg-white flex flex-col justify-between"

@@ -3,7 +3,7 @@ import { Service } from "../../types/service";
 import { Store } from "../../types/store";
 
 interface ServiceSelectionProps {
-  storeId: Store["id"];
+  storeId: Store["storeId"];
   onSelect: (service: Service) => void;
   onBack: () => void;
 }
@@ -15,8 +15,8 @@ export const ServiceSelection = ({
 }: ServiceSelectionProps) => {
   // Mock services data
   const services: Service[] = [
-    { id: "service-1", name: "Haircut", duration: 30, price: 30 },
-    { id: "service-2", name: "Hair Coloring", duration: 120, price: 80 },
+    { serviceId: "service-1", name: "Haircut", duration: 30, price: 30 },
+    { serviceId: "service-2", name: "Hair Coloring", duration: 120, price: 80 },
   ];
 
   return (
@@ -38,7 +38,7 @@ export const ServiceSelection = ({
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         {services.map((service) => (
           <div
-            key={service.id}
+            key={service.serviceId}
             className="p-6 border border-gray-200 rounded-lg shadow-sm cursor-pointer 
                      hover:border-indigo-500 hover:shadow-md transition-all duration-200
                      bg-white"
