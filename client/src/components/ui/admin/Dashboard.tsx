@@ -1,142 +1,255 @@
-import { useEffect } from "react";
+// src/components/ui/admin/Dashboard.tsx
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Button } from "../common/button";
 import { Card, CardContent, CardHeader, CardTitle } from "../common/card";
 import { AppDispatch, RootState } from "../../../store";
-import { fetchDashboardData, confirmReservation, cancelReservation } from "../../../store/dashboardSlice";
-import { useNotification } from "../../../hooks/useNotification";
+import { Store } from "../../../types/store";
+import { StoreHours } from "../../../types/store";
+import { stores } from "../../reservation/StoreSelection";
 
 export const Dashboard = () => {
   const dispatch = useDispatch<AppDispatch>();
-  const { showSuccess, showError } = useNotification();
-  const { stats, todayReservations, status, error } = useSelector(
-    (state: RootState) => state.dashboard
+  const days = [
+    "Monday",
+    "Tuesday",
+    "Wednesday",
+    "Thursday",
+    "Friday",
+    "Saturday",
+    "Sunday",
+  ];
+  const [selectedStore, setSelectedStore] = useState<Store | null>(null);
+  const [storeHours, setStoreHours] = useState<StoreHours[]>(
+    stores.map((store) => ({
+      storeId: store.id,
+      regularHours: days.map((day) => ({
+        day,
+        open: "09:00",
+        close: "18:00",
+        isClosed: false,
+      })),
+    }))
   );
 
-  useEffect(() => {
-    dispatch(fetchDashboardData());
-  }, [dispatch]);
+  // 요일별 기본 영업시간
+  // todo: edit needed after backend integration.
 
-  const handleConfirm = async (id: string) => {
-    try {
-      await dispatch(confirmReservation(id)).unwrap();
-      showSuccess("Reservation confirmed successfully.");
-    } catch (error) {
-      showError("Reservation confirmation failed.");
-    }
+  // **** DIRECT INPUT TO storeHours ****
+  // const defaultHours: StoreHours[] = stores.map((store) => ({
+  //   storeId: store.id,
+  //   regularHours: days.map((day) => ({
+  //     day,
+  //     open: "09:00",
+  //     close: "18:00",
+  //     isClosed: false,
+  //   })),
+  // specialDate: [
+  //   {
+  //     date: "2025-01-01",
+  //     open: "09:00",
+  //     close: "18:00",
+  //     isClosed: false,
+  //   },
+  // ],
+  // }));
+  // useEffect(() => {
+  //   setStoreHours(defaultHours);
+  // }, []);
+
+  // const defaultHours: StoreHours[] = [
+  //   {
+  //     storeId: stores[0].id,
+  //     regularHours: [
+  //       {
+  //         day: "Monday",
+  //         open: "09:00",
+  //         close: "18:00",
+  //         isClosed: false,
+  //       },
+  //     ],
+  //     specialDate: {
+  //       date: "Monday",
+  //       open: "09:00",
+  //       close: "18:00",
+  //       isClosed: false,
+  //     },
+  //   },
+  //   {
+  //     storeId: stores[1].id,
+  //     regularHours: {
+  //       date: "Tuesday",
+  //       open: "09:00",
+  //       close: "18:00",
+  //       isClosed: false,
+  //     },
+  //     specialDate: {
+  //       date: "Wednesday",
+  //       open: "09:00",
+  //       close: "18:00",
+  //       isClosed: false,
+  //     },
+  //   },
+  //   {
+  //     storeId: stores[2].id,
+  //     regularHours: {
+  //       date: "Wednesday",
+  //       open: "09:00",
+  //       close: "18:00",
+  //       isClosed: false,
+  //     },
+  //     specialDate: {
+  //       date: "Wednesday",
+  //       open: "09:00",
+  //       close: "18:00",
+  //       isClosed: false,
+  //     },
+  //   },
+  // ];
+  // **** DIRECT INPUT TO storeHours ****
+
+  const handleStoreSelect = (store: Store) => {
+    setSelectedStore(store);
+    // TODO: 해당 스토어의 영업시간 데이터 가져오기
+    // todo: 지금은 맨 위 데이터로 하면 될거같음.
   };
 
-  const handleCancel = async (id: string) => {
-    try {
-      await dispatch(cancelReservation(id)).unwrap();
-      showSuccess("Reservation cancelled successfully.");
-    } catch (error) {
-      showError("Reservation cancellation failed.");
-    }
+  const handleRegularHoursChange = (
+    day: string,
+    field: "open" | "close",
+    value: string
+  ) => {
+    setStoreHours((prev) => {
+      return prev.map((storeHour) =>
+        storeHour.regularHours.find((hour) => hour.day === day)
+          ? {
+              ...storeHour,
+              regularHours: storeHour.regularHours.map((hour) =>
+                hour.day === day ? { ...hour, [field]: value } : hour
+              ),
+            }
+          : storeHour
+      );
+    });
   };
 
-  if (status === "loading") {
-    return <div>Loading...</div>;
-  }
-
-  if (error) {
-    return <div>Error: {error}</div>;
-  }
+  const handleSpecialDate = (date: string, isClosed: boolean) => {
+    // TODO: 특정 날짜 휴무 설정
+  };
 
   return (
-    <div className="p-6">
-      <div className="flex justify-between items-center mb-6">
-        <h1 className="text-2xl font-bold">DashBoard</h1>
-        <Button onClick={() => dispatch(fetchDashboardData())}>
-          Refresh
-        </Button>
+    <div className="p-6 border-2 border-gray-200 shadow-lg rounded-md">
+      <div className="mb-8">
+        <h1 className="text-2xl font-bold text-gray-800">
+          Store Hours Management
+        </h1>
+        <p className="text-gray-500 mt-1">
+          Manage store operating hours and special dates
+        </p>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
-        <Card>
-          <CardHeader>
-            <CardTitle>Total Reservations</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <p className="text-2xl font-bold">{stats?.totalReservations || 0}</p>
-          </CardContent>
-        </Card>
-        <Card>
-          <CardHeader>
-            <CardTitle>Today's Reservations</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <p className="text-2xl font-bold">{stats?.todayReservations || 0}</p>
-          </CardContent>
-        </Card>
-        <Card>
-          <CardHeader>
-            <CardTitle>Pending Reservations</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <p className="text-2xl font-bold">{stats?.pendingReservations || 0}</p>
-          </CardContent>
-        </Card>
-        <Card>
-          <CardHeader>
-            <CardTitle>Confirmed Reservations</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <p className="text-2xl font-bold">{stats?.confirmedReservations || 0}</p>
-          </CardContent>
-        </Card>
-      </div>
-
-      <Card>
+      {/* 스토어 선택 */}
+      <Card className="mb-6">
         <CardHeader>
-          <CardTitle>Today's Reservations List</CardTitle>
+          <CardTitle>Select Store</CardTitle>
         </CardHeader>
         <CardContent>
-          <div className="overflow-x-auto">
-            <table className="w-full">
-              <thead>
-                <tr>
-                  <th className="text-left">Name</th>
-                  <th className="text-left">Service</th>
-                  <th className="text-left">Time</th>
-                  <th className="text-left">Status</th>
-                  <th className="text-left">Actions</th>
-                </tr>
-              </thead>
-              <tbody>
-                {todayReservations.map((reservation) => (
-                  <tr key={reservation.id}>
-                    <td>{reservation.name}</td>
-                    <td>{reservation.service}</td>
-                    <td>{reservation.time}</td>
-                    <td>{reservation.status}</td>
-                    <td>
-                      <div className="space-x-2">
-                        <Button
-                          variant="outline"
-                          size="sm"
-                          onClick={() => handleConfirm(reservation.id)}
-                          disabled={reservation.status === "confirmed"}
-                        >
-                          Confirm
-                        </Button>
-                        <Button
-                          variant="outline"
-                          size="sm"
-                          onClick={() => handleCancel(reservation.id)}
-                          disabled={reservation.status === "cancelled"}
-                        >
-                          Cancel
-                        </Button>
-                      </div>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+            {stores.map((store) => (
+              <div
+                key={store.id}
+                className={`p-4 border rounded-lg cursor-pointer transition-colors ${
+                  selectedStore?.id === store.id
+                    ? "border-indigo-500 bg-indigo-50"
+                    : "border-gray-200 hover:border-indigo-300"
+                }`}
+                onClick={() => handleStoreSelect(store)}
+              >
+                <h3 className="font-medium text-gray-900">{store.name}</h3>
+                <p className="text-sm text-gray-500">{store.location}</p>
+              </div>
+            ))}
           </div>
         </CardContent>
       </Card>
+
+      {/* 영업시간 설정 */}
+      {selectedStore && (
+        <Card>
+          <CardHeader>
+            <CardTitle>Regular Hours</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="space-y-4">
+              {days.map((day, index) => (
+                <div key={index} className="flex items-center gap-4">
+                  <div className="w-32">
+                    <span className="font-medium text-gray-700">{day}</span>
+                  </div>
+                  <div className="flex w-full items-center justify-evenly gap-2">
+                    <input
+                      type="time"
+                      // ! storeId를 number로 하면 편하겠지만, String 으로 했을때의 유연성을 갖지 않아서, 확장을 위해 우선은 String 으로 ID 셋업하고 find 함수 사용
+                      // ! If I set storeId as number, it would be more convenient, but I chose to set it as a string to maintain flexibility for future extensions.
+
+                      value={
+                        storeHours.find((sh) => sh.storeId === selectedStore.id)
+                          ?.regularHours[index].open || ""
+                      }
+                      className="border-2 flex-1 rounded-md p-2"
+                    />
+                    <span>to</span>
+                    <input
+                      type="time"
+                      value={
+                        storeHours.find((sh) => sh.storeId === selectedStore.id)
+                          ?.regularHours[index].close || ""
+                      }
+                      onChange={(e) =>
+                        handleRegularHoursChange(
+                          storeHours.find(
+                            (sh) => sh.storeId === selectedStore.id
+                          )?.regularHours[index].day || "",
+                          "close",
+                          e.target.value
+                        )
+                      }
+                      className="border flex-1 rounded-md p-2"
+                    />
+                  </div>
+                </div>
+              ))}
+            </div>
+          </CardContent>
+        </Card>
+      )}
+
+      {/* 특별 휴무일 설정 */}
+      {selectedStore && (
+        <Card className="mt-6">
+          <CardHeader>
+            <CardTitle>Special Dates</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="space-y-4">
+              <div className="flex items-center gap-4">
+                <input
+                  type="date"
+                  className="border rounded-md p-2"
+                  onChange={(e) => handleSpecialDate(e.target.value, true)}
+                />
+                <Button
+                  variant="outline"
+                  className="bg-gray-200 border-gray-200 border-2 hover:bg-gray-400"
+                >
+                  Add Closed Date
+                </Button>
+              </div>
+              {/* TODO: 특별 휴무일 목록 표시 */}
+            </div>
+          </CardContent>
+        </Card>
+      )}
     </div>
   );
 };

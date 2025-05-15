@@ -1,11 +1,17 @@
 export interface StoreHours {
-  id: string;
-  storeId: string;
-  day: string;
-  open: string;
-  close: string;
-  isSpecial: boolean;
-  date?: string;
+  storeId: Store["id"];
+  regularHours: {
+    day: string;
+    open: string;
+    close: string;
+    isClosed: boolean;
+  }[];
+  specialDate?: {
+    date: specialDate["date"];
+    open: specialDate["open"];
+    close: specialDate["close"];
+    isClosed: specialDate["isClosed"];
+  }[];
 }
 
 export interface Store {
@@ -14,4 +20,11 @@ export interface Store {
   storeEmail: string;
   location: string;
   image?: string;
+}
+
+export interface specialDate {
+  date: string;
+  open: string;
+  close: string;
+  isClosed: boolean;
 }

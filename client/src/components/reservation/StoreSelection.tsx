@@ -5,28 +5,30 @@ interface StoreSelectionProps {
   
 }
 
+export const stores: Store[] = [
+  {
+    id: "store-1",
+    name: "Hair Salon A",
+    location: "Los Angeles",
+    storeEmail: "hairsalon@example.com",
+  },
+  {
+    id: "store-2",
+    name: "Hair Salon B",
+    location: "Texas",
+    storeEmail: "hairsalon@example.com",
+  },
+  {
+    id: "store-3",
+    name: "Hair Salon C",
+    location: "New York",
+    storeEmail: "hairsalon@example.com",
+  },
+];
+
+
 export const StoreSelection = ({ onSelect }: StoreSelectionProps) => {
   // Mock stores data
-  const stores: Store[] = [
-    {
-      id: "store-1",
-      name: "Hair Salon A",
-      location: "Los Angeles",
-      storeEmail: "hairsalon@example.com",
-    },
-    {
-      id: "store-2",
-      name: "Hair Salon B",
-      location: "Texas",
-      storeEmail: "hairsalon@example.com",
-    },
-    {
-      id: "store-3",
-      name: "Hair Salon C",
-      location: "New York",
-      storeEmail: "hairsalon@example.com",
-    },
-  ];
 
   return (
     <div>

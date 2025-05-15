@@ -10,6 +10,9 @@ import { ReservationListPage } from "./pages/reservation/ReservationListPage";
 import ReservationDetailPage from "./pages/reservation/ReservationDetailPage";
 import { Provider } from "react-redux";
 import { store } from "./store";
+import { ProtectedRoute } from "./pages/auth/ProtectedRoute";
+import { LoginPage } from "./pages/auth/LoginPage";
+import { Dashboard } from "./components/ui/admin/Dashboard";
 
 const CenteredLayout = ({ children }: { children: React.ReactNode }) => {
   return (
@@ -28,6 +31,24 @@ function App() {
         <Notifications />
         <CenteredLayout>
           <Routes>
+            <Route path="/login" element={<LoginPage />} />
+            <Route path="/dashboard" element={<Dashboard />} />
+            <Route
+              path="/admin/*"
+              element={
+                <ProtectedRoute requiredRole="admin">
+                  {/* <AdminLayout> */}
+                  <Routes>
+                    <Route path="/dashboard" element={<Dashboard />} />
+                    {/* <Route
+                        path="/store-hours"
+                        element={<StoreHoursManagement />}
+                      /> */}
+                  </Routes>
+                  {/* </AdminLayout> */}
+                </ProtectedRoute>
+              }
+            />
             <Route path="/" element={<ReservationPage />} />
             <Route path="/list" element={<ReservationListPage />} />
             <Route path="/detail" element={<ReservationDetailPage />} />

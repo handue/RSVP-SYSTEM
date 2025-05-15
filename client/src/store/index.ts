@@ -6,6 +6,7 @@ import uiReducer from "./uiSlice"; // 추가 필요
 import { errorMiddleware } from "../middleware/errorMiddleware";
 import notificationReducer from "./notificationSlice";
 import dashboardReducer from "./dashboardSlice";
+import authReducer from "./authSlice";
 
 export const store = configureStore({
   reducer: {
@@ -14,6 +15,7 @@ export const store = configureStore({
     ui: uiReducer,
     notification: notificationReducer,
     dashboard: dashboardReducer,
+    auth: authReducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({
