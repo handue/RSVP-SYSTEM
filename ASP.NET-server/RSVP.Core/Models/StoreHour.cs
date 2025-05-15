@@ -29,10 +29,10 @@ public class RegularHour
     public string Day { get; set; } = string.Empty;
 
     [JsonPropertyName("open")]
-    public string TimeSpan { get; set; } = string.Empty;
+    public TimeSpan Open { get; set; } = string.Empty;
 
     [JsonPropertyName("close")]
-    public string TimeSpan { get; set; } = string.Empty;
+    public TimeSpan Close { get; set; } = string.Empty;
 
     [JsonPropertyName("isClosed")]
     public bool IsClosed { get; set; }
@@ -44,10 +44,10 @@ public class SpecialDate
     public string Date { get; set; } = string.Empty;
 
     [JsonPropertyName("open")]
-    public string TimeSpan { get; set; } = string.Empty;
+    public TimeSpan Open { get; set; } = string.Empty;
 
     [JsonPropertyName("close")]
-    public string TimeSpan { get; set; } = string.Empty;
+    public TimeSpan Close { get; set; } = string.Empty;
 
     [JsonPropertyName("isClosed")]
     public bool IsClosed { get; set; }
