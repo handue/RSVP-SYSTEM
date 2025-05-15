@@ -1,5 +1,5 @@
 export interface StoreHours {
-  storeId: Store["id"];
+  storeId: Store["storeId"];
   regularHours: {
     day: string;
     open: string;
@@ -15,11 +15,12 @@ export interface StoreHours {
 }
 
 export interface Store {
-  id: string;
+  id?: number;
+  storeId: string;
   name: string;
   storeEmail: string;
   location: string;
-  image?: string;
+  // image?: string;
 }
 
 export interface specialDate {
