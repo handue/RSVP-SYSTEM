@@ -6,11 +6,13 @@ namespace RSVP.Core.Models;
 
 public class StoreHour
 {
+    [Key]
+    [JsonPropertyName("id")]
     public int Id { get; set; }
 
     [JsonPropertyName("storeId")]
     [Required]
-    public String StoreId { get; set; }
+    public string StoreId { get; set; } = string.Empty;
 
     [JsonPropertyName("regularHours")]
     [Required]
@@ -25,16 +27,22 @@ public class StoreHour
 
 public class RegularHour
 {
+
     [JsonPropertyName("day")]
+    [Required]
     public string Day { get; set; } = string.Empty;
 
+
     [JsonPropertyName("open")]
+    [Required]
     public TimeSpan Open { get; set; } = string.Empty;
 
     [JsonPropertyName("close")]
+    [Required]
     public TimeSpan Close { get; set; } = string.Empty;
 
     [JsonPropertyName("isClosed")]
+    [Required]
     public bool IsClosed { get; set; }
 }
 

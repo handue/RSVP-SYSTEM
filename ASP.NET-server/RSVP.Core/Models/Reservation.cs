@@ -5,16 +5,17 @@ namespace RSVP.Core.Models;
 
 public class Reservation
 {
-    
     [Key]
     [JsonPropertyName("id")]
     public int Id { get; set; }
 
-    [JsonPropertyName("store_id")]
-    public String StoreId { get; set; }
+    [Required]
+    [JsonPropertyName("store_Id")]
+    public string StoreId { get; set; } = string.Empty;
 
+    [Required]
     [JsonPropertyName("service_id")]
-    public String ServiceId { get; set; }
+    public string ServiceId { get; set; } = string.Empty;
 
     [Required]
     [StringLength(100)]
