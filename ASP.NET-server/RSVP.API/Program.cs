@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using RSVP.API.Middleware;
 using RSVP.Infrastructure.Data;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -24,6 +25,9 @@ if (app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 
 app.UseAuthorization();
+
+// Add global exception handling middleware
+app.UseMiddleware<GlobalExceptionMiddleware>();
 
 app.MapControllers();
 
