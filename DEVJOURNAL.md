@@ -91,3 +91,79 @@ This file tracks development decisions and progress for the RSVP System project.
 - Add date and time validation
 - Implement store hours integration
 - Add email notification system
+
+## 2025-05-14: Authentication System and Component Reorganization
+
+**Implemented:**
+- Added authentication system
+  - Created auth types and interfaces
+  - Implemented auth slice for Redux store
+  - Added login page component
+
+- Reorganized reservation components
+  - Moved components to new directory structure
+  - Updated component imports and file organization
+  - Improved ReservationDetail and ReservationList styling
+  - Enhanced ReservationDetailPage and ReservationListPage UI
+
+- Fixed UI issues
+  - Fixed Steps component center alignment
+  - Updated reservation types
+  - Updated App.tsx routing
+
+- Updated dependencies
+  - Reinstalled Tailwind CSS packages with specific versions
+  - Updated postcss configuration
+
+**Technical Decisions:**
+- Implemented authentication system for admin access
+- Reorganized component structure for better maintainability
+- Enhanced UI/UX with improved styling
+- Fixed dependency issues for better stability
+
+**Next Steps:**
+- Temporarily postpone frontend tasks to focus on backend implementation
+- Implement backend API endpoints and business logic
+- Set up database and data access layer
+- Implement authentication and authorization on backend
+- Return to frontend tasks after backend completion:
+  - Implement store hours management in admin dashboard
+  - Add date and time validation
+  - Implement store hours integration
+  - Add email notification system
+  - Login UI refactoring
+
+## 2025-05-15: Backend Implementation - Domain Models and Repository Pattern
+
+**Implemented:**
+- Created domain models
+  - Implemented Store model with business hours
+  - Added Service model for store services
+  - Created Reservation model with validation
+  - Aligned models with frontend types
+
+- Set up project structure
+  - Created ASP.NET Core solution with multiple projects
+  - Organized projects: API, Core, Infrastructure, Tests
+  - Added setup script and guidelines
+  - Updated README with project documentation
+
+- Implemented repository pattern
+  - Created generic repository interface
+  - Added specific repositories for each entity
+  - Implemented repository implementations
+  - Added proper error handling
+
+**Technical Decisions:**
+- Used clean architecture principles
+- Implemented repository pattern for data access
+- Added proper validation and error handling
+- Maintained type consistency with frontend
+- Used Entity Framework Core for data access
+
+**Next Steps:**
+- Implement service layer with business logic
+- Add API controllers with proper routing
+- Implement authentication and authorization
+- Add request/response DTOs
+- Set up database migrations

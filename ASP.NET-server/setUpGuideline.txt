@@ -1,46 +1,107 @@
 #!/bin/bash
 
 # 프로젝트 이름 설정
-# Project Name
 PROJECT_NAME="RSVP"
 
 # 솔루션 생성
-# Create solution
 echo "Creating solution..."
 dotnet new sln -n $PROJECT_NAME
 
-# Create projects
+# 프로젝트 생성
 echo "Creating projects..."
 dotnet new webapi -n "$PROJECT_NAME.API"
 dotnet new classlib -n "$PROJECT_NAME.Core"
 dotnet new classlib -n "$PROJECT_NAME.Infrastructure"
 dotnet new xunit -n "$PROJECT_NAME.Tests"
 
-# Add projects to solution
+# 솔루션에 프로젝트 추가
 echo "Adding projects to solution..."
 dotnet sln add "$PROJECT_NAME.API/$PROJECT_NAME.API.csproj"
 dotnet sln add "$PROJECT_NAME.Core/$PROJECT_NAME.Core.csproj"
 dotnet sln add "$PROJECT_NAME.Infrastructure/$PROJECT_NAME.Infrastructure.csproj"
 dotnet sln add "$PROJECT_NAME.Tests/$PROJECT_NAME.Tests.csproj"
 
-# Add project references
+# 프로젝트 참조 추가
 echo "Adding project references..."
+# API 프로젝트는 Core와 Infrastructure 참조
 dotnet add "$PROJECT_NAME.API/$PROJECT_NAME.API.csproj" reference "$PROJECT_NAME.Core/$PROJECT_NAME.Core.csproj"
 dotnet add "$PROJECT_NAME.API/$PROJECT_NAME.API.csproj" reference "$PROJECT_NAME.Infrastructure/$PROJECT_NAME.Infrastructure.csproj"
+# Infrastructure 프로젝트는 Core만 참조
 dotnet add "$PROJECT_NAME.Infrastructure/$PROJECT_NAME.Infrastructure.csproj" reference "$PROJECT_NAME.Core/$PROJECT_NAME.Core.csproj"
+# 테스트 프로젝트는 모든 프로젝트 참조
 dotnet add "$PROJECT_NAME.Tests/$PROJECT_NAME.Tests.csproj" reference "$PROJECT_NAME.API/$PROJECT_NAME.API.csproj"
 dotnet add "$PROJECT_NAME.Tests/$PROJECT_NAME.Tests.csproj" reference "$PROJECT_NAME.Core/$PROJECT_NAME.Core.csproj"
 dotnet add "$PROJECT_NAME.Tests/$PROJECT_NAME.Tests.csproj" reference "$PROJECT_NAME.Infrastructure/$PROJECT_NAME.Infrastructure.csproj"
 
-# Install NuGet packages
-echo "Installing NuGet packages..."
-cd "$PROJECT_NAME.API"
+# Core 프로젝트 패키지 설치 (외부 의존성 최소화)
+echo "Installing NuGet packages for Core project..."
+cd "$PROJECT_NAME.Core"
+# 도메인 모델 검증용 FluentValidation만 추가
+dotnet add package FluentValidation --version 11.8.0
+cd ..
+
+# Infrastructure 프로젝트 패키지 설치 (데이터 액세스 관련)
+echo "Installing NuGet packages for Infrastructure project..."
+cd "$PROJECT_NAME.Infrastructure"
+# 데이터베이스 액세스 관련 패키지
+dotnet add package Microsoft.EntityFrameworkCore --version 8.0.5
 dotnet add package Microsoft.EntityFrameworkCore.SqlServer --version 8.0.5
+dotnet add package Microsoft.EntityFrameworkCore.Tools --version 8.0.5
+# 객체 매핑용 AutoMapper
+dotnet add package AutoMapper --version 12.0.1
+# 의존성 주입 지원
+dotnet add package Microsoft.Extensions.DependencyInjection.Abstractions --version 8.0.0
+cd ..
+
+# API 프로젝트 패키지 설치 (웹 API 관련)
+echo "Installing NuGet packages for API project..."
+cd "$PROJECT_NAME.API"
+# EF Core Design 패키지만 설치 (마이그레이션 명령 실행용)
 dotnet add package Microsoft.EntityFrameworkCore.Design --version 8.0.5
+# API 관련 패키지
 dotnet add package Microsoft.AspNetCore.Authentication.JwtBearer --version 8.0.5
 dotnet add package AutoMapper.Extensions.Microsoft.DependencyInjection --version 12.0.1
 dotnet add package FluentValidation.AspNetCore --version 11.3.0
 dotnet add package Swashbuckle.AspNetCore --version 6.5.0
+# CORS, 로깅 등 API 관련 패키지
+dotnet add package Microsoft.AspNetCore.Cors --version 2.2.0
+dotnet add package Serilog.AspNetCore --version 8.0.0
 cd ..
 
-echo "Project setup completed!"
+# Tests 프로젝트 패키지 설치 (테스트 관련, Not Used)
+echo "Installing NuGet packages for Tests project..."
+cd "$PROJECT_NAME.Tests"
+# 테스트 프레임워크 패키지
+dotnet add package Microsoft.NET.Test.Sdk --version 17.8.0
+dotnet add package xunit --version 2.6.2
+dotnet add package xunit.runner.visualstudio --version 2.5.4
+# 테스트 지원 라이브러리
+dotnet add package Moq --version 4.20.70
+dotnet add package FluentAssertions --version 6.12.0
+# 테스트용 인메모리 데이터베이스
+dotnet add package Microsoft.EntityFrameworkCore.InMemory --version 8.0.5
+cd ..
+
+# 기본 폴더 구조 생성
+echo "Creating folder structure..."
+
+# Core 프로젝트 폴더 구조
+mkdir -p "$PROJECT_NAME.Core/Entities"
+mkdir -p "$PROJECT_NAME.Core/Interfaces"
+mkdir -p "$PROJECT_NAME.Core/DTOs"
+mkdir -p "$PROJECT_NAME.Core/Enums"
+mkdir -p "$PROJECT_NAME.Core/Exceptions"
+
+# Infrastructure 프로젝트 폴더 구조
+mkdir -p "$PROJECT_NAME.Infrastructure/Data"
+mkdir -p "$PROJECT_NAME.Infrastructure/Repositories"
+mkdir -p "$PROJECT_NAME.Infrastructure/Services"
+mkdir -p "$PROJECT_NAME.Infrastructure/Migrations"
+
+# API 프로젝트 폴더 구조
+mkdir -p "$PROJECT_NAME.API/Controllers"
+mkdir -p "$PROJECT_NAME.API/Middleware"
+mkdir -p "$PROJECT_NAME.API/Extensions"
+mkdir -p "$PROJECT_NAME.API/Filters"
+
+echo "Project setup completed successfully!"

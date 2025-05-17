@@ -15,23 +15,25 @@ The backend application for the RSVP System, built with ASP.NET Core 8.0, Entity
 ## Project Structure
 ```
 RSVP.sln
-├── RSVP.API/              # Web API 프로젝트 (Similar to Spring Boot's @RestController or Express.js routes)
-│   ├── Controllers/       # API 엔드포인트 (Similar to Spring's @Controller or Express.js route handlers)
-│   ├── Middleware/        # 커스텀 미들웨어 (Similar to Spring's Interceptors or Express.js middleware)
-│   └── Program.cs         # 서비스 설정 (Similar to Spring's Application.java or Express.js app.js)
-├── RSVP.Core/             # 도메인 모델 및 인터페이스 (Similar to Spring's domain package or Node.js models)
-│   ├── Models/           # 도메인 모델 (Similar to Spring's entities or Node.js mongoose schemas)
-│   ├── Interfaces/       # 인터페이스 정의 (Similar to Spring's repositories or Node.js service interfaces)
-│   └── DTOs/             # 데이터 전송 객체 (Similar to Spring's DTOs or Node.js response models)
-├── RSVP.Infrastructure/   # 데이터 액세스 및 외부 서비스 (Similar to Spring's repositories or Node.js services)
-│   ├── Data/             # DbContext 및 마이그레이션 (Similar to Spring's JPA repositories or Node.js mongoose models)
-│   ├── Repositories/     # 리포지토리 구현 (Similar to Spring's repository implementations or Node.js service implementations)
-│   └── Services/         # 외부 서비스 구현 (Similar to Spring's service layer or Node.js external service integrations)
-└── RSVP.Tests/           # 단위 테스트 (Similar to Spring's test package or Node.js test directory)
-    ├── API/              # API 테스트 (Similar to Spring's @WebMvcTest or Node.js API tests)
-    ├── Core/             # 도메인 테스트 (Similar to Spring's unit tests or Node.js model tests)
-    └── Infrastructure/   # 인프라 테스트 (Similar to Spring's integration tests or Node.js service tests)
-```
+├── RSVP.API/              # Web API 프로젝트
+│   ├── Controllers/       # API 엔드포인트 컨트롤러
+│   ├── Middleware/        # 커스텀 미들웨어 구현
+│   └── Program.cs         # 애플리케이션 설정 및 구성
+
+├── RSVP.Core/             # 핵심 비즈니스 로직 및 도메인 계층
+│   ├── Models/            # 도메인 모델 클래스
+│   ├── Interfaces/        # 인터페이스 정의
+│   └── DTOs/              # 데이터 전송 객체
+
+├── RSVP.Infrastructure/   # 데이터 액세스 및 외부 서비스 계층
+│   ├── Data/              # DbContext 및 데이터베이스 마이그레이션
+│   ├── Repositories/      # 리포지토리 패턴 구현체
+│   └── Services/          # 외부 서비스 통합 구현
+
+└── RSVP.Tests/            # 테스트 프로젝트(Not Used)
+    ├── API/               # API 계층 테스트
+    ├── Core/              # 도메인 계층 테스트
+    └── Infrastructure/    # 인프라 계층 테스트
 
 ## Getting Started
 

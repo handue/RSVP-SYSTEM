@@ -1,20 +1,22 @@
 # RSVP System
 
-A reservation management system with React/TypeScript frontend and planned Spring Boot backend.
+A reservation management system with React/TypeScript frontend and ASP.NET Core backend.
 
 ## Project Structure
 
 This project is organized as a monorepo with the following structure:
 
 - `client/`: React/TypeScript frontend application
+- `ASP.NET-server/`: ASP.NET Core backend server (current implementation)
 - `spring-server/`: Spring Boot backend server (planned for future development)
 
 ## Current Development Focus
 
 The project is being developed in phases:
 
-- **Phase 1 (Current)**: Frontend implementation with React/TypeScript
-- **Phase 2 (Planned)**: Backend implementation with Spring Boot
+- **Phase 1**: Frontend implementation with React/TypeScript
+- **Phase 2 (Current)**: Backend implementation with ASP.NET Core
+- **Phase 3 (Planned)**: Alternative backend implementation with Spring Boot
 
 ## Features
 
@@ -29,12 +31,22 @@ The project is being developed in phases:
 - Admin dashboard for reservation management
 - Mock API integration for development
 
-### Planned Features (Backend)
+### Current Features (Backend - ASP.NET Core)
 
 - RESTful API endpoints
-- Database persistence
+- Entity Framework Core for data access
+- Repository pattern implementation
+- Service layer with business logic
+- Domain models with validation
+- Clean architecture principles
+
+### Planned Features (Backend - Spring Boot)
+
+- Alternative RESTful API implementation
+- Spring Data JPA for data access
+- Spring Security for authentication
 - Email notification system
-- Authentication and authorization
+- Integration with Google APIs
 
 ## Technology Stack
 
@@ -47,10 +59,19 @@ The project is being developed in phases:
 - Tailwind CSS for styling
 - Vite as build tool
 
-### Backend (Planned)
+### Backend (Current - ASP.NET Core)
+
+- ASP.NET Core 8
+- Entity Framework Core
+- SQL Server
+- Repository Pattern
+- Clean Architecture
+- JWT Authentication
+
+### Backend (Planned - Spring Boot)
 
 - Spring Boot
-- PostgreSQL or MySql
+- PostgreSQL or MySQL
 - Spring Security (JWT)
 - Lombok
 - Maven
@@ -73,6 +94,18 @@ npm run dev
 
 The frontend will be available at `http://localhost:5173`.
 
+### Running the Backend (ASP.NET Core)
+
+```bash
+# Navigate to ASP.NET-server directory
+cd ASP.NET-server
+
+# Run the application
+dotnet run --project RSVP.API
+```
+
+The backend API will be available at `http://localhost:5000`.
+
 ## Frontend Architecture
 
 The client application follows a feature-based architecture:
@@ -92,6 +125,15 @@ The client application follows a feature-based architecture:
   - Service types
 - **Utils**: Utility functions for common operations
 
+## Backend Architecture (ASP.NET Core)
+
+The backend follows clean architecture principles:
+
+- **API Layer**: Controllers and API endpoints
+- **Core Layer**: Domain models and interfaces
+- **Infrastructure Layer**: Repository implementations and data access
+- **Service Layer**: Business logic implementation
+
 ## Development Workflow
 
 This project follows a simplified Git workflow:
@@ -100,10 +142,10 @@ This project follows a simplified Git workflow:
 - Feature branches are used for new features and bug fixes
 - Semantic commit messages are used for better readability
 
-## Next Steps
+## Steps
 
-- Complete the frontend implementation
-- Develop the Spring Boot backend
-- Integrate frontend with actual backend API
+- Complete the ASP.NET Core backend implementation
+- Integrate frontend with ASP.NET Core backend
 - Implement authentication and authorization
 - Deploy the application
+- Develop alternative Spring Boot backend (future)
