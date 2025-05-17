@@ -33,9 +33,11 @@ public class Service
     [JsonPropertyName("price")]
     public decimal Price { get; set; }
 
-    [Required]
-    [JsonPropertyName("serviceId")]
-    public string ServiceId { get; set; } = string.Empty;
+    public string? StoreId { get; set; }
+
+    // [Required]
+    // [JsonPropertyName("serviceId")]
+    // public string ServiceId { get; set; } = string.Empty;
 
     // Navigation properties
     public Store Store { get; set; } = null!;

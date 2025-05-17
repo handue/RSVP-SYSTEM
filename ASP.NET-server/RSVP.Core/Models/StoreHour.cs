@@ -35,11 +35,11 @@ public class RegularHour
 
     [JsonPropertyName("open")]
     [Required]
-    public TimeSpan Open { get; set; } = string.Empty;
+    public TimeSpan Open { get; set; } = new TimeSpan(9, 0, 0);
 
     [JsonPropertyName("close")]
     [Required]
-    public TimeSpan Close { get; set; } = string.Empty;
+    public TimeSpan Close { get; set; } = new TimeSpan(18, 0, 0);
 
     [JsonPropertyName("isClosed")]
     [Required]
@@ -52,10 +52,10 @@ public class SpecialDate
     public string Date { get; set; } = string.Empty;
 
     [JsonPropertyName("open")]
-    public TimeSpan Open { get; set; } = string.Empty;
+    public TimeSpan Open { get; set; }
 
     [JsonPropertyName("close")]
-    public TimeSpan Close { get; set; } = string.Empty;
+    public TimeSpan Close { get; set; }
 
     [JsonPropertyName("isClosed")]
     public bool IsClosed { get; set; }
