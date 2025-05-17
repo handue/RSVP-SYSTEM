@@ -167,3 +167,44 @@ This file tracks development decisions and progress for the RSVP System project.
 - Implement authentication and authorization
 - Add request/response DTOs
 - Set up database migrations
+
+## 2025-05-16: Backend Implementation - Error Handling and API Standardization
+
+**Implemented:**
+- Added global exception handling
+  - Implemented GlobalExceptionMiddleware for centralized error handling
+  - Created custom AppException class with error codes
+  - Added standardized error response format
+  - Implemented proper HTTP status code mapping
+
+- Updated API controllers
+  - Standardized error handling across all controllers
+  - Updated StoreController with consistent response format
+  - Updated ServiceController with consistent response format
+  - Updated ReservationController with consistent response format
+
+- Refactored domain models and infrastructure
+  - Updated domain models with proper relationships
+  - Updated ApplicationDbContext configurations
+  - Refactored repository implementations
+  - Updated service layer implementations
+
+- Project maintenance
+  - Removed obj directory from git tracking
+  - Updated project files and dependencies
+  - Updated API documentation
+  - Reorganized repository interfaces
+
+**Technical Decisions:**
+- Implemented centralized error handling for consistent API responses
+- Used custom exceptions for better error management
+- Standardized HTTP status codes and error messages
+- Maintained clean architecture principles
+- Improved project structure and documentation
+
+**Next Steps:**
+- Implement authentication and authorization
+- Add request/response DTOs
+- Set up database migrations
+- Add unit tests for services and controllers
+- Implement email notification system
