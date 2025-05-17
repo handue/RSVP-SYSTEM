@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using RSVP.Core.Interfaces;
+using RSVP.Core.Interfaces.Repositories;
 using RSVP.Core.Models;
 using RSVP.Infrastructure.Data;
 
@@ -33,7 +34,7 @@ public class StoreRepository : Repository<Store>, IStoreRepository
     public async Task<IEnumerable<Store>> GetStoresWithHoursAsync()
     {
         return await _dbSet
-            .Include(s => s.StoreHours)
+            .Include(s => s.StoreHour)
             .ToListAsync();
     }
 

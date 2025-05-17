@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using RSVP.Core.Interfaces;
+using RSVP.Core.Interfaces.Repositories;
 using RSVP.Core.Models;
 using RSVP.Infrastructure.Data;
 
@@ -21,7 +22,7 @@ public class ReservationRepository : Repository<Reservation>, IReservationReposi
     // var dbContext = new ApplicationDbContext(options); // DB 컨텍스트 생성
     // var reservationRepo = new ReservationRepository(dbContext); // 레포지토리 초기화
     // 
-    ㅇ// 의존성 주입 사용 시:
+    // 의존성 주입 사용 시:
     // services.AddScoped<IReservationRepository, ReservationRepository>(); // Startup.cs에 등록
     // 그 후 생성자에서 IReservationRepository를 매개변수로 받아 사용
     public ReservationRepository(ApplicationDbContext context) : base(context)
@@ -62,7 +63,7 @@ public class ReservationRepository : Repository<Reservation>, IReservationReposi
             .Include(r => r.Store)
             .Include(r => r.Service)
             .ToListAsync();
-    }
+    }}
 
 // * Not implemented yet, utilize it needed.
 //     public async Task<bool> IsTimeSlotAvailableAsync(string storeId, string serviceId, DateTime date, TimeSpan time)

@@ -1,4 +1,5 @@
 using RSVP.Core.Interfaces;
+using RSVP.Core.Interfaces.Repositories;
 using RSVP.Core.Interfaces.Services;
 using RSVP.Core.Models;
 

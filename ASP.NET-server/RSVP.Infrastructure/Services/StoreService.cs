@@ -1,7 +1,9 @@
 using RSVP.Core.Interfaces;
+using RSVP.Core.Interfaces.Repositories;
 using RSVP.Core.Interfaces.Services;
 using RSVP.Core.Models;
 
+// TODO : 수정 꼭 필요. 아직 터칭 안했음
 namespace RSVP.Infrastructure.Services
 {
     public class StoreService : IStoreService

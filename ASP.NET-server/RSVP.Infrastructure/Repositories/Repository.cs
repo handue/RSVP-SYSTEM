@@ -1,6 +1,8 @@
 using Microsoft.EntityFrameworkCore;
 using RSVP.Core.Interfaces;
+using RSVP.Core.Interfaces.Repositories;
 using RSVP.Infrastructure.Data;
+using System.Linq.Expressions;
 
 namespace RSVP.Infrastructure.Repositories;
 
