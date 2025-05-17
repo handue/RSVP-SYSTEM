@@ -80,26 +80,28 @@ namespace RSVP.API.Controllers
             return NoContent();
         }
 
-        [HttpGet("{storeId}/is-open")]
-        public async Task<ActionResult<bool>> IsStoreOpen(string storeId, [FromQuery] DateTime date, [FromQuery] TimeSpan time)
-        {
-            var isOpen = await _storeService.IsStoreOpenAsync(storeId, date, time);
-            return Ok(isOpen);
-        }
 
-        [HttpGet("{storeId}/available-slots")]
-        public async Task<ActionResult<IEnumerable<TimeSpan>>> GetAvailableTimeSlots(
-            string storeId, [FromQuery] string serviceId, [FromQuery] DateTime date)
-        {
-            try
-            {
-                var timeSlots = await _storeService.GetAvailableTimeSlotsAsync(storeId, serviceId, date);
-                return Ok(timeSlots);
-            }
-            catch (ArgumentException ex)
-            {
-                return BadRequest(ex.Message);
-            }
-        }
+        // ! Not Used at the moment
+        // [HttpGet("{storeId}/is-open")]
+        // public async Task<ActionResult<bool>> IsStoreOpen(string storeId, [FromQuery] DateTime date, [FromQuery] TimeSpan time)
+        // {
+        //     var isOpen = await _storeService.IsStoreOpenAsync(storeId, date, time);
+        //     return Ok(isOpen);
+        // }
+
+        // [HttpGet("{storeId}/available-slots")]
+        // public async Task<ActionResult<IEnumerable<TimeSpan>>> GetAvailableTimeSlots(
+        //     string storeId, [FromQuery] string serviceId, [FromQuery] DateTime date)
+        // {
+        //     try
+        //     {
+        //         var timeSlots = await _storeService.GetAvailableTimeSlotsAsync(storeId, serviceId, date);
+        //         return Ok(timeSlots);
+        //     }
+        //     catch (ArgumentException ex)
+        //     {
+        //         return BadRequest(ex.Message);
+        //     }
+        // }
     }
 } 

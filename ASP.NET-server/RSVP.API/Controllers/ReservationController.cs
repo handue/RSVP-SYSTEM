@@ -72,7 +72,7 @@ namespace RSVP.API.Controllers
         }
 
         [HttpPut("{id}")]
-        public async Task<ActionResult<Reservation>> UpdateReservation(string id, Reservation reservation)
+        public async Task<ActionResult<Reservation>> UpdateReservation(int id, Reservation reservation)
         {
             if (id != reservation.Id)
                 return BadRequest("ID mismatch");
@@ -102,4 +102,4 @@ namespace RSVP.API.Controllers
             return NoContent();
         }
     }
-} 
+}

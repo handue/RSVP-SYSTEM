@@ -80,12 +80,13 @@ namespace RSVP.API.Controllers
             return NoContent();
         }
 
-        [HttpGet("{serviceId}/is-available")]
-        public async Task<ActionResult<bool>> IsServiceAvailable(
-            string serviceId, [FromQuery] DateTime date, [FromQuery] TimeSpan time)
-        {
-            var isAvailable = await _serviceService.IsServiceAvailableAsync(serviceId, date, time);
-            return Ok(isAvailable);
-        }
+        // ! Not Used at the moment
+        // [HttpGet("{serviceId}/is-available")]
+        // public async Task<ActionResult<bool>> IsServiceAvailable(
+        //     string serviceId, [FromQuery] DateTime date, [FromQuery] TimeSpan time)
+        // {
+        //     var isAvailable = await _serviceService.IsServiceAvailableAsync(serviceId, date, time);
+        //     return Ok(isAvailable);
+        // }
     }
-} 
+}
