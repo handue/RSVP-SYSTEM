@@ -1,6 +1,9 @@
 using Microsoft.AspNetCore.Mvc;
+using RSVP.API.Middleware;
+using RSVP.Core.Exceptions;
 using RSVP.Core.Interfaces.Services;
 using RSVP.Core.Models;
+using RSVP.Core.DTOs;
 
 namespace RSVP.API.Controllers
 {
@@ -18,15 +21,11 @@ namespace RSVP.API.Controllers
         [HttpPost]
         public async Task<ActionResult<Service>> CreateService(Service service)
         {
-            try
-            {
-                var result = await _serviceService.CreateServiceAsync(service);
-                return CreatedAtAction(nameof(GetServiceById), new { id = result.ServiceId }, result);
-            }
-            catch (ArgumentException ex)
-            {
-                return BadRequest(ex.Message);
-            }
+
+            var result = await _serviceService.CreateServiceAsync(service);
+            return CreatedAtAction(nameof(GetServiceById), new { id = result.ServiceId }, ApiResponse<Service>.CreateSuccess(result));
+
+
         }
 
         [HttpGet("{id}")]
@@ -34,40 +33,45 @@ namespace RSVP.API.Controllers
         {
             var service = await _serviceService.GetServiceByIdAsync(id);
             if (service == null)
-                return NotFound();
+                return NotFound(ApiResponse<Service>.CreateError(new ErrorResponse
+                {
+                    Code = ErrorCodes.NotFound,
+                    Message = "Service not found",
+                    Details = null,
+                }));
 
-            return Ok(service);
+            return Ok(ApiResponse<Service>.CreateSuccess(service));
         }
 
         [HttpGet("store/{storeId}")]
         public async Task<ActionResult<IEnumerable<Service>>> GetServicesByStoreId(string storeId)
         {
             var services = await _serviceService.GetServicesByStoreIdAsync(storeId);
-            return Ok(services);
+            return Ok(ApiResponse<IEnumerable<Service>>.CreateSuccess(services));
         }
 
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Service>>> GetAllServices()
         {
             var services = await _serviceService.GetAllServicesAsync();
-            return Ok(services);
+            return Ok(ApiResponse<IEnumerable<Service>>.CreateSuccess(services));
         }
 
         [HttpPut("{id}")]
         public async Task<ActionResult<Service>> UpdateService(string id, Service service)
         {
             if (id != service.ServiceId)
-                return BadRequest("ID mismatch");
+                return BadRequest(ApiResponse<Service>.CreateError(new ErrorResponse
+                {
+                    Code = ErrorCodes.ValidationError,
+                    Message = "ID mismatch",
+                    Details = null,
+                }));
 
-            try
-            {
-                var result = await _serviceService.UpdateServiceAsync(service);
-                return Ok(result);
-            }
-            catch (ArgumentException ex)
-            {
-                return NotFound(ex.Message);
-            }
+
+            var result = await _serviceService.UpdateServiceAsync(service);
+            return Ok(ApiResponse<Service>.CreateSuccess(result));
+
         }
 
         [HttpDelete("{id}")]
@@ -75,7 +79,12 @@ namespace RSVP.API.Controllers
         {
             var result = await _serviceService.DeleteServiceAsync(id);
             if (!result)
-                return NotFound();
+                return NotFound(ApiResponse<Service>.CreateError(new ErrorResponse
+                {
+                    Code = ErrorCodes.NotFound,
+                    Message = "Service not found",
+                    Details = null,
+                }));
 
             return NoContent();
         }

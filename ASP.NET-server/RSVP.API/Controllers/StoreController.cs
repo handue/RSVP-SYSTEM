@@ -1,4 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
+using RSVP.Core.DTOs;
+using RSVP.Core.Exceptions;
 using RSVP.Core.Interfaces.Services;
 using RSVP.Core.Models;
 
@@ -18,15 +20,10 @@ namespace RSVP.API.Controllers
         [HttpPost]
         public async Task<ActionResult<Store>> CreateStore(Store store)
         {
-            try
-            {
-                var result = await _storeService.CreateStoreAsync(store);
-                return CreatedAtAction(nameof(GetStoreById), new { id = result.StoreId }, result);
-            }
-            catch (ArgumentException ex)
-            {
-                return BadRequest(ex.Message);
-            }
+
+            var result = await _storeService.CreateStoreAsync(store);
+            return CreatedAtAction(nameof(GetStoreById), new { id = result.StoreId }, ApiResponse<Store>.CreateSuccess(result));
+
         }
 
         [HttpGet("{id}")]
@@ -34,40 +31,45 @@ namespace RSVP.API.Controllers
         {
             var store = await _storeService.GetStoreByIdAsync(id);
             if (store == null)
-                return NotFound();
+                return NotFound(ApiResponse<Store>.CreateError(new ErrorResponse
+                {
+                    Code = ErrorCodes.NotFound,
+                    Message = "Store not found",
+                    Details = null,
+                }));
 
-            return Ok(store);
+            return Ok(ApiResponse<Store>.CreateSuccess(store));
         }
 
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Store>>> GetAllStores()
         {
             var stores = await _storeService.GetAllStoresAsync();
-            return Ok(stores);
+            return Ok(ApiResponse<IEnumerable<Store>>.CreateSuccess(stores));
         }
 
         [HttpGet("location/{location}")]
         public async Task<ActionResult<IEnumerable<Store>>> GetStoresByLocation(string location)
         {
             var stores = await _storeService.GetStoresByLocationAsync(location);
-            return Ok(stores);
+            return Ok(ApiResponse<IEnumerable<Store>>.CreateSuccess(stores));
         }
 
         [HttpPut("{id}")]
         public async Task<ActionResult<Store>> UpdateStore(string id, Store store)
         {
             if (id != store.StoreId)
-                return BadRequest("ID mismatch");
+                return BadRequest(ApiResponse<Store>.CreateError(new ErrorResponse
+                {
+                    Code = ErrorCodes.ValidationError,
+                    Message = "ID mismatch",
+                    Details = null,
+                }));
 
-            try
-            {
-                var result = await _storeService.UpdateStoreAsync(store);
-                return Ok(result);
-            }
-            catch (ArgumentException ex)
-            {
-                return NotFound(ex.Message);
-            }
+
+            var result = await _storeService.UpdateStoreAsync(store);
+            return Ok(ApiResponse<Store>.CreateSuccess(result));
+
         }
 
         [HttpDelete("{id}")]
@@ -75,7 +77,12 @@ namespace RSVP.API.Controllers
         {
             var result = await _storeService.DeleteStoreAsync(id);
             if (!result)
-                return NotFound();
+                return NotFound(ApiResponse<Store>.CreateError(new ErrorResponse
+                {
+                    Code = ErrorCodes.NotFound,
+                    Message = "Store not found",
+                    Details = null,
+                }));
 
             return NoContent();
         }
@@ -104,4 +111,4 @@ namespace RSVP.API.Controllers
         //     }
         // }
     }
-} 
+}
