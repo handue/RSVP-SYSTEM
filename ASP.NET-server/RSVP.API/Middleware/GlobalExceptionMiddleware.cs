@@ -1,6 +1,8 @@
+using System.ComponentModel.DataAnnotations;
 using System.Net;
 using System.Text.Json;
 using RSVP.Core.Exceptions;
+using RSVP.Core.DTOs;
 
 namespace RSVP.API.Middleware
 {
@@ -9,11 +11,11 @@ namespace RSVP.API.Middleware
         // RequestDelegate: HTTP 요청을 처리하는 함수 대리자로, 다음 미들웨어로 요청을 전달하는 역할
         // RequestDelegate: A function delegate that processes HTTP requests and passes them to the next middleware
         private readonly RequestDelegate _next;
-        
+
         // ILogger: 애플리케이션의 이벤트와 오류를 기록하는 로깅 인터페이스
         // ILogger: Logging interface that records application events and errors
         private readonly ILogger<GlobalExceptionMiddleware> _logger;
-        
+
         // IWebHostEnvironment: 애플리케이션 실행 환경(개발/스테이징/프로덕션)에 대한 정보를 제공하는 인터페이스
         // IWebHostEnvironment: Interface that provides information about the application's runtime environment (dev/staging/prod)
         private readonly IWebHostEnvironment _env;
@@ -28,6 +30,8 @@ namespace RSVP.API.Middleware
             _env = env;
         }
 
+    // * 해당 InvokeAsync는 Program.cs에 app.UseMiddleware에 이 클래스가 등록돼 있으면, http 요청이 서버에 도착시, 미들웨어 클래스에서 InvokeAsync 또는 Invoke 를 찾아 자동으로 실행해줌.
+    // * 첫 번째 매개변수 타입은 httpcontex , 반환 타입은 Task여야함
         public async Task InvokeAsync(HttpContext context)
         {
             try
@@ -53,15 +57,21 @@ namespace RSVP.API.Middleware
             };
 
             response.StatusCode = GetStatusCode(exception);
-            _logger.LogError(exception, "An error occurred: {Message}", exception.Message);
+            _logger.LogError(exception,
+          "An error occurred: {Message}. Request Path: {Path}, Method: {Method}",
+          exception.Message,
+          context.Request.Path,
+          context.Request.Method);
 
-            await response.WriteAsJsonAsync(errorResponse);
+            var apiResponse = ApiResponse<object>.CreateError(errorResponse);
+            await response.WriteAsJsonAsync(apiResponse);
         }
 
         private string GetErrorCode(Exception exception)
         {
             return exception switch
             {
+                // * 당장에 사용자 정의를 할지는 모르곘다. 
                 AppException appException => appException.ErrorCode,
                 KeyNotFoundException => ErrorCodes.NotFound,
                 UnauthorizedAccessException => ErrorCodes.Unauthorized,
@@ -103,10 +113,5 @@ namespace RSVP.API.Middleware
         }
     }
 
-    public class ErrorResponse
-    {
-        public string Code { get; set; }
-        public string Message { get; set; }
-        public string Details { get; set; }
-    }
-} 
+  
+}
