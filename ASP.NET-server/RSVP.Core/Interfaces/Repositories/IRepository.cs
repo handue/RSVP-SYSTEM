@@ -13,13 +13,14 @@ public interface IRepository<T> where T : class
     Task<T?> GetByIdAsync(int id);
     Task<IEnumerable<T>> GetAllAsync();
     Task<IEnumerable<T>> FindAsync(Expression<Func<T, bool>> predicate);
-    Task AddAsync(T entity);
+    Task<T> AddAsync(T entity);
 
     // AddRangeAsync: 여러 엔티티를 한 번에 데이터베이스에 비동기적으로 추가하는 메서드. 일괄 처리로 성능 향상
     // AddRangeAsync: A method that asynchronously adds multiple entities to the database at once. Improves performance through batch processing.
     Task AddRangeAsync(IEnumerable<T> entities);
-    void Update(T entity);
-    void Remove(T entity);
-    void RemoveRange(IEnumerable<T> entities);
+    Task<T> UpdateAsync(T entity);
+    Task RemoveAsync(T entity);
+    Task RemoveRangeAsync(IEnumerable<T> entities);
     Task<bool> ExistsAsync(int id);
+    Task SaveChangesAsync();
 }

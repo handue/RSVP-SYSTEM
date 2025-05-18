@@ -9,4 +9,6 @@ public interface IStoreRepository : IRepository<Store>
     Task<IEnumerable<Store>> GetStoresWithServicesAsync();
     Task<IEnumerable<Store>> GetStoresWithHoursAsync();
     Task<bool> ExistsByStoreIdAsync(string storeId);
+
+    
 } 

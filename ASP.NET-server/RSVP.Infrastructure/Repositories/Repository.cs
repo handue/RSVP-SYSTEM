@@ -62,33 +62,45 @@ public class Repository<T> : IRepository<T> where T : class
         return await _dbSet.Where(predicate).ToListAsync();
     }
 
-    public virtual async Task AddAsync(T entity)
+    public virtual async Task<T> AddAsync(T entity)
     {
         await _dbSet.AddAsync(entity);
+        await _context.SaveChangesAsync();
+        return entity;
     }
 
     public virtual async Task AddRangeAsync(IEnumerable<T> entities)
     {
         await _dbSet.AddRangeAsync(entities);
+        await _context.SaveChangesAsync();
     }
 
-    public virtual void Update(T entity)
+    public virtual async Task<T> UpdateAsync(T entity)
     {
         _dbSet.Update(entity);
+        await _context.SaveChangesAsync();
+        return entity;
     }
 
-    public virtual void Remove(T entity)
+    public virtual async Task RemoveAsync(T entity)
     {
         _dbSet.Remove(entity);
+        await _context.SaveChangesAsync();
     }
 
-    public virtual void RemoveRange(IEnumerable<T> entities)
+    public virtual async Task RemoveRangeAsync(IEnumerable<T> entities)
     {
         _dbSet.RemoveRange(entities);
+        await _context.SaveChangesAsync();
     }
 
     public virtual async Task<bool> ExistsAsync(int id)
     {
         return await _dbSet.FindAsync(id) != null;
+    }
+
+    public virtual async Task SaveChangesAsync()
+    {
+        await _context.SaveChangesAsync();
     }
 }
