@@ -30,7 +30,9 @@ public class RegularHour
 
     [JsonPropertyName("day")]
     [Required]
-    public string Day { get; set; } = string.Empty;
+//    * default value sunday (0) is set. should change the value when we put the default value into DB (in Data folder, ApplicationDbContext)
+// * but I set up it as one-one relation. so we don't need to modify. 
+    public DayOfWeek Day { get; set; }
 
 
     [JsonPropertyName("open")]
@@ -49,7 +51,7 @@ public class RegularHour
 public class SpecialDate
 {
     [JsonPropertyName("date")]
-    public string Date { get; set; } = string.Empty;
+    public DateTime Date { get; set; }
 
     [JsonPropertyName("open")]
     public TimeSpan Open { get; set; }
