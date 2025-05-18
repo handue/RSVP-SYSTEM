@@ -5,7 +5,7 @@ namespace RSVP.Core.Interfaces.Services
     public interface IStoreService
     {
         Task<Store> CreateStoreAsync(Store store);
-        Task<Store> GetStoreByIdAsync(string id);
+        Task<Store?> GetStoreByIdAsync(string id);
         Task<IEnumerable<Store>> GetAllStoresAsync();
         Task<IEnumerable<Store>> GetStoresByLocationAsync(string location);
         Task<Store> UpdateStoreAsync(Store store);

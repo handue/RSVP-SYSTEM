@@ -3,7 +3,7 @@ using RSVP.Core.Interfaces.Repositories;
 using RSVP.Core.Interfaces.Services;
 using RSVP.Core.Models;
 
-// TODO : 수정 꼭 필요. 아직 터칭 안했음
+// TODO : 5월 17일에 수정 꼭 필요. 아직 터칭 안했음
 namespace RSVP.Infrastructure.Services
 {
     public class StoreService : IStoreService
@@ -29,10 +29,15 @@ namespace RSVP.Infrastructure.Services
                 throw new ArgumentException($"Store with ID {store.StoreId} already exists.");
 
             // 2. 매장 생성
-            return await _storeRepository.AddAsync(store);
+            await _storeRepository.AddAsync(store);
+
+            return store;
         }
 
-        public async Task<Store> GetStoreByIdAsync(string id)
+
+
+        // todo: return type redefine needed
+        public async Task<Store?> GetStoreByIdAsync(string id)
         {
             return await _storeRepository.GetByStoreIdAsync(id);
         }
@@ -47,6 +52,7 @@ namespace RSVP.Infrastructure.Services
             return await _storeRepository.GetStoresByLocationAsync(location);
         }
 
+        //    todo: return type redefine needed
         public async Task<Store> UpdateStoreAsync(Store store)
         {
             // 1. 매장이 존재하는지 확인
@@ -55,8 +61,9 @@ namespace RSVP.Infrastructure.Services
                 throw new ArgumentException($"Store with ID {store.StoreId} not found.");
 
             // 2. 매장 업데이트
-            return _storeRepository.Update(store);
+            return await _storeRepository.UpdateAsync(store);
         }
+
 
         public async Task<bool> DeleteStoreAsync(string id)
         {
@@ -64,7 +71,7 @@ namespace RSVP.Infrastructure.Services
             if (store == null)
                 return false;
 
-            _storeRepository.Remove(store);
+            await _storeRepository.RemoveAsync(store);
             return true;
         }
 
@@ -75,78 +82,78 @@ namespace RSVP.Infrastructure.Services
                 return false;
 
             // 1. 특별 영업일 확인
-            var specialDate = store.SpecialDates
+            var specialDate = store.StoreHour.SpecialDate?
                 .FirstOrDefault(sd => sd.Date.Date == date.Date);
-            
+
             if (specialDate != null)
             {
-                return time >= specialDate.OpenTime && time <= specialDate.CloseTime;
+                return time >= specialDate.Open && time <= specialDate.Close;
             }
 
             // 2. 일반 영업시간 확인
             var dayOfWeek = date.DayOfWeek;
-            var regularHours = store.RegularHours
-                .FirstOrDefault(rh => rh.DayOfWeek == dayOfWeek);
+            var regularHours = store.StoreHour.RegularHours
+                .FirstOrDefault(rh => rh.Day == dayOfWeek);
 
             if (regularHours == null)
                 return false;
 
-            return time >= regularHours.OpenTime && time <= regularHours.CloseTime;
+            return time >= regularHours.Open && time <= regularHours.Close;
         }
 
-        public async Task<IEnumerable<TimeSpan>> GetAvailableTimeSlotsAsync(
-            string storeId, string serviceId, DateTime date)
-        {
-            // 1. 매장과 서비스 확인
-            var store = await _storeRepository.GetByStoreIdAsync(storeId);
-            if (store == null)
-                throw new ArgumentException($"Store with ID {storeId} not found.");
+        // public async Task<IEnumerable<TimeSpan>> GetAvailableTimeSlotsAsync(
+        //     string storeId, string serviceId, DateTime date)
+        // {
+        //     // 1. 매장과 서비스 확인
+        //     var store = await _storeRepository.GetByStoreIdAsync(storeId);
+        //     if (store == null)
+        //         throw new ArgumentException($"Store with ID {storeId} not found.");
 
-            var service = await _serviceRepository.GetByServiceIdAsync(serviceId);
-            if (service == null)
-                throw new ArgumentException($"Service with ID {serviceId} not found.");
+        //     var service = await _serviceRepository.GetByServiceIdAsync(serviceId);
+        //     if (service == null)
+        //         throw new ArgumentException($"Service with ID {serviceId} not found.");
 
-            // 2. 영업 시간 확인
-            if (!await IsStoreOpenAsync(storeId, date, TimeSpan.Zero))
-                return Enumerable.Empty<TimeSpan>();
+        //     // 2. 영업 시간 확인
+        //     if (!await IsStoreOpenAsync(storeId, date, TimeSpan.Zero))
+        //         return Enumerable.Empty<TimeSpan>();
 
-            // 3. 예약 가능 시간대 계산
-            var availableSlots = new List<TimeSpan>();
-            var currentTime = store.RegularHours
-                .FirstOrDefault(rh => rh.DayOfWeek == date.DayOfWeek)?.OpenTime 
-                ?? TimeSpan.Zero;
-            
-            var closeTime = store.RegularHours
-                .FirstOrDefault(rh => rh.DayOfWeek == date.DayOfWeek)?.CloseTime 
-                ?? TimeSpan.Zero;
+        //     // 3. 예약 가능 시간대 계산
+        //     var availableSlots = new List<TimeSpan>();
+        //     var currentTime = store.RegularHours
+        //         .FirstOrDefault(rh => rh.DayOfWeek == date.DayOfWeek)?.OpenTime
+        //         ?? TimeSpan.Zero;
 
-            // 4. 기존 예약 확인
-            var existingReservations = await _reservationRepository.GetReservationsByDateAsync(date);
-            var storeReservations = existingReservations
-                .Where(r => r.StoreId == storeId)
-                .ToList();
+        //     var closeTime = store.RegularHours
+        //         .FirstOrDefault(rh => rh.DayOfWeek == date.DayOfWeek)?.CloseTime
+        //         ?? TimeSpan.Zero;
 
-            // 5. 가능한 시간대 계산
-            while (currentTime.Add(service.Duration) <= closeTime)
-            {
-                var isAvailable = true;
-                foreach (var reservation in storeReservations)
-                {
-                    if (currentTime < reservation.Time.Add(reservation.Duration) &&
-                        currentTime.Add(service.Duration) > reservation.Time)
-                    {
-                        isAvailable = false;
-                        break;
-                    }
-                }
+        //     // 4. 기존 예약 확인
+        //     var existingReservations = await _reservationRepository.GetReservationsByDateAsync(date);
+        //     var storeReservations = existingReservations
+        //         .Where(r => r.StoreId == storeId)
+        //         .ToList();
 
-                if (isAvailable)
-                    availableSlots.Add(currentTime);
+        //     // 5. 가능한 시간대 계산
+        //     while (currentTime.Add(service.Duration) <= closeTime)
+        //     {
+        //         var isAvailable = true;
+        //         foreach (var reservation in storeReservations)
+        //         {
+        //             if (currentTime < reservation.Time.Add(reservation.Duration) &&
+        //                 currentTime.Add(service.Duration) > reservation.Time)
+        //             {
+        //                 isAvailable = false;
+        //                 break;
+        //             }
+        //         }
 
-                currentTime = currentTime.Add(TimeSpan.FromMinutes(30)); // 30분 간격으로 체크
-            }
+        //         if (isAvailable)
+        //             availableSlots.Add(currentTime);
 
-            return availableSlots;
-        }
+        //         currentTime = currentTime.Add(TimeSpan.FromMinutes(30)); // 30분 간격으로 체크
+        //     }
+
+        //     return availableSlots;
+        // }
     }
-} 
+}

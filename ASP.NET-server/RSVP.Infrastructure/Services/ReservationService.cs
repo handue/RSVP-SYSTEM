@@ -33,15 +33,15 @@ namespace RSVP.Infrastructure.Services
                 throw new ArgumentException($"Service with ID {reservation.ServiceId} not found.");
 
             // 2. 예약 가능 시간인지 확인
-            if (!await IsTimeSlotAvailableAsync(reservation.StoreId, reservation.ServiceId, 
-                reservation.Date, reservation.Time))
-                throw new InvalidOperationException("The selected time slot is not available.");
+            // if (!await IsTimeSlotAvailableAsync(reservation.StoreId, reservation.ServiceId, 
+            //     reservation.Date, reservation.Time))
+            //     throw new InvalidOperationException("The selected time slot is not available.");
 
             // 3. 예약 생성
             return await _reservationRepository.AddAsync(reservation);
         }
 
-        public async Task<Reservation> GetReservationByIdAsync(string id)
+        public async Task<Reservation?> GetReservationByIdAsync(int id)
         {
             return await _reservationRepository.GetByIdAsync(id);
         }
@@ -73,51 +73,51 @@ namespace RSVP.Infrastructure.Services
             if (existingReservation == null)
                 throw new ArgumentException($"Reservation with ID {reservation.Id} not found.");
 
-            // 2. 시간 변경이 있는 경우, 새로운 시간이 가능한지 확인
-            if (existingReservation.Date != reservation.Date || 
-                existingReservation.Time != reservation.Time)
-            {
-                if (!await IsTimeSlotAvailableAsync(reservation.StoreId, reservation.ServiceId, 
-                    reservation.Date, reservation.Time))
-                    throw new InvalidOperationException("The selected time slot is not available.");
-            }
+            // // 2. 시간 변경이 있는 경우, 새로운 시간이 가능한지 확인
+            // if (existingReservation.Date != reservation.Date || 
+            //     existingReservation.Time != reservation.Time)
+            // {
+            //     if (!await IsTimeSlotAvailableAsync(reservation.StoreId, reservation.ServiceId, 
+            //         reservation.Date, reservation.Time))
+            //         throw new InvalidOperationException("The selected time slot is not available.");
+            // }
 
             // 3. 예약 업데이트
-            return _reservationRepository.Update(reservation);
+            return await _reservationRepository.UpdateAsync(reservation);
         }
 
-        public async Task<bool> DeleteReservationAsync(string id)
+        public async Task<bool> DeleteReservationAsync(int id)
         {
             var reservation = await _reservationRepository.GetByIdAsync(id);
             if (reservation == null)
                 return false;
 
-            _reservationRepository.Remove(reservation);
+            await _reservationRepository.RemoveAsync(reservation);
             return true;
         }
 
-        public async Task<bool> IsTimeSlotAvailableAsync(string storeId, string serviceId, 
-            DateTime date, TimeSpan time)
-        {
-            // 1. 매장의 영업 시간 확인
-            var store = await _storeRepository.GetByStoreIdAsync(storeId);
-            if (store == null)
-                return false;
+        // public async Task<bool> IsTimeSlotAvailableAsync(string storeId, string serviceId, 
+        //     DateTime date, TimeSpan time)
+        // {
+        //     // 1. 매장의 영업 시간 확인
+        //     var store = await _storeRepository.GetByStoreIdAsync(storeId);
+        //     if (store == null)
+        //         return false;
 
-            // 2. 서비스의 소요 시간 확인
-            var service = await _serviceRepository.GetByServiceIdAsync(serviceId);
-            if (service == null)
-                return false;
+        //     // 2. 서비스의 소요 시간 확인
+        //     var service = await _serviceRepository.GetByServiceIdAsync(serviceId);
+        //     if (service == null)
+        //         return false;
 
-            // 3. 해당 시간대의 예약 확인
-            var reservations = await _reservationRepository.GetReservationsByDateAsync(date);
-            var conflictingReservations = reservations
-                .Where(r => r.StoreId == storeId && 
-                           r.Time <= time && 
-                           r.Time.Add(r.Duration) > time)
-                .ToList();
+        //     // 3. 해당 시간대의 예약 확인
+        //     var reservations = await _reservationRepository.GetReservationsByDateAsync(date);
+        //     var conflictingReservations = reservations
+        //         .Where(r => r.StoreId == storeId && 
+        //                    r.Time <= time && 
+        //                    r.Time.Add(r.Duration) > time)
+        //         .ToList();
 
-            return !conflictingReservations.Any();
-        }
+        //     return !conflictingReservations.Any();
+        // }
     }
 } 

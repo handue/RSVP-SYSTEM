@@ -1,4 +1,5 @@
 using RSVP.Core.Interfaces;
+using RSVP.Core.Interfaces.Repositories;
 using RSVP.Core.Interfaces.Services;
 using RSVP.Core.Models;
 
@@ -23,21 +24,28 @@ namespace RSVP.Infrastructure.Services
         public async Task<Service> CreateServiceAsync(Service service)
         {
             // 1. 매장이 존재하는지 확인
-            var store = await _storeRepository.GetByStoreIdAsync(service.StoreId);
+            var store = await _storeRepository.GetByStoreIdAsync(service.Store.StoreId);
             if (store == null)
-                throw new ArgumentException($"Store with ID {service.StoreId} not found.");
+                throw new ArgumentException($"Store with ID {service.Store.StoreId} not found.");
 
             // 2. 서비스 ID 중복 확인
             if (await _serviceRepository.ExistsByServiceIdAsync(service.ServiceId))
                 throw new ArgumentException($"Service with ID {service.ServiceId} already exists.");
 
             // 3. 서비스 생성
-            return await _serviceRepository.AddAsync(service);
+            await _serviceRepository.AddAsync(service);
+
+            return service;
         }
 
         public async Task<Service> GetServiceByIdAsync(string id)
         {
-            return await _serviceRepository.GetByServiceIdAsync(id);
+            var service = await _serviceRepository.GetByServiceIdAsync(id);
+
+            if (service == null)
+                throw new ArgumentException($"Service with ID {id} not found.");
+
+            return service;
         }
 
         public async Task<IEnumerable<Service>> GetServicesByStoreIdAsync(string storeId)
@@ -63,7 +71,7 @@ namespace RSVP.Infrastructure.Services
                 throw new ArgumentException($"Store with ID {service.StoreId} not found.");
 
             // 3. 서비스 업데이트
-            return _serviceRepository.Update(service);
+            return await _serviceRepository.UpdateAsync(service);
         }
 
         public async Task<bool> DeleteServiceAsync(string id)
@@ -72,31 +80,31 @@ namespace RSVP.Infrastructure.Services
             if (service == null)
                 return false;
 
-            _serviceRepository.Remove(service);
+            await _serviceRepository.RemoveAsync(service);
             return true;
         }
 
-        public async Task<bool> IsServiceAvailableAsync(string serviceId, DateTime date, TimeSpan time)
-        {
-            // 1. 서비스 확인
-            var service = await _serviceRepository.GetByServiceIdAsync(serviceId);
-            if (service == null)
-                return false;
+        // public async Task<bool> IsServiceAvailableAsync(string serviceId, DateTime date, TimeSpan time)
+        // {
+        //     // 1. 서비스 확인
+        //     var service = await _serviceRepository.GetByServiceIdAsync(serviceId);
+        //     if (service == null)
+        //         return false;
 
-            // 2. 매장 영업시간 확인
-            var store = await _storeRepository.GetByStoreIdAsync(service.StoreId);
-            if (store == null)
-                return false;
+        //     // 2. 매장 영업시간 확인
+        //     var store = await _storeRepository.GetByStoreIdAsync(service.StoreId);
+        //     if (store == null)
+        //         return false;
 
-            // 3. 예약 가능 시간인지 확인
-            var reservations = await _reservationRepository.GetReservationsByDateAsync(date);
-            var conflictingReservations = reservations
-                .Where(r => r.ServiceId == serviceId && 
-                           r.Time <= time && 
-                           r.Time.Add(r.Duration) > time)
-                .ToList();
+        //     // 3. 예약 가능 시간인지 확인
+        //     var reservations = await _reservationRepository.GetReservationsByDateAsync(date);
+        //     var conflictingReservations = reservations
+        //         .Where(r => r.ServiceId == serviceId &&
+        //                    r.Time <= time &&
+        //                    r.Time.Add(r.Duration) > time)
+        //         .ToList();
 
-            return !conflictingReservations.Any();
-        }
+        //     return !conflictingReservations.Any();
+        // }
     }
-} 
+}
