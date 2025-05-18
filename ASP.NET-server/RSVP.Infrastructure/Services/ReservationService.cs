@@ -26,11 +26,11 @@ namespace RSVP.Infrastructure.Services
             // 1. 매장과 서비스가 존재하는지 확인
             var store = await _storeRepository.GetByStoreIdAsync(reservation.StoreId);
             if (store == null)
-                throw new ArgumentException($"Store with ID {reservation.StoreId} not found.");
+                throw new KeyNotFoundException($"Store with ID {reservation.StoreId} not found.");
 
             var service = await _serviceRepository.GetByServiceIdAsync(reservation.ServiceId);
             if (service == null)
-                throw new ArgumentException($"Service with ID {reservation.ServiceId} not found.");
+                throw new KeyNotFoundException($"Service with ID {reservation.ServiceId} not found.");
 
             // 2. 예약 가능 시간인지 확인
             // if (!await IsTimeSlotAvailableAsync(reservation.StoreId, reservation.ServiceId, 
