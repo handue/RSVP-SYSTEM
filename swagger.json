@@ -1,0 +1,1358 @@
+{
+    "openapi": "3.0.1",
+    "info": {
+      "title": "RSVP.API",
+      "version": "1.0"
+    },
+    "paths": {
+      "/api/Reservation": {
+        "post": {
+          "tags": [
+            "Reservation"
+          ],
+          "requestBody": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Reservation"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Reservation"
+                }
+              },
+              "application/*+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Reservation"
+                }
+              }
+            }
+          },
+          "responses": {
+            "200": {
+              "description": "Success",
+              "content": {
+                "text/plain": {
+                  "schema": {
+                    "$ref": "#/components/schemas/ReservationApiResponse"
+                  }
+                },
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/ReservationApiResponse"
+                  }
+                },
+                "text/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/ReservationApiResponse"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "/api/Reservation/{id}": {
+        "get": {
+          "tags": [
+            "Reservation"
+          ],
+          "parameters": [
+            {
+              "name": "id",
+              "in": "path",
+              "required": true,
+              "style": "simple",
+              "schema": {
+                "type": "integer",
+                "format": "int32"
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Success",
+              "content": {
+                "text/plain": {
+                  "schema": {
+                    "$ref": "#/components/schemas/ReservationApiResponse"
+                  }
+                },
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/ReservationApiResponse"
+                  }
+                },
+                "text/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/ReservationApiResponse"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "put": {
+          "tags": [
+            "Reservation"
+          ],
+          "parameters": [
+            {
+              "name": "id",
+              "in": "path",
+              "required": true,
+              "style": "simple",
+              "schema": {
+                "type": "integer",
+                "format": "int32"
+              }
+            }
+          ],
+          "requestBody": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Reservation"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Reservation"
+                }
+              },
+              "application/*+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Reservation"
+                }
+              }
+            }
+          },
+          "responses": {
+            "200": {
+              "description": "Success",
+              "content": {
+                "text/plain": {
+                  "schema": {
+                    "$ref": "#/components/schemas/ReservationApiResponse"
+                  }
+                },
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/ReservationApiResponse"
+                  }
+                },
+                "text/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/ReservationApiResponse"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "delete": {
+          "tags": [
+            "Reservation"
+          ],
+          "parameters": [
+            {
+              "name": "id",
+              "in": "path",
+              "required": true,
+              "style": "simple",
+              "schema": {
+                "type": "integer",
+                "format": "int32"
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Success",
+              "content": {
+                "text/plain": {
+                  "schema": {
+                    "$ref": "#/components/schemas/BooleanApiResponse"
+                  }
+                },
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/BooleanApiResponse"
+                  }
+                },
+                "text/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/BooleanApiResponse"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "/api/Reservation/store/{storeId}": {
+        "get": {
+          "tags": [
+            "Reservation"
+          ],
+          "parameters": [
+            {
+              "name": "storeId",
+              "in": "path",
+              "required": true,
+              "style": "simple",
+              "schema": {
+                "type": "string"
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Success",
+              "content": {
+                "text/plain": {
+                  "schema": {
+                    "$ref": "#/components/schemas/ReservationIEnumerableApiResponse"
+                  }
+                },
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/ReservationIEnumerableApiResponse"
+                  }
+                },
+                "text/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/ReservationIEnumerableApiResponse"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "/api/Reservation/service/{serviceId}": {
+        "get": {
+          "tags": [
+            "Reservation"
+          ],
+          "parameters": [
+            {
+              "name": "serviceId",
+              "in": "path",
+              "required": true,
+              "style": "simple",
+              "schema": {
+                "type": "string"
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Success",
+              "content": {
+                "text/plain": {
+                  "schema": {
+                    "$ref": "#/components/schemas/ReservationIEnumerableApiResponse"
+                  }
+                },
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/ReservationIEnumerableApiResponse"
+                  }
+                },
+                "text/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/ReservationIEnumerableApiResponse"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "/api/Reservation/date/{date}": {
+        "get": {
+          "tags": [
+            "Reservation"
+          ],
+          "parameters": [
+            {
+              "name": "date",
+              "in": "path",
+              "required": true,
+              "style": "simple",
+              "schema": {
+                "type": "string",
+                "format": "date-time"
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Success",
+              "content": {
+                "text/plain": {
+                  "schema": {
+                    "$ref": "#/components/schemas/ReservationIEnumerableApiResponse"
+                  }
+                },
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/ReservationIEnumerableApiResponse"
+                  }
+                },
+                "text/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/ReservationIEnumerableApiResponse"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "/api/Reservation/customer/{email}": {
+        "get": {
+          "tags": [
+            "Reservation"
+          ],
+          "parameters": [
+            {
+              "name": "email",
+              "in": "path",
+              "required": true,
+              "style": "simple",
+              "schema": {
+                "type": "string"
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Success",
+              "content": {
+                "text/plain": {
+                  "schema": {
+                    "$ref": "#/components/schemas/ReservationIEnumerableApiResponse"
+                  }
+                },
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/ReservationIEnumerableApiResponse"
+                  }
+                },
+                "text/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/ReservationIEnumerableApiResponse"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "/api/Reservation/{id}/confirm": {
+        "put": {
+          "tags": [
+            "Reservation"
+          ],
+          "parameters": [
+            {
+              "name": "id",
+              "in": "path",
+              "required": true,
+              "style": "simple",
+              "schema": {
+                "type": "integer",
+                "format": "int32"
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Success",
+              "content": {
+                "text/plain": {
+                  "schema": {
+                    "$ref": "#/components/schemas/ReservationApiResponse"
+                  }
+                },
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/ReservationApiResponse"
+                  }
+                },
+                "text/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/ReservationApiResponse"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "/api/Reservation/{id}/cancel": {
+        "put": {
+          "tags": [
+            "Reservation"
+          ],
+          "parameters": [
+            {
+              "name": "id",
+              "in": "path",
+              "required": true,
+              "style": "simple",
+              "schema": {
+                "type": "integer",
+                "format": "int32"
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Success",
+              "content": {
+                "text/plain": {
+                  "schema": {
+                    "$ref": "#/components/schemas/ReservationApiResponse"
+                  }
+                },
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/ReservationApiResponse"
+                  }
+                },
+                "text/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/ReservationApiResponse"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "/api/Service": {
+        "post": {
+          "tags": [
+            "Service"
+          ],
+          "requestBody": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Service"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Service"
+                }
+              },
+              "application/*+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Service"
+                }
+              }
+            }
+          },
+          "responses": {
+            "200": {
+              "description": "Success",
+              "content": {
+                "text/plain": {
+                  "schema": {
+                    "$ref": "#/components/schemas/Service"
+                  }
+                },
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/Service"
+                  }
+                },
+                "text/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/Service"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "get": {
+          "tags": [
+            "Service"
+          ],
+          "responses": {
+            "200": {
+              "description": "Success",
+              "content": {
+                "text/plain": {
+                  "schema": {
+                    "type": "array",
+                    "items": {
+                      "$ref": "#/components/schemas/Service"
+                    }
+                  }
+                },
+                "application/json": {
+                  "schema": {
+                    "type": "array",
+                    "items": {
+                      "$ref": "#/components/schemas/Service"
+                    }
+                  }
+                },
+                "text/json": {
+                  "schema": {
+                    "type": "array",
+                    "items": {
+                      "$ref": "#/components/schemas/Service"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "/api/Service/{id}": {
+        "get": {
+          "tags": [
+            "Service"
+          ],
+          "parameters": [
+            {
+              "name": "id",
+              "in": "path",
+              "required": true,
+              "style": "simple",
+              "schema": {
+                "type": "string"
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Success",
+              "content": {
+                "text/plain": {
+                  "schema": {
+                    "$ref": "#/components/schemas/Service"
+                  }
+                },
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/Service"
+                  }
+                },
+                "text/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/Service"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "put": {
+          "tags": [
+            "Service"
+          ],
+          "parameters": [
+            {
+              "name": "id",
+              "in": "path",
+              "required": true,
+              "style": "simple",
+              "schema": {
+                "type": "string"
+              }
+            }
+          ],
+          "requestBody": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Service"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Service"
+                }
+              },
+              "application/*+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Service"
+                }
+              }
+            }
+          },
+          "responses": {
+            "200": {
+              "description": "Success",
+              "content": {
+                "text/plain": {
+                  "schema": {
+                    "$ref": "#/components/schemas/Service"
+                  }
+                },
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/Service"
+                  }
+                },
+                "text/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/Service"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "delete": {
+          "tags": [
+            "Service"
+          ],
+          "parameters": [
+            {
+              "name": "id",
+              "in": "path",
+              "required": true,
+              "style": "simple",
+              "schema": {
+                "type": "string"
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Success"
+            }
+          }
+        }
+      },
+      "/api/Service/store/{storeId}": {
+        "get": {
+          "tags": [
+            "Service"
+          ],
+          "parameters": [
+            {
+              "name": "storeId",
+              "in": "path",
+              "required": true,
+              "style": "simple",
+              "schema": {
+                "type": "string"
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Success",
+              "content": {
+                "text/plain": {
+                  "schema": {
+                    "type": "array",
+                    "items": {
+                      "$ref": "#/components/schemas/Service"
+                    }
+                  }
+                },
+                "application/json": {
+                  "schema": {
+                    "type": "array",
+                    "items": {
+                      "$ref": "#/components/schemas/Service"
+                    }
+                  }
+                },
+                "text/json": {
+                  "schema": {
+                    "type": "array",
+                    "items": {
+                      "$ref": "#/components/schemas/Service"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "/api/Store": {
+        "post": {
+          "tags": [
+            "Store"
+          ],
+          "requestBody": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Store"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Store"
+                }
+              },
+              "application/*+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Store"
+                }
+              }
+            }
+          },
+          "responses": {
+            "200": {
+              "description": "Success",
+              "content": {
+                "text/plain": {
+                  "schema": {
+                    "$ref": "#/components/schemas/Store"
+                  }
+                },
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/Store"
+                  }
+                },
+                "text/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/Store"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "get": {
+          "tags": [
+            "Store"
+          ],
+          "responses": {
+            "200": {
+              "description": "Success",
+              "content": {
+                "text/plain": {
+                  "schema": {
+                    "type": "array",
+                    "items": {
+                      "$ref": "#/components/schemas/Store"
+                    }
+                  }
+                },
+                "application/json": {
+                  "schema": {
+                    "type": "array",
+                    "items": {
+                      "$ref": "#/components/schemas/Store"
+                    }
+                  }
+                },
+                "text/json": {
+                  "schema": {
+                    "type": "array",
+                    "items": {
+                      "$ref": "#/components/schemas/Store"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "/api/Store/{id}": {
+        "get": {
+          "tags": [
+            "Store"
+          ],
+          "parameters": [
+            {
+              "name": "id",
+              "in": "path",
+              "required": true,
+              "style": "simple",
+              "schema": {
+                "type": "string"
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Success",
+              "content": {
+                "text/plain": {
+                  "schema": {
+                    "$ref": "#/components/schemas/Store"
+                  }
+                },
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/Store"
+                  }
+                },
+                "text/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/Store"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "put": {
+          "tags": [
+            "Store"
+          ],
+          "parameters": [
+            {
+              "name": "id",
+              "in": "path",
+              "required": true,
+              "style": "simple",
+              "schema": {
+                "type": "string"
+              }
+            }
+          ],
+          "requestBody": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Store"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Store"
+                }
+              },
+              "application/*+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Store"
+                }
+              }
+            }
+          },
+          "responses": {
+            "200": {
+              "description": "Success",
+              "content": {
+                "text/plain": {
+                  "schema": {
+                    "$ref": "#/components/schemas/Store"
+                  }
+                },
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/Store"
+                  }
+                },
+                "text/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/Store"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "delete": {
+          "tags": [
+            "Store"
+          ],
+          "parameters": [
+            {
+              "name": "id",
+              "in": "path",
+              "required": true,
+              "style": "simple",
+              "schema": {
+                "type": "string"
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Success"
+            }
+          }
+        }
+      },
+      "/api/Store/location/{location}": {
+        "get": {
+          "tags": [
+            "Store"
+          ],
+          "parameters": [
+            {
+              "name": "location",
+              "in": "path",
+              "required": true,
+              "style": "simple",
+              "schema": {
+                "type": "string"
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Success",
+              "content": {
+                "text/plain": {
+                  "schema": {
+                    "type": "array",
+                    "items": {
+                      "$ref": "#/components/schemas/Store"
+                    }
+                  }
+                },
+                "application/json": {
+                  "schema": {
+                    "type": "array",
+                    "items": {
+                      "$ref": "#/components/schemas/Store"
+                    }
+                  }
+                },
+                "text/json": {
+                  "schema": {
+                    "type": "array",
+                    "items": {
+                      "$ref": "#/components/schemas/Store"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "components": {
+      "schemas": {
+        "BooleanApiResponse": {
+          "type": "object",
+          "properties": {
+            "success": {
+              "type": "boolean"
+            },
+            "data": {
+              "type": "boolean"
+            },
+            "error": {
+              "$ref": "#/components/schemas/ErrorResponse"
+            }
+          },
+          "additionalProperties": false
+        },
+        "DayOfWeek": {
+          "enum": [0, 1, 2, 3, 4, 5, 6],
+          "type": "integer",
+          "format": "int32"
+        },
+        "ErrorResponse": {
+          "required": [
+            "code",
+            "message"
+          ],
+          "type": "object",
+          "properties": {
+            "code": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "message": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "details": {
+              "nullable": true
+            }
+          },
+          "additionalProperties": false
+        },
+        "RegularHour": {
+          "required": [
+            "close",
+            "day",
+            "isClosed",
+            "open"
+          ],
+          "type": "object",
+          "properties": {
+            "day": {
+              "$ref": "#/components/schemas/DayOfWeek"
+            },
+            "open": {
+              "$ref": "#/components/schemas/TimeSpan"
+            },
+            "close": {
+              "$ref": "#/components/schemas/TimeSpan"
+            },
+            "isClosed": {
+              "type": "boolean"
+            }
+          },
+          "additionalProperties": false
+        },
+        "Reservation": {
+          "required": [
+            "agreed_to_terms",
+            "email",
+            "name",
+            "phone",
+            "reservation_date",
+            "reservation_time",
+            "service_id",
+            "status",
+            "store_Id"
+          ],
+          "type": "object",
+          "properties": {
+            "id": {
+              "type": "integer",
+              "format": "int32"
+            },
+            "store_Id": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "service_id": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "name": {
+              "maxLength": 100,
+              "minLength": 0,
+              "type": "string"
+            },
+            "phone": {
+              "maxLength": 20,
+              "minLength": 0,
+              "type": "string",
+              "format": "tel"
+            },
+            "email": {
+              "maxLength": 100,
+              "minLength": 0,
+              "type": "string",
+              "format": "email"
+            },
+            "reservation_date": {
+              "type": "string",
+              "format": "date-time"
+            },
+            "reservation_time": {
+              "$ref": "#/components/schemas/TimeSpan"
+            },
+            "status": {
+              "$ref": "#/components/schemas/ReservationStatus"
+            },
+            "comments": {
+              "type": "string",
+              "nullable": true
+            },
+            "agreed_to_terms": {
+              "type": "boolean"
+            },
+            "store": {
+              "$ref": "#/components/schemas/Store"
+            },
+            "service": {
+              "$ref": "#/components/schemas/Service"
+            }
+          },
+          "additionalProperties": false
+        },
+        "ReservationApiResponse": {
+          "type": "object",
+          "properties": {
+            "success": {
+              "type": "boolean"
+            },
+            "data": {
+              "$ref": "#/components/schemas/Reservation"
+            },
+            "error": {
+              "$ref": "#/components/schemas/ErrorResponse"
+            }
+          },
+          "additionalProperties": false
+        },
+        "ReservationIEnumerableApiResponse": {
+          "type": "object",
+          "properties": {
+            "success": {
+              "type": "boolean"
+            },
+            "data": {
+              "type": "array",
+              "items": {
+                "$ref": "#/components/schemas/Reservation"
+              },
+              "nullable": true
+            },
+            "error": {
+              "$ref": "#/components/schemas/ErrorResponse"
+            }
+          },
+          "additionalProperties": false
+        },
+        "ReservationStatus": {
+          "enum": [0, 1, 2],
+          "type": "integer",
+          "format": "int32"
+        },
+        "Service": {
+          "required": [
+            "duration",
+            "name",
+            "price",
+            "serviceId"
+          ],
+          "type": "object",
+          "properties": {
+            "id": {
+              "type": "integer",
+              "format": "int32"
+            },
+            "serviceId": {
+              "maxLength": 100,
+              "minLength": 0,
+              "type": "string"
+            },
+            "name": {
+              "maxLength": 100,
+              "minLength": 0,
+              "type": "string"
+            },
+            "description": {
+              "maxLength": 500,
+              "minLength": 0,
+              "type": "string",
+              "nullable": true
+            },
+            "duration": {
+              "type": "integer",
+              "format": "int32"
+            },
+            "price": {
+              "minimum": 0,
+              "type": "number",
+              "format": "double"
+            },
+            "storeId": {
+              "type": "string",
+              "nullable": true
+            },
+            "store": {
+              "$ref": "#/components/schemas/Store"
+            },
+            "reservations": {
+              "type": "array",
+              "items": {
+                "$ref": "#/components/schemas/Reservation"
+              },
+              "nullable": true
+            }
+          },
+          "additionalProperties": false
+        },
+        "SpecialDate": {
+          "type": "object",
+          "properties": {
+            "date": {
+              "type": "string",
+              "format": "date-time"
+            },
+            "open": {
+              "$ref": "#/components/schemas/TimeSpan"
+            },
+            "close": {
+              "$ref": "#/components/schemas/TimeSpan"
+            },
+            "isClosed": {
+              "type": "boolean"
+            }
+          },
+          "additionalProperties": false
+        },
+        "Store": {
+          "required": [
+            "location",
+            "name",
+            "storeEmail",
+            "storeId"
+          ],
+          "type": "object",
+          "properties": {
+            "id": {
+              "type": "integer",
+              "format": "int32"
+            },
+            "storeId": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "name": {
+              "maxLength": 100,
+              "minLength": 0,
+              "type": "string"
+            },
+            "location": {
+              "maxLength": 200,
+              "minLength": 0,
+              "type": "string"
+            },
+            "storeEmail": {
+              "maxLength": 100,
+              "minLength": 0,
+              "type": "string",
+              "format": "email"
+            },
+            "storeHour": {
+              "$ref": "#/components/schemas/StoreHour"
+            },
+            "services": {
+              "type": "array",
+              "items": {
+                "$ref": "#/components/schemas/Service"
+              },
+              "nullable": true
+            },
+            "reservations": {
+              "type": "array",
+              "items": {
+                "$ref": "#/components/schemas/Reservation"
+              },
+              "nullable": true
+            }
+          },
+          "additionalProperties": false
+        },
+        "StoreHour": {
+          "required": [
+            "regularHours",
+            "storeId"
+          ],
+          "type": "object",
+          "properties": {
+            "id": {
+              "type": "integer",
+              "format": "int32"
+            },
+            "storeId": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "regularHours": {
+              "type": "array",
+              "items": {
+                "$ref": "#/components/schemas/RegularHour"
+              }
+            },
+            "specialDate": {
+              "type": "array",
+              "items": {
+                "$ref": "#/components/schemas/SpecialDate"
+              },
+              "nullable": true
+            },
+            "store": {
+              "$ref": "#/components/schemas/Store"
+            }
+          },
+          "additionalProperties": false
+        },
+        "TimeSpan": {
+          "type": "object",
+          "properties": {
+            "ticks": {
+              "type": "integer",
+              "format": "int64"
+            },
+            "days": {
+              "type": "integer",
+              "format": "int32",
+              "readOnly": true
+            },
+            "hours": {
+              "type": "integer",
+              "format": "int32",
+              "readOnly": true
+            },
+            "milliseconds": {
+              "type": "integer",
+              "format": "int32",
+              "readOnly": true
+            },
+            "microseconds": {
+              "type": "integer",
+              "format": "int32",
+              "readOnly": true
+            },
+            "nanoseconds": {
+              "type": "integer",
+              "format": "int32",
+              "readOnly": true
+            },
+            "minutes": {
+              "type": "integer",
+              "format": "int32",
+              "readOnly": true
+            },
+            "seconds": {
+              "type": "integer",
+              "format": "int32",
+              "readOnly": true
+            },
+            "totalDays": {
+              "type": "number",
+              "format": "double",
+              "readOnly": true
+            },
+            "totalHours": {
+              "type": "number",
+              "format": "double",
+              "readOnly": true
+            },
+            "totalMilliseconds": {
+              "type": "number",
+              "format": "double",
+              "readOnly": true
+            },
+            "totalMicroseconds": {
+              "type": "number",
+              "format": "double",
+              "readOnly": true
+            },
+            "totalNanoseconds": {
+              "type": "number",
+              "format": "double",
+              "readOnly": true
+            },
+            "totalMinutes": {
+              "type": "number",
+              "format": "double",
+              "readOnly": true
+            },
+            "totalSeconds": {
+              "type": "number",
+              "format": "double",
+              "readOnly": true
+            }
+          },
+          "additionalProperties": false
+        }
+      }
+    }
+  }

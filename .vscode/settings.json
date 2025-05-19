@@ -1,0 +1,8 @@
+{
+  "files.exclude": {
+    "**/api-docs.html": true
+  },
+  "files.associations": {
+    "**/api-docs.html": "ignore"
+  }
+}

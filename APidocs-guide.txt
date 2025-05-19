@@ -1,0 +1,19 @@
+****** It's not common way(For static document) ********
+
+
+1. server build and execute
+
+2. access to http://localhost:5000/swagger/v1/swagger.json
+(port can be changed)
+
+3. copy the context in link
+
+4. execute touch swagger.json where you want to put the docs
+
+5. Make a html api docs using with redoc-cli, command line => redoc-cli bundle swagger.json -o api-docs.html
+
+(if you don't install redoc-cli, use below command line)
+
+redoc-cli bundle swagger.json -o api-docs.html
+
+

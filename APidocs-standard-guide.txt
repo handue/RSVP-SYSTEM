@@ -1,0 +1,97 @@
+****** Standard way to implement Swagger/ReDoc in ASP.NET Core ******
+
+1. Install NuGet Packages
+   - Swashbuckle.AspNetCore
+   - Redoc.AspNetCore (Optional)
+
+2. Program.cs Configuration
+   ```csharp
+   // Swagger/OpenAPI Configuration
+   builder.Services.AddEndpointsApiExplorer();
+   builder.Services.AddSwaggerGen();
+
+   // ... existing code ...
+
+   var app = builder.Build();
+
+   // Enable Swagger UI only in Development
+   if (app.Environment.IsDevelopment())
+   {
+       app.UseSwagger();
+       app.UseSwaggerUI();
+   }
+
+   // Add ReDoc for better readability (only in Development)
+   if (app.Environment.IsDevelopment())
+   {
+       app.UseReDoc(c =>
+       {
+           c.RoutePrefix = "redoc";
+           c.SpecUrl("/swagger/v1/swagger.json");
+           c.DocumentTitle = "RSVP API Documentation";
+           c.HideHostname();
+           c.HideDownloadButton();
+           c.RequiredPropsFirst();
+           c.SortPropsAlphabetically();
+       });
+   }
+   ```
+
+3. XML Documentation Generation
+   - Add to RSVP.API.csproj:
+   ```xml
+   <PropertyGroup>
+     <GenerateDocumentationFile>true</GenerateDocumentationFile>
+     <NoWarn>$(NoWarn);1591</NoWarn>
+   </PropertyGroup>
+   ```
+
+4. API Documentation Comments
+   ```csharp
+   /// <summary>
+   /// Creates a new reservation.
+   /// </summary>
+   /// <param name="request">Reservation request information</param>
+   /// <returns>Created reservation information</returns>
+   /// <response code="201">Reservation successfully created</response>
+   /// <response code="400">Invalid request</response>
+   [HttpPost]
+   [ProducesResponseType(typeof(ReservationDto), StatusCodes.Status201Created)]
+   [ProducesResponseType(StatusCodes.Status400BadRequest)]
+   public async Task<IActionResult> CreateReservation([FromBody] CreateReservationRequest request)
+   {
+       // ... implementation ...
+   }
+   ```
+
+5. Access Methods (Development Environment Only)
+   - Swagger UI: http://localhost:5000/swagger
+   - ReDoc: http://localhost:5000/redoc
+   - OpenAPI JSON: http://localhost:5000/swagger/v1/swagger.json
+
+6. Generate Static Documentation
+   ```bash
+   # 1. Start the server in Development environment
+   dotnet run --environment Development
+
+   # 2. Access swagger.json
+   # Open http://localhost:5000/swagger/v1/swagger.json in browser
+   # Copy the content
+
+   # 3. Create swagger.json file
+   touch swagger.json
+   # Paste the copied content
+
+   # 4. Generate HTML documentation
+   redoc-cli bundle swagger.json -o api-docs.html
+   ```
+
+7. Best Practices
+   - Keep API documentation in sync with code changes
+   - Use meaningful descriptions and examples
+   - Document all possible response codes
+   - Include authentication requirements
+   - Add validation rules and constraints
+   - Generate static documentation for version control
+   - Use ReDoc for better readability
+   - Keep Swagger/ReDoc enabled only in Development environment 
