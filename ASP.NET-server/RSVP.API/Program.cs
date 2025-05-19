@@ -36,6 +36,21 @@ builder.Services.AddScoped<IReservationService, ReservationService>();
 // * MVC pattern 컨트롤러 사용
 // * it's parsing the http request data to C# object
 builder.Services.AddControllers();
+
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("DevCors", policy =>
+        policy.WithOrigins("http://localhost:3000")
+              .AllowAnyHeader()
+              .AllowAnyMethod()
+    );
+    options.AddPolicy("ProdCors", policy =>
+        policy.WithOrigins("https://myapp.com") // todo: need to change later(for production)
+              .AllowAnyHeader()
+              .AllowAnyMethod()
+    );
+});
+
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 // api 엔드포인트 정보 생성
 builder.Services.AddEndpointsApiExplorer();
@@ -59,13 +74,21 @@ app.UseReDoc(c =>
     c.SpecUrl("/swagger/v1/swagger.json");
     c.DocumentTitle = "RSVP API Documentation";
     c.HideHostname();
-    c.HideDownloadButton();
+    // c.HideDownloadButton(); 
     c.RequiredPropsFirst();
     c.SortPropsAlphabetically();
 });
 
 // redirect http to https
 app.UseHttpsRedirection();
+if (app.Environment.IsDevelopment())
+{
+    app.UseCors("DevCors");
+}
+else
+{
+    app.UseCors("ProdCors");
+}
 // 인증관리, 미들웨어나 라우터에 [] 로 넣어주면 되는데 지금은 구현 안됐음
 app.UseAuthorization();
 
