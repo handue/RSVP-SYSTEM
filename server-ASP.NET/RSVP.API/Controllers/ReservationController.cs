@@ -24,7 +24,9 @@ namespace RSVP.API.Controllers
 
         [HttpPost]
         public async Task<ActionResult<ApiResponse<ReservationResponseDto>>> CreateReservation([FromBody] CreateReservationDto dto)
-        {
+        {   
+            
+            Console.WriteLine($"[Controller] CreateReservation: {dto}");
             var reservation = _mapper.Map<Reservation>(dto);
             var result = await _reservationService.CreateReservationAsync(reservation);
             var responseDto = _mapper.Map<ReservationResponseDto>(result);
