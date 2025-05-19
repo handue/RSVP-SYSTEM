@@ -5,6 +5,7 @@ using RSVP.Core.Interfaces.Repositories;
 using RSVP.Core.Interfaces.Services;
 using RSVP.Infrastructure.Repositories;
 using RSVP.Infrastructure.Services;
+using RSVP.Core.Mappings;
 
 var builder = WebApplication.CreateBuilder(args);
 // = ASP.NET Core 애플리케이션 구성을 위한 빌더 객체 생성, 이 빌더는 서비스 등록, 구성 설정 등을 위해 사용
@@ -37,17 +38,21 @@ builder.Services.AddScoped<IReservationService, ReservationService>();
 // * it's parsing the http request data to C# object
 builder.Services.AddControllers();
 
+builder.Services.AddAutoMapper(typeof(MappingProfile).Assembly);
+
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("DevCors", policy =>
-        policy.WithOrigins("http://localhost:3000")
+        policy.WithOrigins("http://localhost:5173")
               .AllowAnyHeader()
               .AllowAnyMethod()
+              .AllowCredentials()
     );
     options.AddPolicy("ProdCors", policy =>
         policy.WithOrigins("https://myapp.com") // todo: need to change later(for production)
               .AllowAnyHeader()
               .AllowAnyMethod()
+              .AllowCredentials()
     );
 });
 
@@ -65,6 +70,7 @@ if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
+
 }
 
 // Add ReDoc for better readability
@@ -80,15 +86,20 @@ app.UseReDoc(c =>
 });
 
 // redirect http to https
-app.UseHttpsRedirection();
+
+
 if (app.Environment.IsDevelopment())
 {
     app.UseCors("DevCors");
 }
 else
 {
+    app.UseHttpsRedirection();
     app.UseCors("ProdCors");
 }
+
+app.UseRouting();
+
 // 인증관리, 미들웨어나 라우터에 [] 로 넣어주면 되는데 지금은 구현 안됐음
 app.UseAuthorization();
 

@@ -22,9 +22,10 @@ namespace RSVP.Infrastructure.Services
         }
 
         public async Task<Reservation> CreateReservationAsync(Reservation reservation)
-        {
+        {   
             // 1. 매장과 서비스가 존재하는지 확인
             var store = await _storeRepository.GetByStoreIdAsync(reservation.StoreId);
+            
             if (store == null)
                 throw new KeyNotFoundException($"Store with ID {reservation.StoreId} not found.");
 

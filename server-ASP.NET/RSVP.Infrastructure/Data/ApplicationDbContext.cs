@@ -34,6 +34,7 @@ public class ApplicationDbContext : DbContext
             // * HasKey = Primary Key Setup
             // * Property = Column Setup (e.g. Name, Address, Phone, Email)
             entity.HasKey(e => e.Id);
+            entity.HasIndex(e => e.StoreId).IsUnique();
             // HasIndex: 데이터베이스 인덱스를 생성하는 메서드. 검색 속도를 향상시키는 데이터 구조를 만듦. 해당 값으로 검색한다는 뜻
             // HasIndex: A method to create a database index. Creates a data structure that improves search speed. it means search by that value
             // IsUnique: 해당 인덱스가 고유해야 함을 지정. 동일한 StoreId 값을 가진 두 개의 Store 레코드가 존재할 수 없음
@@ -56,6 +57,7 @@ public class ApplicationDbContext : DbContext
             // StoreId 필드는 필수이며 최대 길이는 100자
             // StoreId field is required and has a maximum length of 100 characters
             entity.Property(e => e.StoreId).IsRequired().HasMaxLength(100);
+
             // * HasIndex = 데이터베이스 인덱스 생성 (Creates a database index)
             // * IsUnique = 유니크 인덱스 설정 (Sets a unique index)
             // 유니크 인덱스: 동일한 StoreId 값을 가진 두 개의 StoreHour 레코드가 존재할 수 없음
@@ -81,8 +83,37 @@ public class ApplicationDbContext : DbContext
             // * HasForeignKey<StoreHour>: In one-to-one relationships, must explicitly specify which entity owns the foreign key
             entity.HasOne(e => e.Store)
                 .WithOne(s => s.StoreHour)
+                .HasPrincipalKey<Store>(e => e.StoreId)
                 .HasForeignKey<StoreHour>(e => e.StoreId)
                 .OnDelete(DeleteBehavior.Cascade);
+
+            entity.OwnsMany(e => e.RegularHours, regularHour =>
+            {
+                regularHour.WithOwner();
+                // 종속됨을 의미 + 해당 엔티티의 ID를 가져와 FK 로 설정. 이름은 엔티티 이름 + 기본키 이름이 될 것. ex) StoreHourId
+                regularHour.HasKey(r => r.Id);
+                regularHour.Property<int>("Id").ValueGeneratedOnAdd();
+                // regularHour.HasKey("Id");
+                regularHour.HasIndex("StoreHourId", nameof(RegularHour.Day)).IsUnique();
+                regularHour.Property(r => r.Day).IsRequired();
+                regularHour.Property(r => r.Open).IsRequired();
+                regularHour.Property(r => r.Close).IsRequired();
+                regularHour.Property(r => r.IsClosed).IsRequired();
+            });
+
+            // SpecialDate 설정
+            entity.OwnsMany(e => e.SpecialDate, specialDate =>
+            {
+                specialDate.WithOwner();
+                specialDate.HasKey(r => r.Id);
+                specialDate.Property<int>("Id").ValueGeneratedOnAdd();
+                // specialDate.HasKey("Id");
+                specialDate.HasIndex("StoreHourId", nameof(SpecialDate.Date)).IsUnique();
+                specialDate.Property(s => s.Date).IsRequired();
+                specialDate.Property(s => s.Open).IsRequired();
+                specialDate.Property(s => s.Close).IsRequired();
+                specialDate.Property(s => s.IsClosed).IsRequired();
+            });
         });
 
         // Service configuration
@@ -90,6 +121,8 @@ public class ApplicationDbContext : DbContext
         {
             entity.HasKey(e => e.Id);
             entity.Property(e => e.ServiceId).IsRequired().HasMaxLength(100);
+            entity.HasIndex(e => e.ServiceId).IsUnique();
+            entity.HasAlternateKey(e => e.ServiceId);
             entity.Property(e => e.Name).IsRequired().HasMaxLength(100);
             entity.Property(e => e.Description).HasMaxLength(500);
             entity.Property(e => e.Duration).IsRequired();
@@ -99,6 +132,7 @@ public class ApplicationDbContext : DbContext
             entity.HasOne(e => e.Store)
                 .WithMany(s => s.Services)
                 .HasForeignKey(e => e.StoreId)
+                .HasPrincipalKey(e => e.StoreId)
                 // * HasForeignKey = 외래 키 설정 (Foreign Key Setup)
                 // * Service 엔티티가 Store 엔티티를 참조하기 위한 외래 키로 StoreId 속성을 사용
                 // * Service entity uses StoreId property as a foreign key to reference the Store entity
@@ -115,10 +149,12 @@ public class ApplicationDbContext : DbContext
             entity.HasOne(e => e.Store)
                 .WithMany(s => s.Reservations)
                 .HasForeignKey(e => e.StoreId)
+                .HasPrincipalKey(e => e.StoreId)
                 .OnDelete(DeleteBehavior.Cascade);
             entity.HasOne(e => e.Service)
                 .WithMany(s => s.Reservations)
                 .HasForeignKey(e => e.ServiceId)
+                .HasPrincipalKey(e => e.ServiceId)
                 .OnDelete(DeleteBehavior.Restrict);
         });
     }

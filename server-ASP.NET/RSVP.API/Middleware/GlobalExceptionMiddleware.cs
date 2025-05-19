@@ -30,16 +30,30 @@ namespace RSVP.API.Middleware
             _env = env;
         }
 
-    // * 해당 InvokeAsync는 Program.cs에 app.UseMiddleware에 이 클래스가 등록돼 있으면, http 요청이 서버에 도착시, 미들웨어 클래스에서 InvokeAsync 또는 Invoke 를 찾아 자동으로 실행해줌.
-    // * 첫 번째 매개변수 타입은 httpcontex , 반환 타입은 Task여야함
+        // * 해당 InvokeAsync는 Program.cs에 app.UseMiddleware에 이 클래스가 등록돼 있으면, http 요청이 서버에 도착시, 미들웨어 클래스에서 InvokeAsync 또는 Invoke 를 찾아 자동으로 실행해줌.
+        // * 첫 번째 매개변수 타입은 httpcontex , 반환 타입은 Task여야함
         public async Task InvokeAsync(HttpContext context)
         {
             try
             {
+                if (context.Request.ContentLength > 0)
+                {
+                    context.Request.EnableBuffering();
+                    var buffer = new byte[context.Request.ContentLength.Value];
+                    await context.Request.Body.ReadAsync(buffer, 0, buffer.Length);
+                    var bodyText = System.Text.Encoding.UTF8.GetString(buffer);
+                    Console.WriteLine($"[Middleware] Request body: {bodyText}");
+
+                    // 중요: Body 스트림 위치를 처음으로 되돌려야 함
+                    context.Request.Body.Position = 0;
+                }
+
+                Console.WriteLine("InvokeAsync 호출됨");
                 await _next(context);
             }
             catch (Exception ex)
             {
+                Console.WriteLine("InvokeAsync 호출됨");
                 await HandleExceptionAsync(context, ex);
             }
         }
@@ -62,6 +76,8 @@ namespace RSVP.API.Middleware
           exception.Message,
           context.Request.Path,
           context.Request.Method);
+
+
 
             var apiResponse = ApiResponse<object>.CreateError(errorResponse);
             await response.WriteAsJsonAsync(apiResponse);
@@ -113,5 +129,5 @@ namespace RSVP.API.Middleware
         }
     }
 
-  
+
 }

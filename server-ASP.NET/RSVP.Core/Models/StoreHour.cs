@@ -2,6 +2,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Text.Json.Serialization;
 using System.Collections.Generic;
 
+
 namespace RSVP.Core.Models;
 
 public class StoreHour
@@ -28,6 +29,9 @@ public class StoreHour
 public class RegularHour
 {
 
+      // 명시적 ID (데이터베이스에서만 사용됨)
+    public int Id { get; set; }
+
     [JsonPropertyName("day")]
     [Required]
 //    * default value sunday (0) is set. should change the value when we put the default value into DB (in Data folder, ApplicationDbContext)
@@ -48,8 +52,13 @@ public class RegularHour
     public bool IsClosed { get; set; }
 }
 
+
 public class SpecialDate
 {
+
+      // 명시적 ID (데이터베이스에서만 사용됨)
+    public int Id { get; set; }
+
     [JsonPropertyName("date")]
     public DateTime Date { get; set; }
 

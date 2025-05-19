@@ -14,6 +14,7 @@ public class StoreRepository : Repository<Store>, IStoreRepository
 
     public async Task<Store?> GetByStoreIdAsync(string storeId)
     {
+        
         return await _dbSet.FirstOrDefaultAsync(s => s.StoreId == storeId);
     }
 
