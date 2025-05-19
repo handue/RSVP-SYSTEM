@@ -1,8 +1,11 @@
 using Microsoft.AspNetCore.Mvc;
 using RSVP.Core.DTOs;
-using RSVP.Core.Exceptions;
-using RSVP.Core.Interfaces.Services;
 using RSVP.Core.Models;
+using RSVP.Core.Interfaces.Services;
+using AutoMapper;
+using System.Collections.Generic;
+using System.Threading.Tasks;
+using RSVP.Core.Exceptions;
 
 namespace RSVP.API.Controllers
 {
@@ -11,65 +14,61 @@ namespace RSVP.API.Controllers
     public class StoreController : ControllerBase
     {
         private readonly IStoreService _storeService;
+        private readonly IMapper _mapper;
 
-        public StoreController(IStoreService storeService)
+        public StoreController(IStoreService storeService, IMapper mapper)
         {
             _storeService = storeService;
+            _mapper = mapper;
         }
 
         [HttpPost]
-        public async Task<ActionResult<Store>> CreateStore(Store store)
+        public async Task<ActionResult<StoreResponseDto>> CreateStore([FromBody] CreateStoreDto dto)
         {
-
+            var store = _mapper.Map<Store>(dto);
             var result = await _storeService.CreateStoreAsync(store);
-            return CreatedAtAction(nameof(GetStoreById), new { id = result.StoreId }, ApiResponse<Store>.CreateSuccess(result));
-
+            var responseDto = _mapper.Map<StoreResponseDto>(result);
+            return CreatedAtAction(nameof(GetStoreById), new { id = result.StoreId }, ApiResponse<StoreResponseDto>.CreateSuccess(responseDto));
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<Store>> GetStoreById(string id)
+        public async Task<ActionResult<StoreResponseDto>> GetStoreById(string id)
         {
             var store = await _storeService.GetStoreByIdAsync(id);
             if (store == null)
-                return NotFound(ApiResponse<Store>.CreateError(new ErrorResponse
+                return NotFound(ApiResponse<StoreResponseDto>.CreateError(new ErrorResponse
                 {
                     Code = ErrorCodes.NotFound,
-                    Message = "Store not found",
-                    Details = null,
+                    Message = "Store not found"
                 }));
-
-            return Ok(ApiResponse<Store>.CreateSuccess(store));
+            var responseDto = _mapper.Map<StoreResponseDto>(store);
+            return Ok(ApiResponse<StoreResponseDto>.CreateSuccess(responseDto));
         }
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Store>>> GetAllStores()
+        public async Task<ActionResult<IEnumerable<StoreResponseDto>>> GetAllStores()
         {
             var stores = await _storeService.GetAllStoresAsync();
-            return Ok(ApiResponse<IEnumerable<Store>>.CreateSuccess(stores));
+            var responseDtos = _mapper.Map<IEnumerable<StoreResponseDto>>(stores);
+            return Ok(ApiResponse<IEnumerable<StoreResponseDto>>.CreateSuccess(responseDtos));
         }
 
         [HttpGet("location/{location}")]
-        public async Task<ActionResult<IEnumerable<Store>>> GetStoresByLocation(string location)
+        public async Task<ActionResult<IEnumerable<StoreResponseDto>>> GetStoresByLocation(string location)
         {
             var stores = await _storeService.GetStoresByLocationAsync(location);
-            return Ok(ApiResponse<IEnumerable<Store>>.CreateSuccess(stores));
+            var responseDtos = _mapper.Map<IEnumerable<StoreResponseDto>>(stores);
+            return Ok(ApiResponse<IEnumerable<StoreResponseDto>>.CreateSuccess(responseDtos));
         }
 
         [HttpPut("{id}")]
-        public async Task<ActionResult<Store>> UpdateStore(string id, Store store)
+        public async Task<ActionResult<StoreResponseDto>> UpdateStore(string id, [FromBody] CreateStoreDto dto)
         {
-            if (id != store.StoreId)
-                return BadRequest(ApiResponse<Store>.CreateError(new ErrorResponse
-                {
-                    Code = ErrorCodes.ValidationError,
-                    Message = "ID mismatch",
-                    Details = null,
-                }));
-
-
+            var store = _mapper.Map<Store>(dto);
+            store.StoreId = id;
             var result = await _storeService.UpdateStoreAsync(store);
-            return Ok(ApiResponse<Store>.CreateSuccess(result));
-
+            var responseDto = _mapper.Map<StoreResponseDto>(result);
+            return Ok(ApiResponse<StoreResponseDto>.CreateSuccess(responseDto));
         }
 
         [HttpDelete("{id}")]
@@ -77,16 +76,13 @@ namespace RSVP.API.Controllers
         {
             var result = await _storeService.DeleteStoreAsync(id);
             if (!result)
-                return NotFound(ApiResponse<Store>.CreateError(new ErrorResponse
+                return NotFound(ApiResponse<StoreResponseDto>.CreateError(new ErrorResponse
                 {
                     Code = ErrorCodes.NotFound,
-                    Message = "Store not found",
-                    Details = null,
+                    Message = "Store not found"
                 }));
-
             return NoContent();
         }
-
 
         // ! Not Used at the moment
         // [HttpGet("{storeId}/is-open")]
