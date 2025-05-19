@@ -3,7 +3,7 @@ import axios from 'axios';
 
 const API_URL = process.env.NODE_ENV === 'production'
   ? ''  // Empty string for relative URLs in production
-  : 'http://localhost:8080';
+  : 'http://localhost:5000';
 
 export const api = axios.create({
   baseURL: `${API_URL}/api`,

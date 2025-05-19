@@ -196,7 +196,7 @@ export function ReservationForm({
                 value={formData.reservation_time || ""}
                 onChange={handleInputChange}
                 required
-                className="w-full border-gray-300 focus:ring-indigo-500 focus:border-indigo-500 rounded-md shadow-sm"
+                className="w-full border-gray-300 focus:ring-indigo-500 focus:border-indigo-500 rounded-md pr-10 shadow-sm"
               />
             </div>
           </div>
@@ -216,7 +216,7 @@ export function ReservationForm({
                 setFormData((prev) => ({ ...prev, comments: e.target.value }))
               }
               rows={3}
-              className="w-full border-gray-300 focus:ring-indigo-500 focus:border-indigo-500 rounded-md shadow-sm p-4"
+              className="w-full border-gray-300 focus:ring-indigo-500 focus:border-indigo-500 rounded-md shadow-sm p-4 border"
               placeholder="Any special requests or information we should know"
             />
           </div>
