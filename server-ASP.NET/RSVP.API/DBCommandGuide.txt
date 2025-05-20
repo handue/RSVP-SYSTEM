@@ -1,0 +1,7 @@
+cd rsvp-system/server-ASP.NET/RSVP.API
+sqlite3 RSVP.db
+
+.tables  -- 테이블 목록 보기
+SELECT * FROM Stores;  -- 매장 데이터 확인 / Store Data Check
+SELECT * FROM Services;  -- 서비스 데이터 확인 / Service Data Check
+SELECT * FROM Reservations;  -- 예약 데이터 확인 / Reservation Data Check

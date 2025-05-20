@@ -13,9 +13,23 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 // Entity Framework core 의 데이터베이스 컨텍스트를 서비스로 등록.  
+
+// * 기존 셋업은 이거였으나, 이건 SQL Server LocalDB로 윈도우에서만 지원하는거라 맥 기준으로 현재 바꿔놨음. "Server=(localdb)\\mssqllocaldb;Database=RSVPDb;Trusted_Connection=True;MultipleActiveResultSets=true"
+
+// builder.Services.AddDbContext<ApplicationDbContext>(options =>
+// // sql server 사용하도록 설정
+//     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
-// sql server 사용하도록 설정
-    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+    options.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection"),
+        b => b.MigrationsAssembly("RSVP.API")));
+// ? MigrationsAssembly 를 사용하는 이유
+// ? 현재 우리 프로젝트는 다중 계층 아키텍처로 구성되어 있는데, ApplicationDbContext 는 Infrastucture 계층에 존재. 다만 마이그레이션 명령은 API 프로젝트에서 실행. 그래서 Ef core는 dbcontext가 정의된 프로젝트에 마이그레이션 파일을 생성하려고 시도함. 하지만 앞서 말했듯 스타트업 프로젝트(실행 가능한 프로젝트)는 RSVP.API 이기에 Entity Framework core 도구는 스타트업 프로젝트에서 실행됨. 그러나 DbContext 는 다른 프로젝트에 있어서 마이그레이션 파일이 어디에 생겨야 하는지 혼란이 생김
+// ? 그래서 MigrationsAssembly 를 사용하여 마이그레이션 파일이 생성될 위치를 지정해줌. 이 의미는 RSVP.API에 해당 db를 생성한다는 의미
+
+// ? Why we use MigrationAssembly
+// ? Our project is structured with a multi-layered architecture, where ApplicationDbContext exists in the Infrastructure layer. However, migration commands are executed from the API project. By default, EF Core attempts to create migration files in the project where the DbContext is defined. But as mentioned, the startup project (executable project) is RSVP.API, so Entity Framework Core tools run from this startup project. Since the DbContext is in a different project, confusion arises about where migration files should be generated.
+// ? Therefore, we use MigrationsAssembly to specify where migration files should be created. This means we're instructing EF Core to create the database migrations in RSVP.API.
 
 // * 인터페이스와 그 구현체를 나누는 DIP(의존성 역전 원칙) 패턴의 장점
 // * 1. 코드 결합도를 낮출 수 있음 2. 테스트 용이성 증가 3. 유지보수 용이(구현체만 바꾸면 됨)

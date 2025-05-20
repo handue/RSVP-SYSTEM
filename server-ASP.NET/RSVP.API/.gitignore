@@ -1,0 +1,9 @@
+# SQLite
+*.db
+*.db-journal
+*.db-shm
+*.db-wal
+*.db~*
+
+*.db*
+*.db

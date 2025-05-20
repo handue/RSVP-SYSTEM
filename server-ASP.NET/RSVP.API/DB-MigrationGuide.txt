@@ -1,0 +1,82 @@
+# SQLite DB Migration Guide (SQLite DB 마이그레이션 가이드)
+
+## Prerequisites (사전 요구사항)
+1. Install Entity Framework Core CLI tools (Entity Framework Core CLI 도구 설치)
+```bash
+dotnet tool install --global dotnet-ef
+```
+
+2. Add required NuGet packages to your project (프로젝트에 필요한 NuGet 패키지 추가)
+```bash
+dotnet add package Microsoft.EntityFrameworkCore.Sqlite --version 8.0.2
+dotnet add package Microsoft.EntityFrameworkCore.Design --version 8.0.2
+```
+
+## Configuration (설정)
+1. Update `Program.cs` to specify migrations assembly (마이그레이션 어셈블리 지정을 위해 Program.cs 수정)
+```csharp
+builder.Services.AddDbContext<ApplicationDbContext>(options =>
+    options.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection"), 
+        b => b.MigrationsAssembly("RSVP.API")));
+```
+
+2. Ensure your connection string in `appsettings.json` (appsettings.json의 연결 문자열 확인)
+```json
+{
+  "ConnectionStrings": {
+    "DefaultConnection": "Data Source=RSVP.db"
+  }
+}
+```
+
+## Migration Steps (마이그레이션 단계)
+
+### 1. Create Migration (마이그레이션 생성)
+```bash
+dotnet ef migrations add InitialCreate --project RSVP.API
+```
+- This creates migration files in the `Migrations` folder (Migrations 폴더에 마이그레이션 파일들이 생성됩니다)
+- Migration files contain the database schema changes (마이그레이션 파일들은 데이터베이스 스키마 변경사항을 포함합니다)
+
+### 2. Apply Migration (마이그레이션 적용)
+```bash
+dotnet ef database update --project RSVP.API
+```
+- This creates/updates the SQLite database file (SQLite 데이터베이스 파일을 생성/업데이트합니다)
+- The database file will be created in your project directory (데이터베이스 파일은 프로젝트 디렉토리에 생성됩니다)
+
+## How Migration Works (마이그레이션이 작동하는 방식)
+
+1. **Migration Generation (마이그레이션 생성)**
+   - EF Core analyzes your `DbContext` and entity models (EF Core가 DbContext와 엔티티 모델을 분석합니다)
+   - Creates migration files based on the differences between your models and the current database state (모델과 현재 데이터베이스 상태의 차이를 기반으로 마이그레이션 파일을 생성합니다)
+
+2. **Migration Files (마이그레이션 파일)**
+   - Located in the `Migrations` folder (Migrations 폴더에 위치)
+   - Contains `Up()` method for applying changes (변경사항 적용을 위한 Up() 메서드 포함)
+   - Contains `Down()` method for reverting changes (변경사항 되돌리기를 위한 Down() 메서드 포함)
+
+3. **Database Update (데이터베이스 업데이트)**
+   - Applies the migration to create/update the database (데이터베이스를 생성/업데이트하기 위해 마이그레이션을 적용합니다)
+   - Creates tables, columns, and relationships as defined in your models (모델에 정의된 대로 테이블, 컬럼, 관계를 생성합니다)
+
+## Common Commands (자주 사용하는 명령어)
+
+```bash
+# Create new migration (새 마이그레이션 생성)
+dotnet ef migrations add MigrationName --project RSVP.API
+
+# Apply migrations (마이그레이션 적용)
+dotnet ef database update --project RSVP.API
+
+# Remove last migration (마지막 마이그레이션 제거)
+dotnet ef migrations remove --project RSVP.API
+
+# List migrations (마이그레이션 목록 보기)
+dotnet ef migrations list --project RSVP.API
+```
+
+## Notes (참고사항)
+- SQLite is file-based, so no separate database server is needed (SQLite는 파일 기반이므로 별도의 데이터베이스 서버가 필요하지 않습니다)
+- The database file (`RSVP.db`) will be created in your project directory (데이터베이스 파일(RSVP.db)은 프로젝트 디렉토리에 생성됩니다)
+- You can view the database using SQLite tools like DB Browser for SQLite (DB Browser for SQLite와 같은 도구로 데이터베이스를 확인할 수 있습니다)
