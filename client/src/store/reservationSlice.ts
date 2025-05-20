@@ -17,7 +17,7 @@ const initialState: ReservationState = {
 
 export const reserveSchedule = createAsyncThunk(
   "reservation/reserveSchedule",
-  async (reservationData: { reservationData: ReservationData }) => {
+  async (reservationData: ReservationData) => {
     const response = await api.post("/reservation", reservationData);
     return response;
   }

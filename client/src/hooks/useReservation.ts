@@ -15,7 +15,7 @@ export const useReservation = () => {
     async (reservationData: ReservationData) => {
       try {
         const result = await dispatch(
-          reserveSchedule({ reservationData })
+          reserveSchedule(reservationData)
         ).unwrap();
         return result;
       } catch (error) {
