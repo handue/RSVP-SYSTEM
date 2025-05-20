@@ -46,6 +46,34 @@ public class ApplicationDbContext : DbContext
             entity.Property(e => e.Name).IsRequired().HasMaxLength(100);
             entity.Property(e => e.Location).IsRequired().HasMaxLength(200);
             entity.Property(e => e.Email).IsRequired().HasMaxLength(100);
+
+            // Seed Data
+            entity.HasData(
+                new Store 
+                { 
+                    Id = 1,
+                    StoreId = "store-1", 
+                    Name = "Hair Salon A", 
+                    Location = "Los Angeles", 
+                    Email = "hairsalon@example.com" 
+                },
+                new Store 
+                { 
+                    Id = 2,
+                    StoreId = "store-2", 
+                    Name = "Hair Salon B", 
+                    Location = "Texas", 
+                    Email = "hairsalon@example.com" 
+                },
+                new Store 
+                { 
+                    Id = 3,
+                    StoreId = "store-3", 
+                    Name = "Hair Salon C", 
+                    Location = "New York", 
+                    Email = "hairsalon@example.com" 
+                }
+            );
         });
 
         // StoreHour configuration
@@ -99,6 +127,36 @@ public class ApplicationDbContext : DbContext
                 regularHour.Property(r => r.Open).IsRequired();
                 regularHour.Property(r => r.Close).IsRequired();
                 regularHour.Property(r => r.IsClosed).IsRequired();
+
+                // Seed Data for all stores
+                regularHour.HasData(
+                    // Store-1 Regular Hours
+                    new RegularHour { Id = 1, StoreHourId = 1, Day = DayOfWeek.Monday, Open = new TimeSpan(9, 0, 0), Close = new TimeSpan(18, 0, 0), IsClosed = false },
+                    new RegularHour { Id = 2, StoreHourId = 1, Day = DayOfWeek.Tuesday, Open = new TimeSpan(9, 0, 0), Close = new TimeSpan(18, 0, 0), IsClosed = false },
+                    new RegularHour { Id = 3, StoreHourId = 1, Day = DayOfWeek.Wednesday, Open = new TimeSpan(9, 0, 0), Close = new TimeSpan(18, 0, 0), IsClosed = false },
+                    new RegularHour { Id = 4, StoreHourId = 1, Day = DayOfWeek.Thursday, Open = new TimeSpan(9, 0, 0), Close = new TimeSpan(18, 0, 0), IsClosed = false },
+                    new RegularHour { Id = 5, StoreHourId = 1, Day = DayOfWeek.Friday, Open = new TimeSpan(9, 0, 0), Close = new TimeSpan(18, 0, 0), IsClosed = false },
+                    new RegularHour { Id = 6, StoreHourId = 1, Day = DayOfWeek.Saturday, Open = new TimeSpan(10, 0, 0), Close = new TimeSpan(17, 0, 0), IsClosed = false },
+                    new RegularHour { Id = 7, StoreHourId = 1, Day = DayOfWeek.Sunday, Open = new TimeSpan(0, 0, 0), Close = new TimeSpan(0, 0, 0), IsClosed = true },
+
+                    // Store-2 Regular Hours
+                    new RegularHour { Id = 8, StoreHourId = 2, Day = DayOfWeek.Monday, Open = new TimeSpan(9, 0, 0), Close = new TimeSpan(18, 0, 0), IsClosed = false },
+                    new RegularHour { Id = 9, StoreHourId = 2, Day = DayOfWeek.Tuesday, Open = new TimeSpan(9, 0, 0), Close = new TimeSpan(18, 0, 0), IsClosed = false },
+                    new RegularHour { Id = 10, StoreHourId = 2, Day = DayOfWeek.Wednesday, Open = new TimeSpan(9, 0, 0), Close = new TimeSpan(18, 0, 0), IsClosed = false },
+                    new RegularHour { Id = 11, StoreHourId = 2, Day = DayOfWeek.Thursday, Open = new TimeSpan(9, 0, 0), Close = new TimeSpan(18, 0, 0), IsClosed = false },
+                    new RegularHour { Id = 12, StoreHourId = 2, Day = DayOfWeek.Friday, Open = new TimeSpan(9, 0, 0), Close = new TimeSpan(18, 0, 0), IsClosed = false },
+                    new RegularHour { Id = 13, StoreHourId = 2, Day = DayOfWeek.Saturday, Open = new TimeSpan(10, 0, 0), Close = new TimeSpan(17, 0, 0), IsClosed = false },
+                    new RegularHour { Id = 14, StoreHourId = 2, Day = DayOfWeek.Sunday, Open = new TimeSpan(0, 0, 0), Close = new TimeSpan(0, 0, 0), IsClosed = true },
+
+                    // Store-3 Regular Hours
+                    new RegularHour { Id = 15, StoreHourId = 3, Day = DayOfWeek.Monday, Open = new TimeSpan(9, 0, 0), Close = new TimeSpan(18, 0, 0), IsClosed = false },
+                    new RegularHour { Id = 16, StoreHourId = 3, Day = DayOfWeek.Tuesday, Open = new TimeSpan(9, 0, 0), Close = new TimeSpan(18, 0, 0), IsClosed = false },
+                    new RegularHour { Id = 17, StoreHourId = 3, Day = DayOfWeek.Wednesday, Open = new TimeSpan(9, 0, 0), Close = new TimeSpan(18, 0, 0), IsClosed = false },
+                    new RegularHour { Id = 18, StoreHourId = 3, Day = DayOfWeek.Thursday, Open = new TimeSpan(9, 0, 0), Close = new TimeSpan(18, 0, 0), IsClosed = false },
+                    new RegularHour { Id = 19, StoreHourId = 3, Day = DayOfWeek.Friday, Open = new TimeSpan(9, 0, 0), Close = new TimeSpan(18, 0, 0), IsClosed = false },
+                    new RegularHour { Id = 20, StoreHourId = 3, Day = DayOfWeek.Saturday, Open = new TimeSpan(10, 0, 0), Close = new TimeSpan(17, 0, 0), IsClosed = false },
+                    new RegularHour { Id = 21, StoreHourId = 3, Day = DayOfWeek.Sunday, Open = new TimeSpan(0, 0, 0), Close = new TimeSpan(0, 0, 0), IsClosed = true }
+                );
             });
 
             // SpecialDate 설정
@@ -114,6 +172,13 @@ public class ApplicationDbContext : DbContext
                 specialDate.Property(s => s.Close).IsRequired();
                 specialDate.Property(s => s.IsClosed).IsRequired();
             });
+
+            // Seed Data
+            entity.HasData(
+                new StoreHour { Id = 1, StoreId = "store-1" },
+                new StoreHour { Id = 2, StoreId = "store-2" },
+                new StoreHour { Id = 3, StoreId = "store-3" }
+            );
         });
 
         // Service configuration
@@ -137,6 +202,28 @@ public class ApplicationDbContext : DbContext
                 // * Service 엔티티가 Store 엔티티를 참조하기 위한 외래 키로 StoreId 속성을 사용
                 // * Service entity uses StoreId property as a foreign key to reference the Store entity
                 .OnDelete(DeleteBehavior.Cascade);
+
+            // Seed Data
+            entity.HasData(
+                new Service 
+                { 
+                    Id = 1,
+                    ServiceId = "service-1", 
+                    Name = "Haircut", 
+                    Duration = 30, 
+                    Price = 30.00m, 
+                    StoreId = "store-1" 
+                },
+                new Service 
+                { 
+                    Id = 2,
+                    ServiceId = "service-2", 
+                    Name = "Hair Coloring", 
+                    Duration = 120, 
+                    Price = 80.00m, 
+                    StoreId = "store-1" 
+                }
+            );
         });
 
         // Reservation configuration
