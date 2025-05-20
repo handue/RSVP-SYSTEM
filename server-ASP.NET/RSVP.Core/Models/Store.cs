@@ -31,7 +31,7 @@ public class Store
     public string Email { get; set; } = string.Empty;
 
     // Navigation properties
-    public StoreHour StoreHour { get; set; } = new StoreHour();
+    public StoreHour? StoreHour { get; set; }
     // public List<StoreHour> StoreHours { get; set; } = new List<StoreHour>();
     // old: public List<Service> Services { get; set; } = new List<T>();
     // new: public List<Service> Services { get; set; } = [];

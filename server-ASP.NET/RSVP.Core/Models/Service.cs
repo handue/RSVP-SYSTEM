@@ -32,7 +32,9 @@ public class Service
     [Range(0, double.MaxValue)]
     [JsonPropertyName("price")]
     public decimal Price { get; set; }
-
+    // * decimal = It's used for currency (money)
+    // * because it provides precise calculation with fractional/decimal values
+    // * and avoids rounding errors common in floating-point arithmetic
     public string? StoreId { get; set; }
 
     // [Required]

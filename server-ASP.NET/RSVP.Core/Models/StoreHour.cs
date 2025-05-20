@@ -28,16 +28,17 @@ public class StoreHour
 
 public class RegularHour
 {
-
-      // 명시적 ID (데이터베이스에서만 사용됨)
+    // 명시적 ID (데이터베이스에서만 사용됨)
     public int Id { get; set; }
+
+    // StoreHour와의 관계를 위한 외래 키
+    public int StoreHourId { get; set; }
 
     [JsonPropertyName("day")]
     [Required]
 //    * default value sunday (0) is set. should change the value when we put the default value into DB (in Data folder, ApplicationDbContext)
 // * but I set up it as one-one relation. so we don't need to modify. 
     public DayOfWeek Day { get; set; }
-
 
     [JsonPropertyName("open")]
     [Required]
