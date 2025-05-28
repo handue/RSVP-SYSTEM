@@ -31,6 +31,24 @@ namespace RSVP.API.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Users",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    Email = table.Column<string>(type: "TEXT", maxLength: 100, nullable: false),
+                    Password = table.Column<string>(type: "TEXT", maxLength: 100, nullable: false),
+                    FullName = table.Column<string>(type: "TEXT", maxLength: 50, nullable: false),
+                    Role = table.Column<string>(type: "TEXT", nullable: false, defaultValue: "Admin"),
+                    CreatedAt = table.Column<DateTime>(type: "TEXT", nullable: false, defaultValueSql: "CURRENT_TIMESTAMP"),
+                    LastLoginAt = table.Column<DateTime>(type: "TEXT", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Users", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Services",
                 columns: table => new
                 {
@@ -255,6 +273,12 @@ namespace RSVP.API.Migrations
                 table: "Stores",
                 column: "StoreId",
                 unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Users_Email",
+                table: "Users",
+                column: "Email",
+                unique: true);
         }
 
         /// <inheritdoc />
@@ -268,6 +292,9 @@ namespace RSVP.API.Migrations
 
             migrationBuilder.DropTable(
                 name: "SpecialDate");
+
+            migrationBuilder.DropTable(
+                name: "Users");
 
             migrationBuilder.DropTable(
                 name: "Services");

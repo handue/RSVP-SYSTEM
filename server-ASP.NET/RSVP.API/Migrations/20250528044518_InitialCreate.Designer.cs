@@ -11,7 +11,7 @@ using RSVP.Infrastructure.Data;
 namespace RSVP.API.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20250519093247_InitialCreate")]
+    [Migration("20250528044518_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -251,6 +251,55 @@ namespace RSVP.API.Migrations
                             Id = 3,
                             StoreId = "store-3"
                         });
+                });
+
+            modelBuilder.Entity("RSVP.Core.Models.User", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("TEXT")
+                        .HasDefaultValueSql("CURRENT_TIMESTAMP")
+                        .HasAnnotation("Relational:JsonPropertyName", "createdAt");
+
+                    b.Property<string>("Email")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("TEXT")
+                        .HasAnnotation("Relational:JsonPropertyName", "email");
+
+                    b.Property<string>("FullName")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("TEXT")
+                        .HasAnnotation("Relational:JsonPropertyName", "fullName");
+
+                    b.Property<DateTime?>("LastLoginAt")
+                        .HasColumnType("TEXT")
+                        .HasAnnotation("Relational:JsonPropertyName", "lastLoginAt");
+
+                    b.Property<string>("Password")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("TEXT")
+                        .HasAnnotation("Relational:JsonPropertyName", "password");
+
+                    b.Property<string>("Role")
+                        .IsRequired()
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("TEXT")
+                        .HasDefaultValue("Admin")
+                        .HasAnnotation("Relational:JsonPropertyName", "role");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("Email")
+                        .IsUnique();
+
+                    b.ToTable("Users");
                 });
 
             modelBuilder.Entity("RSVP.Core.Models.Reservation", b =>
