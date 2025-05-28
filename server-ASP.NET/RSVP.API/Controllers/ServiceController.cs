@@ -24,64 +24,56 @@ namespace RSVP.API.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<ServiceResponseDto>> CreateService([FromBody] CreateServiceDto dto)
+        public async Task<ActionResult<ServiceResponseDto>> CreateService([FromBody] CreateServiceDto ServiceDto)
         {
-            var service = _mapper.Map<Service>(dto);
-            var result = await _serviceService.CreateServiceAsync(service);
-            var responseDto = _mapper.Map<ServiceResponseDto>(result);
-            return CreatedAtAction(nameof(GetServiceById), new { id = result.ServiceId }, ApiResponse<ServiceResponseDto>.CreateSuccess(responseDto));
+
+            var createdServiceDto = await _serviceService.CreateServiceAsync(ServiceDto);
+
+            return CreatedAtAction(nameof(GetServiceById), new { id = createdServiceDto.ServiceId }, ApiResponse<ServiceResponseDto>.CreateSuccess(createdServiceDto));
         }
 
         [HttpGet("{id}")]
         public async Task<ActionResult<ServiceResponseDto>> GetServiceById(string id)
         {
-            var service = await _serviceService.GetServiceByIdAsync(id);
-            if (service == null)
-                return NotFound(ApiResponse<ServiceResponseDto>.CreateError(new ErrorResponse
-                {
-                    Code = ErrorCodes.NotFound,
-                    Message = "Service not found"
-                }));
-            var responseDto = _mapper.Map<ServiceResponseDto>(service);
-            return Ok(ApiResponse<ServiceResponseDto>.CreateSuccess(responseDto));
+            var serviceDto = await _serviceService.GetServiceByIdAsync(id);
+
+
+            return Ok(ApiResponse<ServiceResponseDto>.CreateSuccess(serviceDto));
         }
 
         [HttpGet("store/{storeId}")]
         public async Task<ActionResult<IEnumerable<ServiceResponseDto>>> GetServicesByStoreId(string storeId)
         {
-            var services = await _serviceService.GetServicesByStoreIdAsync(storeId);
-            var responseDtos = _mapper.Map<IEnumerable<ServiceResponseDto>>(services);
-            return Ok(ApiResponse<IEnumerable<ServiceResponseDto>>.CreateSuccess(responseDtos));
+            var serviceDtos = await _serviceService.GetServicesByStoreIdAsync(storeId);
+
+            return Ok(ApiResponse<IEnumerable<ServiceResponseDto>>.CreateSuccess(serviceDtos));
         }
 
         [HttpGet]
         public async Task<ActionResult<IEnumerable<ServiceResponseDto>>> GetAllServices()
         {
             var services = await _serviceService.GetAllServicesAsync();
-            var responseDtos = _mapper.Map<IEnumerable<ServiceResponseDto>>(services);
-            return Ok(ApiResponse<IEnumerable<ServiceResponseDto>>.CreateSuccess(responseDtos));
+
+            return Ok(ApiResponse<IEnumerable<ServiceResponseDto>>.CreateSuccess(services));
         }
 
         [HttpPut("{id}")]
-        public async Task<ActionResult<ServiceResponseDto>> UpdateService(string id, [FromBody] CreateServiceDto dto)
+        public async Task<ActionResult<ServiceResponseDto>> UpdateService(string id, [FromBody] CreateServiceDto CreateServiceDto)
         {
-            var service = _mapper.Map<Service>(dto);
-            service.ServiceId = id;
-            var result = await _serviceService.UpdateServiceAsync(service);
-            var responseDto = _mapper.Map<ServiceResponseDto>(result);
-            return Ok(ApiResponse<ServiceResponseDto>.CreateSuccess(responseDto));
+
+            CreateServiceDto.ServiceId = id;
+
+            var updatedServiceDto = await _serviceService.UpdateServiceAsync(CreateServiceDto);
+
+
+            return Ok(ApiResponse<ServiceResponseDto>.CreateSuccess(updatedServiceDto));
         }
 
         [HttpDelete("{id}")]
         public async Task<ActionResult> DeleteService(string id)
         {
-            var result = await _serviceService.DeleteServiceAsync(id);
-            if (!result)
-                return NotFound(ApiResponse<ServiceResponseDto>.CreateError(new ErrorResponse
-                {
-                    Code = ErrorCodes.NotFound,
-                    Message = "Service not found"
-                }));
+            await _serviceService.DeleteServiceAsync(id);
+          
             return NoContent();
         }
 

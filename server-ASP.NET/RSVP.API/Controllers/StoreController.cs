@@ -23,24 +23,19 @@ namespace RSVP.API.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<StoreResponseDto>> CreateStore([FromBody] CreateStoreDto dto)
+        public async Task<ActionResult<StoreResponseDto>> CreateStore([FromBody] CreateStoreDto createStoreDto)
         {
-            var store = _mapper.Map<Store>(dto);
-            var result = await _storeService.CreateStoreAsync(store);
-            var responseDto = _mapper.Map<StoreResponseDto>(result);
-            return CreatedAtAction(nameof(GetStoreById), new { id = result.StoreId }, ApiResponse<StoreResponseDto>.CreateSuccess(responseDto));
+
+            var result = await _storeService.CreateStoreAsync(createStoreDto);
+
+            return CreatedAtAction(nameof(GetStoreById), new { id = result.StoreId }, ApiResponse<StoreResponseDto>.CreateSuccess(result));
         }
 
         [HttpGet("{id}")]
         public async Task<ActionResult<StoreResponseDto>> GetStoreById(string id)
         {
             var store = await _storeService.GetStoreByIdAsync(id);
-            if (store == null)
-                return NotFound(ApiResponse<StoreResponseDto>.CreateError(new ErrorResponse
-                {
-                    Code = ErrorCodes.NotFound,
-                    Message = "Store not found"
-                }));
+
             var responseDto = _mapper.Map<StoreResponseDto>(store);
             return Ok(ApiResponse<StoreResponseDto>.CreateSuccess(responseDto));
         }
@@ -48,25 +43,29 @@ namespace RSVP.API.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<StoreResponseDto>>> GetAllStores()
         {
-            var stores = await _storeService.GetAllStoresAsync();
-            var responseDtos = _mapper.Map<IEnumerable<StoreResponseDto>>(stores);
-            return Ok(ApiResponse<IEnumerable<StoreResponseDto>>.CreateSuccess(responseDtos));
+            var storeDtos = await _storeService.GetAllStoresAsync();
+
+            return Ok(ApiResponse<IEnumerable<StoreResponseDto>>.CreateSuccess(storeDtos));
         }
 
         [HttpGet("location/{location}")]
         public async Task<ActionResult<IEnumerable<StoreResponseDto>>> GetStoresByLocation(string location)
         {
-            var stores = await _storeService.GetStoresByLocationAsync(location);
-            var responseDtos = _mapper.Map<IEnumerable<StoreResponseDto>>(stores);
-            return Ok(ApiResponse<IEnumerable<StoreResponseDto>>.CreateSuccess(responseDtos));
+            var storesDto = await _storeService.GetStoresByLocationAsync(location);
+
+            return Ok(ApiResponse<IEnumerable<StoreResponseDto>>.CreateSuccess(storesDto));
         }
 
         [HttpPut("{id}")]
-        public async Task<ActionResult<StoreResponseDto>> UpdateStore(string id, [FromBody] CreateStoreDto dto)
+        public async Task<ActionResult<StoreResponseDto>> UpdateStore(string id, [FromBody] UpdateStoreDto updateStoreDto)
         {
-            var store = _mapper.Map<Store>(dto);
-            store.StoreId = id;
-            var result = await _storeService.UpdateStoreAsync(store);
+
+            if (updateStoreDto.Id != id)
+            {
+                throw new ArgumentException("Invalid store ID");
+            }
+
+            var result = await _storeService.UpdateStoreAsync(updateStoreDto);
             var responseDto = _mapper.Map<StoreResponseDto>(result);
             return Ok(ApiResponse<StoreResponseDto>.CreateSuccess(responseDto));
         }
@@ -75,12 +74,7 @@ namespace RSVP.API.Controllers
         public async Task<ActionResult> DeleteStore(string id)
         {
             var result = await _storeService.DeleteStoreAsync(id);
-            if (!result)
-                return NotFound(ApiResponse<StoreResponseDto>.CreateError(new ErrorResponse
-                {
-                    Code = ErrorCodes.NotFound,
-                    Message = "Store not found"
-                }));
+        
             return NoContent();
         }
 
