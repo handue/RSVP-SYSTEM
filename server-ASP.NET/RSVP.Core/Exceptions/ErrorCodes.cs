@@ -9,7 +9,7 @@ namespace RSVP.Core.Exceptions
         public const string BusinessRuleViolation = "BUSINESS_RULE_VIOLATION";
         public const string Unauthorized = "UNAUTHORIZED";
         public const string Forbidden = "FORBIDDEN";
-
+        public const string BadRequest = "BAD_REQUEST";
         // 예약 관련 에러
         public const string ReservationTimeSlotUnavailable = "RESERVATION_TIME_SLOT_UNAVAILABLE";
         public const string ReservationStoreClosed = "RESERVATION_STORE_CLOSED";
