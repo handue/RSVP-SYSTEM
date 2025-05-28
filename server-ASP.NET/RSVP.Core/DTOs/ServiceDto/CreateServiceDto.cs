@@ -27,5 +27,7 @@ public class CreateServiceDto
     [JsonPropertyName("price")]
     public decimal Price { get; set; }
 
-    public string? StoreId { get; set; }
+    [Required]
+    [JsonPropertyName("storeId")]
+    public string StoreId { get; set; } = string.Empty;
 }

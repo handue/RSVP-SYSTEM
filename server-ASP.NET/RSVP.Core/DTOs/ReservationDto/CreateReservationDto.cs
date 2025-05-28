@@ -45,3 +45,9 @@ public class CreateReservationDto
     public bool AgreedToTerms { get; set; }
 }
 
+
+
+public class UpdateReservationDto : CreateReservationDto
+{
+    public int Id { get; set; }
+}

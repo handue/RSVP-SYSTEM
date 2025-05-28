@@ -23,3 +23,10 @@ public class CreateStoreDto
     [JsonPropertyName("storeEmail")]
     public string Email { get; set; } = string.Empty;
 }
+
+public class UpdateStoreDto : CreateStoreDto
+{
+
+    [JsonPropertyName("Id")]
+    public string Id { get; set; } = string.Empty;
+}
