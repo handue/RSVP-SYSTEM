@@ -1,3 +1,4 @@
+using AutoMapper;
 using RSVP.Core.Interfaces;
 using RSVP.Core.Interfaces.Repositories;
 using RSVP.Core.Interfaces.Services;
@@ -11,57 +12,86 @@ namespace RSVP.Infrastructure.Services
         private readonly IStoreRepository _storeRepository;
         private readonly IServiceRepository _serviceRepository;
         private readonly IReservationRepository _reservationRepository;
+        private readonly IMapper _mapper;
 
         public StoreService(
             IStoreRepository storeRepository,
             IServiceRepository serviceRepository,
-            IReservationRepository reservationRepository)
+            IReservationRepository reservationRepository,
+            IMapper mapper)
         {
             _storeRepository = storeRepository;
             _serviceRepository = serviceRepository;
             _reservationRepository = reservationRepository;
+            _mapper = mapper;
         }
 
-        public async Task<Store> CreateStoreAsync(Store store)
+        public async Task<StoreResponseDto> CreateStoreAsync(CreateStoreDto storeDto)
         {
+            var store = _mapper.Map<Store>(storeDto);
+
+            var isExists = await _storeRepository.ExistsByStoreIdAsync(store.StoreId);
             // 1. 매장 ID 중복 확인
-            if (await _storeRepository.ExistsByStoreIdAsync(store.StoreId))
+            if (isExists)
                 throw new ArgumentException($"Store with ID {store.StoreId} already exists.");
 
             // 2. 매장 생성
-            await _storeRepository.AddAsync(store);
+            var createdStoreEntity = await _storeRepository.AddAsync(store);
 
-            return store;
+            var createdStoreDto = _mapper.Map<StoreResponseDto>(createdStoreEntity);
+
+            return createdStoreDto;
         }
 
 
 
         // todo: return type redefine needed
-        public async Task<Store?> GetStoreByIdAsync(string id)
+        public async Task<StoreResponseDto> GetStoreByIdAsync(string id)
         {
-            return await _storeRepository.GetByStoreIdAsync(id);
+            var store = await _storeRepository.GetByStoreIdAsync(id);
+            if (store == null)
+                throw new KeyNotFoundException($"Store with ID {id} not found.");
+
+            var storeDto = _mapper.Map<StoreResponseDto>(store);
+
+            return storeDto;
         }
 
-        public async Task<IEnumerable<Store>> GetAllStoresAsync()
+        public async Task<IEnumerable<StoreResponseDto>> GetAllStoresAsync()
         {
-            return await _storeRepository.GetAllAsync();
+
+            var stores = await _storeRepository.GetAllAsync();
+            var storeDtos = _mapper.Map<IEnumerable<StoreResponseDto>>(stores);
+
+            return storeDtos;
         }
 
-        public async Task<IEnumerable<Store>> GetStoresByLocationAsync(string location)
+        public async Task<IEnumerable<StoreResponseDto>> GetStoresByLocationAsync(string location)
         {
-            return await _storeRepository.GetStoresByLocationAsync(location);
+            var stores = await _storeRepository.GetStoresByLocationAsync(location);
+            var storeDtos = _mapper.Map<IEnumerable<StoreResponseDto>>(stores);
+
+            return storeDtos;
         }
 
         //    todo: return type redefine needed
-        public async Task<Store> UpdateStoreAsync(Store store)
+        public async Task<StoreResponseDto> UpdateStoreAsync(UpdateStoreDto updateStoreDto)
         {
+
             // 1. 매장이 존재하는지 확인
-            var existingStore = await _storeRepository.GetByStoreIdAsync(store.StoreId);
+            var existingStore = await _storeRepository.GetByStoreIdAsync(updateStoreDto.Id);
+
             if (existingStore == null)
-                throw new ArgumentException($"Store with ID {store.StoreId} not found.");
+                throw new KeyNotFoundException($"Store with ID {updateStoreDto.StoreId} not found.");
+
+            var store = _mapper.Map<Store>(updateStoreDto);
 
             // 2. 매장 업데이트
-            return await _storeRepository.UpdateAsync(store);
+            var updatedStoreEntity = await _storeRepository.UpdateAsync(store);
+
+            var updatedStoreDto = _mapper.Map<StoreResponseDto>(updatedStoreEntity);
+
+            return updatedStoreDto;
         }
 
 
@@ -69,7 +99,7 @@ namespace RSVP.Infrastructure.Services
         {
             var store = await _storeRepository.GetByStoreIdAsync(id);
             if (store == null)
-                return false;
+                throw new KeyNotFoundException($"Store with ID {id} not found.");
 
             await _storeRepository.RemoveAsync(store);
             return true;
@@ -79,7 +109,7 @@ namespace RSVP.Infrastructure.Services
         {
             var store = await _storeRepository.GetByStoreIdAsync(storeId);
             if (store == null)
-                return false;
+                throw new KeyNotFoundException($"Store with ID {storeId} not found.");
 
             // 1. 특별 영업일 확인
             var specialDate = store.StoreHour.SpecialDate?

@@ -1,3 +1,4 @@
+using AutoMapper;
 using RSVP.Core.Interfaces;
 using RSVP.Core.Interfaces.Repositories;
 using RSVP.Core.Interfaces.Services;
@@ -10,22 +11,28 @@ namespace RSVP.Infrastructure.Services
         private readonly IReservationRepository _reservationRepository;
         private readonly IStoreRepository _storeRepository;
         private readonly IServiceRepository _serviceRepository;
+        private readonly IMapper _mapper;
 
         public ReservationService(
             IReservationRepository reservationRepository,
             IStoreRepository storeRepository,
-            IServiceRepository serviceRepository)
+            IServiceRepository serviceRepository,
+            IMapper mapper)
         {
             _reservationRepository = reservationRepository;
             _storeRepository = storeRepository;
             _serviceRepository = serviceRepository;
+            _mapper = mapper;
         }
 
-        public async Task<Reservation> CreateReservationAsync(Reservation reservation)
-        {   
+        public async Task<ReservationResponseDto> CreateReservationAsync(CreateReservationDto reservationDto)
+        {
+
+            var reservation = _mapper.Map<Reservation>(reservationDto);
+
             // 1. 매장과 서비스가 존재하는지 확인
             var store = await _storeRepository.GetByStoreIdAsync(reservation.StoreId);
-            
+
             if (store == null)
                 throw new KeyNotFoundException($"Store with ID {reservation.StoreId} not found.");
 
@@ -39,36 +46,77 @@ namespace RSVP.Infrastructure.Services
             //     throw new InvalidOperationException("The selected time slot is not available.");
 
             // 3. 예약 생성
-            return await _reservationRepository.AddAsync(reservation);
+            var result = await _reservationRepository.AddAsync(reservation);
+            var responseDto = _mapper.Map<ReservationResponseDto>(result)
+            ;
+            return responseDto;
         }
 
-        public async Task<Reservation?> GetReservationByIdAsync(int id)
+        public async Task<ReservationResponseDto?> GetReservationByIdAsync(int id)
         {
-            return await _reservationRepository.GetByIdAsync(id);
+            var result = await _reservationRepository.GetByIdAsync(id);
+
+            if (result == null)
+            {
+                throw new KeyNotFoundException("Reservation Not Found");
+            }
+
+            var responseDto = _mapper.Map<ReservationResponseDto>(result);
+
+            return responseDto;
         }
 
-        public async Task<IEnumerable<Reservation>> GetReservationsByStoreIdAsync(string storeId)
+        public async Task<IEnumerable<ReservationResponseDto>> GetReservationsByStoreIdAsync(string storeId)
         {
-            return await _reservationRepository.GetReservationsByStoreIdAsync(storeId);
+            var result = await _reservationRepository.GetReservationsByStoreIdAsync(storeId);
+            var reservations = _mapper.Map<IEnumerable<ReservationResponseDto>>(result);
+
+            return reservations;
         }
 
-        public async Task<IEnumerable<Reservation>> GetReservationsByServiceIdAsync(string serviceId)
+        public async Task<IEnumerable<ReservationResponseDto>> GetReservationsByServiceIdAsync(string serviceId)
         {
-            return await _reservationRepository.GetReservationsByServiceIdAsync(serviceId);
+            var result = await _reservationRepository.GetReservationsByServiceIdAsync(serviceId);
+            var reservations = _mapper.Map<IEnumerable<ReservationResponseDto>>(result);
+
+            return reservations;
         }
 
-        public async Task<IEnumerable<Reservation>> GetReservationsByDateAsync(DateTime date)
+        public async Task<IEnumerable<ReservationResponseDto>> GetReservationsByDateAsync(DateTime date)
         {
-            return await _reservationRepository.GetReservationsByDateAsync(date);
+            var result = await _reservationRepository.GetReservationsByDateAsync(date);
+            var reservations = _mapper.Map<IEnumerable<ReservationResponseDto>>(result);
+
+            return reservations;
         }
 
-        public async Task<IEnumerable<Reservation>> GetReservationsByCustomerEmailAsync(string email)
+        public async Task<IEnumerable<ReservationResponseDto>> GetReservationsByCustomerEmailAsync(string email)
         {
-            return await _reservationRepository.GetReservationsByCustomerEmailAsync(email);
+            var result = await _reservationRepository.GetReservationsByCustomerEmailAsync(email);
+            var reservations = _mapper.Map<IEnumerable<ReservationResponseDto>>(result);
+
+            return reservations;
         }
 
-        public async Task<Reservation> UpdateReservationAsync(Reservation reservation)
+        public async Task<ReservationResponseDto> ConfirmReservationAsync(int id)
         {
+            var reservation = await _reservationRepository.GetByIdAsync(id);
+            if (reservation == null)
+                throw new ArgumentException($"Reservation with ID {id} not found.");
+
+            reservation.Status = ReservationStatus.Confirmed;
+
+            var result = await _reservationRepository.UpdateAsync(reservation);
+            var confirmedReservation = _mapper.Map<ReservationResponseDto>(result);
+
+            return confirmedReservation;
+        }
+
+        public async Task<ReservationResponseDto> UpdateReservationAsync(UpdateReservationDto reservationDto)
+        {
+            var reservation = _mapper.Map<Reservation>(reservationDto);
+
+            reservation.Id = reservationDto.Id;
             // 1. 기존 예약이 존재하는지 확인
             var existingReservation = await _reservationRepository.GetByIdAsync(reservation.Id);
             if (existingReservation == null)
@@ -84,14 +132,18 @@ namespace RSVP.Infrastructure.Services
             // }
 
             // 3. 예약 업데이트
-            return await _reservationRepository.UpdateAsync(reservation);
+            var result = await _reservationRepository.UpdateAsync(reservation);
+            var updatedReservation = _mapper.Map<ReservationResponseDto>(result);
+
+            return updatedReservation;
         }
 
         public async Task<bool> DeleteReservationAsync(int id)
         {
             var reservation = await _reservationRepository.GetByIdAsync(id);
+
             if (reservation == null)
-                return false;
+                throw new KeyNotFoundException("Reservation Not Found");
 
             await _reservationRepository.RemoveAsync(reservation);
             return true;
@@ -121,4 +173,4 @@ namespace RSVP.Infrastructure.Services
         //     return !conflictingReservations.Any();
         // }
     }
-} 
+}
