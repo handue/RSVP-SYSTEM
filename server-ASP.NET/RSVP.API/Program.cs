@@ -6,6 +6,13 @@ using RSVP.Core.Interfaces.Services;
 using RSVP.Infrastructure.Repositories;
 using RSVP.Infrastructure.Services;
 using RSVP.Core.Mappings;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
+using DotNetEnv;
+
+
+Env.Load();
 
 var builder = WebApplication.CreateBuilder(args);
 // = ASP.NET Core 애플리케이션 구성을 위한 빌더 객체 생성, 이 빌더는 서비스 등록, 구성 설정 등을 위해 사용
@@ -20,8 +27,10 @@ var builder = WebApplication.CreateBuilder(args);
 // // sql server 사용하도록 설정
 //     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
+// Console.WriteLine("데이터 확인:" + Env.GetString("DB_CONNECTION"));
+
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
-    options.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection"),
+    options.UseSqlite(Env.GetString("DB_CONNECTION"),
         b => b.MigrationsAssembly("RSVP.API")));
 // ? MigrationsAssembly 를 사용하는 이유
 // ? 현재 우리 프로젝트는 다중 계층 아키텍처로 구성되어 있는데, ApplicationDbContext 는 Infrastucture 계층에 존재. 다만 마이그레이션 명령은 API 프로젝트에서 실행. 그래서 Ef core는 dbcontext가 정의된 프로젝트에 마이그레이션 파일을 생성하려고 시도함. 하지만 앞서 말했듯 스타트업 프로젝트(실행 가능한 프로젝트)는 RSVP.API 이기에 Entity Framework core 도구는 스타트업 프로젝트에서 실행됨. 그러나 DbContext 는 다른 프로젝트에 있어서 마이그레이션 파일이 어디에 생겨야 하는지 혼란이 생김
@@ -47,6 +56,33 @@ builder.Services.AddScoped<IReservationRepository, ReservationRepository>();
 builder.Services.AddScoped<IStoreService, StoreService>();
 builder.Services.AddScoped<IServiceService, ServiceService>();
 builder.Services.AddScoped<IReservationService, ReservationService>();
+builder.Services.AddScoped<IAuthService, AuthService>();
+
+// Add JWT Authentication
+builder.Services.AddAuthentication(options =>
+{
+    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+})
+.AddJwtBearer(options =>
+{
+    options.TokenValidationParameters = new TokenValidationParameters
+    {
+        ValidateIssuer = true,  // Whether to validate the token issuer
+        ValidateAudience = true,  // Whether to validate the token audience
+        ValidateLifetime = true,  // Whether to validate the token expiration time
+        ValidateIssuerSigningKey = true,  // Whether to validate the token signing key
+
+        ValidIssuer = Env.GetString("JWT_ISSUER"),  // Valid token issuer
+        // Env.GetString = get the value and parse it as string from the environment variable
+        // Environment.GetEnvironmentVariable = get the value from the environment variable
+        ValidAudience = Env.GetString("JWT_AUDIENCE"),  // Valid token audience
+
+        // Secret key used for token signing
+        IssuerSigningKey = new SymmetricSecurityKey(
+            Encoding.UTF8.GetBytes(Env.GetString("JWT_KEY") ?? throw new InvalidOperationException("JWT Key not found")))
+    };
+});
 
 // * MVC pattern 컨트롤러 사용
 // * it's parsing the http request data to C# object

@@ -22,11 +22,23 @@ public class ApplicationDbContext : DbContext
     public DbSet<StoreHour> StoreHours { get; set; }
     public DbSet<Service> Services { get; set; }
     public DbSet<Reservation> Reservations { get; set; }
+    public DbSet<User> Users { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         // todo: need to review with new model type configuration
         base.OnModelCreating(modelBuilder);
+
+        // User 테이블 설정
+        modelBuilder.Entity<User>(entity =>
+        {
+            entity.HasIndex(e => e.Email).IsUnique();
+            entity.Property(e => e.Email).IsRequired();
+            entity.Property(e => e.Password).IsRequired();
+            entity.Property(e => e.FullName).IsRequired();
+            entity.Property(e => e.Role).HasDefaultValue("Admin");
+            entity.Property(e => e.CreatedAt).HasDefaultValueSql("CURRENT_TIMESTAMP");
+        });
 
         // Store configuration
         modelBuilder.Entity<Store>(entity =>
@@ -49,29 +61,29 @@ public class ApplicationDbContext : DbContext
 
             // Seed Data
             entity.HasData(
-                new Store 
-                { 
+                new Store
+                {
                     Id = 1,
-                    StoreId = "store-1", 
-                    Name = "Hair Salon A", 
-                    Location = "Los Angeles", 
-                    Email = "hairsalon@example.com" 
+                    StoreId = "store-1",
+                    Name = "Hair Salon A",
+                    Location = "Los Angeles",
+                    Email = "hairsalon@example.com"
                 },
-                new Store 
-                { 
+                new Store
+                {
                     Id = 2,
-                    StoreId = "store-2", 
-                    Name = "Hair Salon B", 
-                    Location = "Texas", 
-                    Email = "hairsalon@example.com" 
+                    StoreId = "store-2",
+                    Name = "Hair Salon B",
+                    Location = "Texas",
+                    Email = "hairsalon@example.com"
                 },
-                new Store 
-                { 
+                new Store
+                {
                     Id = 3,
-                    StoreId = "store-3", 
-                    Name = "Hair Salon C", 
-                    Location = "New York", 
-                    Email = "hairsalon@example.com" 
+                    StoreId = "store-3",
+                    Name = "Hair Salon C",
+                    Location = "New York",
+                    Email = "hairsalon@example.com"
                 }
             );
         });
@@ -205,23 +217,23 @@ public class ApplicationDbContext : DbContext
 
             // Seed Data
             entity.HasData(
-                new Service 
-                { 
+                new Service
+                {
                     Id = 1,
-                    ServiceId = "service-1", 
-                    Name = "Haircut", 
-                    Duration = 30, 
-                    Price = 30.00m, 
-                    StoreId = "store-1" 
+                    ServiceId = "service-1",
+                    Name = "Haircut",
+                    Duration = 30,
+                    Price = 30.00m,
+                    StoreId = "store-1"
                 },
-                new Service 
-                { 
+                new Service
+                {
                     Id = 2,
-                    ServiceId = "service-2", 
-                    Name = "Hair Coloring", 
-                    Duration = 120, 
-                    Price = 80.00m, 
-                    StoreId = "store-1" 
+                    ServiceId = "service-2",
+                    Name = "Hair Coloring",
+                    Duration = 120,
+                    Price = 80.00m,
+                    StoreId = "store-1"
                 }
             );
         });
