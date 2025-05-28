@@ -73,6 +73,7 @@ This file tracks development decisions and progress for the RSVP System project.
 ## 2025-05-13: Reservation System Structure Implementation
 
 **Implemented:**
+
 - Created Steps component for reservation progress tracking
 - Implemented StoreSelection and ServiceSelection components
 - Set up reservation pages structure (ReservationPage, ReservationListPage, ReservationDetailPage)
@@ -80,6 +81,7 @@ This file tracks development decisions and progress for the RSVP System project.
 - Updated existing reservation components (ReservationForm, ReservationList, ReservationDetail)
 
 **Technical Decisions:**
+
 - Used shadcn/ui components for consistent UI
 - Implemented 3-step reservation process (Store → Service → Details)
 - Separated page components from UI components
@@ -87,6 +89,7 @@ This file tracks development decisions and progress for the RSVP System project.
 - Maintained English for all component names and UI text
 
 **Next Steps:**
+
 - Implement API integration for reservation system
 - Add date and time validation
 - Implement store hours integration
@@ -95,18 +98,22 @@ This file tracks development decisions and progress for the RSVP System project.
 ## 2025-05-14: Authentication System and Component Reorganization
 
 **Implemented:**
+
 - Added authentication system
+
   - Created auth types and interfaces
   - Implemented auth slice for Redux store
   - Added login page component
 
 - Reorganized reservation components
+
   - Moved components to new directory structure
   - Updated component imports and file organization
   - Improved ReservationDetail and ReservationList styling
   - Enhanced ReservationDetailPage and ReservationListPage UI
 
 - Fixed UI issues
+
   - Fixed Steps component center alignment
   - Updated reservation types
   - Updated App.tsx routing
@@ -116,12 +123,14 @@ This file tracks development decisions and progress for the RSVP System project.
   - Updated postcss configuration
 
 **Technical Decisions:**
+
 - Implemented authentication system for admin access
 - Reorganized component structure for better maintainability
 - Enhanced UI/UX with improved styling
 - Fixed dependency issues for better stability
 
 **Next Steps:**
+
 - Temporarily postpone frontend tasks to focus on backend implementation
 - Implement backend API endpoints and business logic
 - Set up database and data access layer
@@ -136,13 +145,16 @@ This file tracks development decisions and progress for the RSVP System project.
 ## 2025-05-15: Backend Implementation - Domain Models and Repository Pattern
 
 **Implemented:**
+
 - Created domain models
+
   - Implemented Store model with business hours
   - Added Service model for store services
   - Created Reservation model with validation
   - Aligned models with frontend types
 
 - Set up project structure
+
   - Created ASP.NET Core solution with multiple projects
   - Organized projects: API, Core, Infrastructure, Tests
   - Added setup script and guidelines
@@ -155,6 +167,7 @@ This file tracks development decisions and progress for the RSVP System project.
   - Added proper error handling
 
 **Technical Decisions:**
+
 - Used clean architecture principles
 - Implemented repository pattern for data access
 - Added proper validation and error handling
@@ -162,6 +175,7 @@ This file tracks development decisions and progress for the RSVP System project.
 - Used Entity Framework Core for data access
 
 **Next Steps:**
+
 - Implement service layer with business logic
 - Add API controllers with proper routing
 - Implement authentication and authorization
@@ -171,19 +185,23 @@ This file tracks development decisions and progress for the RSVP System project.
 ## 2025-05-16: Backend Implementation - Error Handling and API Standardization
 
 **Implemented:**
+
 - Added global exception handling
+
   - Implemented GlobalExceptionMiddleware for centralized error handling
   - Created custom AppException class with error codes
   - Added standardized error response format
   - Implemented proper HTTP status code mapping
 
 - Updated API controllers
+
   - Standardized error handling across all controllers
   - Updated StoreController with consistent response format
   - Updated ServiceController with consistent response format
   - Updated ReservationController with consistent response format
 
 - Refactored domain models and infrastructure
+
   - Updated domain models with proper relationships
   - Updated ApplicationDbContext configurations
   - Refactored repository implementations
@@ -196,6 +214,7 @@ This file tracks development decisions and progress for the RSVP System project.
   - Reorganized repository interfaces
 
 **Technical Decisions:**
+
 - Implemented centralized error handling for consistent API responses
 - Used custom exceptions for better error management
 - Standardized HTTP status codes and error messages
@@ -203,6 +222,7 @@ This file tracks development decisions and progress for the RSVP System project.
 - Improved project structure and documentation
 
 **Next Steps:**
+
 - Implement authentication and authorization
 - Add request/response DTOs
 - Set up database migrations
@@ -212,19 +232,23 @@ This file tracks development decisions and progress for the RSVP System project.
 ## 2025-05-17: Backend Implementation - API Response Standardization
 
 **Implemented:**
+
 - Added standardized API response format
+
   - Created ApiResponse<T> class for consistent response structure
   - Added ErrorResponse class for standardized error handling
   - Implemented success/error response wrappers
   - Added JSON property name attributes for consistent serialization
 
 - Enhanced global exception handling
+
   - Integrated ApiResponse with GlobalExceptionMiddleware
   - Added detailed request logging (path, method)
   - Improved error message formatting
   - Added development environment specific error details
 
 - Updated controllers with new response format
+
   - Wrapped all responses with ApiResponse<T>
   - Removed try-catch blocks in favor of global exception handling
   - Added detailed error messages for each operation
@@ -237,6 +261,7 @@ This file tracks development decisions and progress for the RSVP System project.
   - Added more descriptive error details
 
 **Technical Decisions:**
+
 - Implemented consistent API response format for better frontend integration
 - Enhanced error handling with detailed logging
 - Standardized error messages and response structure
@@ -244,20 +269,154 @@ This file tracks development decisions and progress for the RSVP System project.
 - Maintained clean architecture principles
 
 **Next Steps:**
+
 1. Frontend-Backend Integration
+
    - Connect frontend API services with new standardized responses
    - Update frontend error handling to match new response format
    - Test all API endpoints with frontend
    - Implement proper loading states and error displays
 
 2. Database Setup (After Frontend Integration)
+
    - Set up actual database connection
    - Configure connection strings
    - Run initial migrations
    - Test with real data
 
 3. Future Enhancements (Post-MVP)
+
    - Implement authentication system
    - Add email notification system
    - Add admin dashboard features
    - Implement store hours management
+
+## 2025-05-18: Backend Refactoring - DTO, AutoMapper, and Controller Standardization
+
+**Implemented:**
+
+- Added Create/Response DTOs for Reservation, Service, and Store domains
+  - Each domain now has its own Create and Response DTOs for clear API contracts
+- Introduced AutoMapper MappingProfile for domain <-> DTO conversion
+  - Centralized mapping logic for all domain models and DTOs
+- Refactored ReservationController to use DTOs and AutoMapper
+  - All endpoints now use CreateReservationDto and ReservationResponseDto
+  - Model <-> DTO conversion is handled by AutoMapper
+  - Improved response consistency and type safety
+- Refactored ServiceController to use DTOs and AutoMapper
+  - All endpoints now use CreateServiceDto and ServiceResponseDto
+  - Model <-> DTO conversion is handled by AutoMapper
+- Refactored StoreController to use DTOs and AutoMapper
+  - All endpoints now use CreateStoreDto and StoreResponseDto
+  - Model <-> DTO conversion is handled by AutoMapper
+- Added extension methods for model-DTO conversion (where needed)
+- Updated project files and DI registration for AutoMapper
+- Updated infrastructure, middleware, and configuration files to support new structure
+  - Updated exception middleware, DI registration, and project files
+  - Refactored StoreHour model and related infrastructure
+
+**Technical Decisions:**
+
+- Adopted DTO pattern for all API input/output to ensure clear contract between frontend and backend
+- Used AutoMapper to centralize and automate mapping logic, reducing boilerplate and potential bugs
+- Improved maintainability and scalability by separating API contracts from domain models
+- Ensured all API responses are consistent and type-safe
+- Updated infrastructure and middleware to support new API structure
+
+**Next Steps:**
+
+- Test all endpoints with frontend integration
+- Add/Update unit tests for controller and service layers
+- Document new API contracts and update API documentation
+
+## 2025-05-19: Database Migration and Seed Data Implementation
+
+**Implemented:**
+
+- Migrated from SQL Server to SQLite
+
+  - Updated database configuration in Program.cs
+  - Modified connection string in appsettings.json
+  - Added SQLite package dependencies
+  - Created database migration guides
+
+- Added initial migrations
+
+  - Created migration files for all entities
+  - Configured proper relationships between entities
+  - Added database command guide
+  - Set up migration assembly configuration
+
+- Updated domain models
+
+  - Made StoreHour nullable in Store model
+  - Added StoreHourId to RegularHour
+  - Added documentation for decimal type usage
+  - Fixed model relationships for SQLite
+
+- Implemented seed data
+
+  - Added seed data for Store entities (3 locations)
+  - Added seed data for StoreHour entities
+  - Added seed data for RegularHour entities (all days for each store)
+  - Added seed data for Service entities (Haircut and Hair Coloring)
+
+- Updated frontend integration
+  - Simplified reservation data structure
+  - Updated reservation hooks and store
+  - Removed unnecessary data wrapping
+  - Fixed API integration issues
+
+**Technical Decisions:**
+
+- Switched to SQLite for better cross-platform compatibility
+- Used explicit IDs in seed data to prevent conflicts
+- Implemented proper entity relationships
+- Maintained data consistency across all entities
+- Simplified frontend data handling
+
+**Next Steps:**
+
+- Implement store hours validation
+- Add reservation time slot validation
+- Implement email notification system
+- Add admin dashboard features
+- Create unit tests for new functionality
+
+## 2025-05-27: Authentication System Implementation and Database Migration
+
+**Implemented:**
+
+- Added authentication system
+  - Implemented JWT-based authentication
+  - Created User model and database table
+  - Added AuthService and AuthController
+  - Configured JWT settings in Program.cs
+
+- Updated database configuration
+  - Moved database connection string to .env file
+  - Added DotNetEnv package for environment variable management
+  - Recreated database migrations with User table
+  - Fixed database connection issues
+
+- Enhanced security
+  - Added password hashing with BCrypt
+  - Implemented JWT token validation
+  - Added role-based authorization
+  - Secured sensitive configuration in .env
+
+**Technical Decisions:**
+
+- Used JWT for stateless authentication
+- Implemented secure password hashing
+- Moved sensitive data to environment variables
+- Maintained clean architecture principles
+- Improved database configuration
+
+**Next Steps:**
+
+- Implement frontend authentication integration
+- Add user management features
+- Implement password reset functionality
+- Add email verification system
+- Create admin dashboard for user management
