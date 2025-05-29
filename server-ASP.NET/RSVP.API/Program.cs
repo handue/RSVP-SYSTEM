@@ -53,8 +53,8 @@ builder.Services.AddScoped<IServiceRepository, ServiceRepository>();
 builder.Services.AddScoped<IReservationRepository, ReservationRepository>();
 
 // Register Services
-builder.Services.AddScoped<IStoreService, StoreService>();
-builder.Services.AddScoped<IServiceService, ServiceService>();
+builder.Services.AddScoped<IStoreService, Store_Service>();
+builder.Services.AddScoped<IServiceService, Service_Service>();
 builder.Services.AddScoped<IReservationService, ReservationService>();
 builder.Services.AddScoped<IAuthService, AuthService>();
 
