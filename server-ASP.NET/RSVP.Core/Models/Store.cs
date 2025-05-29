@@ -35,6 +35,8 @@ public class Store
     // public List<StoreHour> StoreHours { get; set; } = new List<StoreHour>();
     // old: public List<Service> Services { get; set; } = new List<T>();
     // new: public List<Service> Services { get; set; } = [];
-    public List<Service> Services { get; set; } = [];
+    public List<StoreService> StoreServices { get; set; } = [];
+
+
     public List<Reservation> Reservations { get; set; } = [];
 }

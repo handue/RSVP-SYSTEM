@@ -35,13 +35,13 @@ public class Service
     // * decimal = It's used for currency (money)
     // * because it provides precise calculation with fractional/decimal values
     // * and avoids rounding errors common in floating-point arithmetic
-    public string? StoreId { get; set; }
+
 
     // [Required]
     // [JsonPropertyName("serviceId")]
     // public string ServiceId { get; set; } = string.Empty;
 
     // Navigation properties
-    public Store Store { get; set; } = null!;
-    public List<Reservation> Reservations { get; set; } = new List<Reservation>();
+    public List<StoreService> StoreServices { get; set; } = [];
+    public List<Reservation> Reservations { get; set; } = [];
 }

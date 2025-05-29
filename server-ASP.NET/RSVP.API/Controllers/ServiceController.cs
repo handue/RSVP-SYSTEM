@@ -26,7 +26,7 @@ namespace RSVP.API.Controllers
         [HttpPost]
         public async Task<ActionResult<ServiceResponseDto>> CreateService([FromBody] CreateServiceDto ServiceDto)
         {
-
+            
             var createdServiceDto = await _serviceService.CreateServiceAsync(ServiceDto);
 
             return CreatedAtAction(nameof(GetServiceById), new { id = createdServiceDto.ServiceId }, ApiResponse<ServiceResponseDto>.CreateSuccess(createdServiceDto));

@@ -14,7 +14,7 @@ public class StoreRepository : Repository<Store>, IStoreRepository
 
     public async Task<Store?> GetByStoreIdAsync(string storeId)
     {
-        
+
         return await _dbSet.FirstOrDefaultAsync(s => s.StoreId == storeId);
     }
 
@@ -28,7 +28,8 @@ public class StoreRepository : Repository<Store>, IStoreRepository
     public async Task<IEnumerable<Store>> GetStoresWithServicesAsync()
     {
         return await _dbSet
-            .Include(s => s.Services)
+            .Include(s => s.StoreServices)
+            .ThenInclude(s => s.Service)
             .ToListAsync();
     }
 
@@ -43,4 +44,4 @@ public class StoreRepository : Repository<Store>, IStoreRepository
     {
         return await _dbSet.AnyAsync(s => s.StoreId == storeId);
     }
-} 
+}

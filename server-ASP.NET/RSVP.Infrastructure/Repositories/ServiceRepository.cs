@@ -20,7 +20,8 @@ public class ServiceRepository : Repository<Service>, IServiceRepository
     public async Task<IEnumerable<Service>> GetServicesByStoreIdAsync(string storeId)
     {
         return await _dbSet
-            .Where(s => s.StoreId == storeId)
+            .Include(s => s.StoreServices)
+            .Where(s => s.StoreServices.Any(ss => ss.StoreId == storeId))
             .ToListAsync();
     }
 

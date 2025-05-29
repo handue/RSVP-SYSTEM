@@ -23,6 +23,7 @@ public class ApplicationDbContext : DbContext
     public DbSet<Service> Services { get; set; }
     public DbSet<Reservation> Reservations { get; set; }
     public DbSet<User> Users { get; set; }
+    public DbSet<StoreService> StoreServices { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -206,14 +207,14 @@ public class ApplicationDbContext : DbContext
             // HasPrecision(18, 2): decimal 타입의 숫자 형식을 정의. 18은 총 자릿수, 2는 소수점 이하 자릿수를 의미함
             // HasPrecision(18, 2): Defines the numeric format of decimal type. 18 is the total number of digits, 2 is the number of decimal places
             entity.Property(e => e.Price).HasPrecision(18, 2);
-            entity.HasOne(e => e.Store)
-                .WithMany(s => s.Services)
-                .HasForeignKey(e => e.StoreId)
-                .HasPrincipalKey(e => e.StoreId)
-                // * HasForeignKey = 외래 키 설정 (Foreign Key Setup)
-                // * Service 엔티티가 Store 엔티티를 참조하기 위한 외래 키로 StoreId 속성을 사용
-                // * Service entity uses StoreId property as a foreign key to reference the Store entity
-                .OnDelete(DeleteBehavior.Cascade);
+            // entity.HasOne(e => e.Store)
+            //     .WithMany(s => s.Services)
+            //     .HasForeignKey(e => e.StoreId)
+            //     .HasPrincipalKey(e => e.StoreId)
+            //     // * HasForeignKey = 외래 키 설정 (Foreign Key Setup)
+            //     // * Service 엔티티가 Store 엔티티를 참조하기 위한 외래 키로 StoreId 속성을 사용
+            //     // * Service entity uses StoreId property as a foreign key to reference the Store entity
+            //     .OnDelete(DeleteBehavior.Cascade);
 
             // Seed Data
             entity.HasData(
@@ -224,7 +225,7 @@ public class ApplicationDbContext : DbContext
                     Name = "Haircut",
                     Duration = 30,
                     Price = 30.00m,
-                    StoreId = "store-1"
+
                 },
                 new Service
                 {
@@ -233,8 +234,33 @@ public class ApplicationDbContext : DbContext
                     Name = "Hair Coloring",
                     Duration = 120,
                     Price = 80.00m,
-                    StoreId = "store-1"
                 }
+            );
+        });
+
+        modelBuilder.Entity<StoreService>(entity =>
+        {
+            entity.HasKey(e => new { e.StoreId, e.ServiceId });
+
+            entity.HasOne(e => e.Store)
+                .WithMany(s => s.StoreServices)
+                .HasForeignKey(e => e.StoreId)
+                .HasPrincipalKey(e => e.StoreId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            entity.HasOne(e => e.Service)
+                .WithMany(s => s.StoreServices)
+                .HasForeignKey(e => e.ServiceId)
+                .HasPrincipalKey(e => e.ServiceId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            entity.HasData(
+                new StoreService { StoreId = "store-1", ServiceId = "service-1" },
+                new StoreService { StoreId = "store-1", ServiceId = "service-2" },
+                new StoreService { StoreId = "store-2", ServiceId = "service-1" },
+                new StoreService { StoreId = "store-2", ServiceId = "service-2" },
+                new StoreService { StoreId = "store-3", ServiceId = "service-1" },
+                new StoreService { StoreId = "store-3", ServiceId = "service-2" }
             );
         });
 
@@ -256,5 +282,7 @@ public class ApplicationDbContext : DbContext
                 .HasPrincipalKey(e => e.ServiceId)
                 .OnDelete(DeleteBehavior.Restrict);
         });
+
+
     }
 }
