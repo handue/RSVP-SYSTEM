@@ -4,7 +4,7 @@ import { useAppSelector } from '../../hooks/useAppSelector';
 
 interface ProtectedRouteProps {
   children: React.ReactNode;
-  requiredRole?: 'admin' | 'store_manager';
+  requiredRole?: 'admin';
 }
 
 export const ProtectedRoute = ({ children, requiredRole }: ProtectedRouteProps) => {
