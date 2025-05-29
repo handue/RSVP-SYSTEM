@@ -420,3 +420,97 @@ This file tracks development decisions and progress for the RSVP System project.
 - Implement password reset functionality
 - Add email verification system
 - Create admin dashboard for user management
+
+## 2025-05-28: Store-Service Many-to-Many Relationship Implementation
+
+**Implemented:**
+
+- Implemented many-to-many relationship between Store and Service
+  - Created StoreService model for relationship management
+  - Updated Store and Service models with navigation properties
+  - Configured entity relationships in ApplicationDbContext
+  - Added cascade delete behavior for Store-StoreService relationship
+  - Added restrict delete behavior for Service-StoreService relationship
+
+- Updated database schema
+  - Recreated database migrations
+  - Added StoreServices table with composite key
+  - Configured proper foreign key constraints
+  - Added seed data for Store-Service relationships
+
+- Refactored service layer
+  - Updated ServiceService to handle StoreService relationships
+  - Modified GetServicesByStoreIdAsync to use StoreServices relationship
+  - Removed direct StoreId reference from Service model
+  - Improved relationship management in CreateServiceAsync
+
+**Technical Decisions:**
+
+- Used junction table (StoreService) for many-to-many relationship
+- Implemented proper cascade/restrict delete behaviors
+- Removed redundant StoreId from Service model
+- Used Entity Framework's automatic relationship management
+- Maintained data integrity with proper constraints
+
+**Next Steps:**
+
+- Test all service endpoints with new relationship structure
+- Update frontend to handle new relationship model
+- Add service management features in admin dashboard
+- Implement service availability checking
+- Add service scheduling features
+
+## 2025-05-28: DTO Implementation, Error Handling, and Environment Configuration
+
+**Implemented:**
+
+- Enhanced DTO structure and validation
+  - Added UpdateReservationDto and UpdateStoreDto
+  - Added required field validations
+  - Improved JSON property naming
+  - Added proper type constraints and default values
+
+- Updated service interfaces and implementation
+  - Modified service interfaces to accept and return DTOs instead of entities
+  - Added new methods for specific operations (e.g., ConfirmReservation)
+  - Updated method signatures to reflect DTO usage
+  - Improved type safety with explicit DTO types
+  - Added AutoMapper integration for entity-DTO conversion
+  - Implemented proper error handling with specific exceptions
+  - Added business logic validation
+  - Improved error messages and exception types
+
+- Updated controllers and error handling
+  - Removed entity mapping from controllers
+  - Implemented consistent response handling
+  - Added proper HTTP status codes
+  - Improved error handling and response structure
+  - Added new error codes for better error categorization
+  - Added BadRequest error code for validation errors
+  - Improved error code organization
+  - Added business rule violation codes
+
+- Enhanced environment and security configuration
+  - Added .env file to gitignore
+  - Added environment variable handling
+  - Updated configuration for secure credential management
+  - Added proper environment file patterns
+  - Improved security with environment variable management
+
+**Technical Decisions:**
+
+- Adopted DTO pattern for all API operations
+- Used AutoMapper for consistent entity-DTO conversion
+- Implemented comprehensive error handling system
+- Enhanced type safety with explicit DTOs
+- Improved security with environment variable management
+- Maintained clean architecture principles
+
+**Next Steps:**
+
+- Test all endpoints with new DTO structure
+- Update frontend to handle new DTO format
+- Add validation middleware for DTOs
+- Implement comprehensive error handling in frontend
+- Add proper error display in UI components
+- Document new API contracts and update API documentation
