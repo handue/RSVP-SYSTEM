@@ -27,6 +27,8 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
     "DefaultConnection": "Data Source=RSVP.db"
   }
 }
+
+지금은 .ENV로 변경함
 ```
 
 ## Migration Steps (마이그레이션 단계)
@@ -74,6 +76,9 @@ dotnet ef migrations remove --project RSVP.API
 
 # List migrations (마이그레이션 목록 보기)
 dotnet ef migrations list --project RSVP.API
+
+# Database delete 
+dotnet ef database drop -f --project RSVP.API
 ```
 
 ## Notes (참고사항)
