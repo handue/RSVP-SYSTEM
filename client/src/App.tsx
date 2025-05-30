@@ -32,14 +32,16 @@ function App() {
         <CenteredLayout>
           <Routes>
             <Route path="/login" element={<LoginPage />} />
-            <Route path="/dashboard" element={<Dashboard />} />
+
             <Route
               path="/admin/*"
               element={
                 <ProtectedRoute requiredRole="admin">
                   {/* <AdminLayout> */}
                   <Routes>
-                    <Route path="/dashboard" element={<Dashboard />} />
+                    <Route path="/" element={<Dashboard />} />
+                    <Route path="/list" element={<ReservationListPage />} />
+                    <Route path="/detail" element={<ReservationDetailPage />} />
                     {/* <Route
                         path="/store-hours"
                         element={<StoreHoursManagement />}
@@ -50,8 +52,6 @@ function App() {
               }
             />
             <Route path="/" element={<ReservationPage />} />
-            <Route path="/list" element={<ReservationListPage />} />
-            <Route path="/detail" element={<ReservationDetailPage />} />
           </Routes>
         </CenteredLayout>
       </BrowserRouter>

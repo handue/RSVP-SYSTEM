@@ -5,17 +5,18 @@ import { useAppDispatch } from "../../hooks/useAppDispatch";
 import { login } from "../../store/authSlice";
 import { Button } from "../../components/ui/common/button";
 import { Input } from "../../components/ui/common/input";
+import { useLogin } from "../../hooks/useLogin";
 
 export const LoginPage = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const dispatch = useAppDispatch();
   const navigate = useNavigate();
+  const { loginHook } = useLogin();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      await dispatch(login({ email, password })).unwrap();
+      await loginHook(email, password);
       navigate("/admin");
     } catch (error) {
       console.error("Login failed:", error);
