@@ -6,6 +6,7 @@ using AutoMapper;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using RSVP.Core.Exceptions;
+using System.Text.Json;
 
 namespace RSVP.API.Controllers
 {
@@ -45,6 +46,8 @@ namespace RSVP.API.Controllers
         {
             var storeDtos = await _storeService.GetAllStoresAsync();
 
+            // Console.WriteLine("storeDtos: " + JsonSerializer.Serialize(storeDtos, new JsonSerializerOptions { WriteIndented = true }));
+
             return Ok(ApiResponse<IEnumerable<StoreResponseDto>>.CreateSuccess(storeDtos));
         }
 
@@ -74,7 +77,7 @@ namespace RSVP.API.Controllers
         public async Task<ActionResult> DeleteStore(string id)
         {
             var result = await _storeService.DeleteStoreAsync(id);
-        
+
             return NoContent();
         }
 
