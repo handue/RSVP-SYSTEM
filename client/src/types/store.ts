@@ -1,29 +1,32 @@
-export interface StoreHours {
+export interface StoreHour {
+  id?: number;
   storeId: Store["storeId"];
-  regularHours: {
-    day: string;
-    open: string;
-    close: string;
-    isClosed: boolean;
-  }[];
-  specialDate?: {
-    date: specialDate["date"];
-    open: specialDate["open"];
-    close: specialDate["close"];
-    isClosed: specialDate["isClosed"];
-  }[];
+  regularHours: RegularHours[];
+  specialDate?: SpecialDate[];
 }
 
+// * same with StoreResponseDto
 export interface Store {
   id?: number;
   storeId: string;
   name: string;
-  storeEmail: string;
   location: string;
+  storeEmail: string;
+  storeHour: StoreHour;
   // image?: string;
 }
 
-export interface specialDate {
+export interface RegularHours {
+  id?: number;
+  storeHourId?: number;
+  day: string;
+  open: string;
+  close: string;
+  isClosed: boolean;
+}
+
+export interface SpecialDate {
+  id?: number;
   date: string;
   open: string;
   close: string;

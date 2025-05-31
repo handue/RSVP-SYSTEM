@@ -1,16 +1,16 @@
 // src/store/storeHoursSlice.ts
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import { StoreHours } from "../types/store";
+import { StoreHour, Store } from "../types/store";
 import { storeHoursService } from "../services/api/storeHoursService";
 
 interface StoreHoursState {
-  hours: StoreHours[];
+  stores: Store[];
   status: "idle" | "loading" | "succeeded" | "failed";
   error: string | null;
 }
 
 const initialState: StoreHoursState = {
-  hours: [],
+  stores: [],
   status: "idle",
   error: null,
 };
@@ -18,8 +18,9 @@ const initialState: StoreHoursState = {
 export const fetchStoreHours = createAsyncThunk(
   "storeHours/fetchStoreHours",
   async () => {
-    const response = await storeHoursService.getStoreHours();
-    return response.storeHours || response.data;
+    const stores = await storeHoursService.getStoreHours();
+    console.log("받아온 스토어 값 확인:" + JSON.stringify(stores));
+    return stores;
   }
 );
 
@@ -85,20 +86,34 @@ const storeHoursSlice = createSlice({
       })
       .addCase(fetchStoreHours.fulfilled, (state, action) => {
         state.status = "succeeded";
-        state.hours = action.payload;
+        state.stores = action.payload;
       })
       .addCase(fetchStoreHours.rejected, (state, action) => {
         state.status = "failed";
         state.error = action.error.message || "Failed to fetch store hours";
       })
+
+      // todo: Implementation needed
       .addCase(updateRegularHours.fulfilled, (state, action) => {
-        state.hours = action.payload;
+        const updatedStore = action.payload;
+        let store = state.stores.find((e) => e.id === updatedStore.id);
+        if (store) {
+          store = updatedStore;
+        }
       })
       .addCase(updateSpecialDate.fulfilled, (state, action) => {
-        state.hours = action.payload;
+        const updatedStore = action.payload;
+        let store = state.stores.find((e) => e.id === updatedStore.id);
+        if (store) {
+          store = updatedStore;
+        }
       })
       .addCase(deleteSpecialDate.fulfilled, (state, action) => {
-        state.hours = action.payload;
+        const updatedStore = action.payload;
+        let store = state.stores.find((e) => e.id === updatedStore.id);
+        if (store) {
+          store = updatedStore;
+        }
       });
   },
 });
