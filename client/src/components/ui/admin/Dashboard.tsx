@@ -5,11 +5,19 @@ import { Button } from "../common/button";
 import { Card, CardContent, CardHeader, CardTitle } from "../common/card";
 import { AppDispatch, RootState } from "../../../store";
 import { Store } from "../../../types/store";
-import { StoreHours } from "../../../types/store";
+import { StoreHour } from "../../../types/store";
 import { stores } from "../../reservation/StoreSelection";
+import { useAppSelector } from "../../../hooks/useAppSelector";
+
+import { useStoreHours } from "../../../hooks/useStoreHours";
+import { Loading } from "../common/Loading";
 
 export const Dashboard = () => {
   const dispatch = useDispatch<AppDispatch>();
+  const { stores, status, error } = useAppSelector((state) => state.storeHours);
+
+  const { getStoreHours } = useStoreHours();
+
   const days = [
     "Monday",
     "Tuesday",
@@ -19,94 +27,59 @@ export const Dashboard = () => {
     "Saturday",
     "Sunday",
   ];
+
   const [selectedStore, setSelectedStore] = useState<Store | null>(null);
-  const [storeHours, setStoreHours] = useState<StoreHours[]>(
-    stores.map((store) => ({
-      storeId: store.storeId,
-      regularHours: days.map((day) => ({
-        day,
-        open: "09:00",
-        close: "18:00",
-        isClosed: false,
-      })),
-    }))
-  );
+  const [storeHours, setStoreHours] = useState<StoreHour[]>([]);
+  //   stores.map((store) => ({
+  //     storeId: store.storeId,
+  //     regularHours: days.map((day) => ({
+  //       day,
+  //       open: "09:00",
+  //       close: "18:00",
+  //       isClosed: false,
+  //     })),
+  //   }
+  // )
+  // )
 
   // 요일별 기본 영업시간
   // todo: edit needed after backend integration.
+  useEffect(() => {
+    const fetchStoreHours = async () => {
+      await getStoreHours();
+    };
+    fetchStoreHours();
+  }, [dispatch]);
 
-  // **** DIRECT INPUT TO storeHours ****
-  // const defaultHours: StoreHours[] = stores.map((store) => ({
-  //   storeId: store.id,
-  //   regularHours: days.map((day) => ({
-  //     day,
-  //     open: "09:00",
-  //     close: "18:00",
-  //     isClosed: false,
-  //   })),
-  // specialDate: [
-  //   {
-  //     date: "2025-01-01",
-  //     open: "09:00",
-  //     close: "18:00",
-  //     isClosed: false,
-  //   },
-  // ],
-  // }));
-  // useEffect(() => {
-  //   setStoreHours(defaultHours);
-  // }, []);
-
-  // const defaultHours: StoreHours[] = [
-  //   {
-  //     storeId: stores[0].id,
-  //     regularHours: [
-  //       {
-  //         day: "Monday",
-  //         open: "09:00",
-  //         close: "18:00",
-  //         isClosed: false,
-  //       },
-  //     ],
-  //     specialDate: {
-  //       date: "Monday",
-  //       open: "09:00",
-  //       close: "18:00",
-  //       isClosed: false,
-  //     },
-  //   },
-  //   {
-  //     storeId: stores[1].id,
-  //     regularHours: {
-  //       date: "Tuesday",
-  //       open: "09:00",
-  //       close: "18:00",
-  //       isClosed: false,
-  //     },
-  //     specialDate: {
-  //       date: "Wednesday",
-  //       open: "09:00",
-  //       close: "18:00",
-  //       isClosed: false,
-  //     },
-  //   },
-  //   {
-  //     storeId: stores[2].id,
-  //     regularHours: {
-  //       date: "Wednesday",
-  //       open: "09:00",
-  //       close: "18:00",
-  //       isClosed: false,
-  //     },
-  //     specialDate: {
-  //       date: "Wednesday",
-  //       open: "09:00",
-  //       close: "18:00",
-  //       isClosed: false,
-  //     },
-  //   },
-  // ];
-  // **** DIRECT INPUT TO storeHours ****
+  useEffect(() => {
+    // setStoreHours(selectedStore?.storeHours);
+    
+    if (stores.length > 0) {
+      
+      setStoreHours(
+        stores.map((store, index) => ({
+          id: store.id ? store.id : index,
+          storeId: store.storeId,
+          regularHours: days.map((day: string) => ({
+            day,
+            open:
+              store.storeHour?.regularHours.find(
+                (regularHour) => regularHour.day === day
+              )?.open || "",
+            close:
+              store.storeHour?.regularHours.find(
+                (regularHour) => regularHour.day === day
+              )?.close || "",
+            isClosed:
+              store.storeHour?.regularHours.find(
+                (regularHour) => regularHour.day === day
+              )?.isClosed || false,
+          })),
+          specialDate: store.storeHour?.specialDate,
+        }))
+      );
+    }
+  }, [stores]);
 
   const handleStoreSelect = (store: Store) => {
     setSelectedStore(store);
@@ -137,6 +110,10 @@ export const Dashboard = () => {
     // TODO: 특정 날짜 휴무 설정
   };
 
+  if (status === "loading") {
+    return <Loading />;
+  }
+
   return (
     <div className="p-6 border-2 border-gray-200 shadow-lg rounded-md">
       <div className="mb-8">
@@ -149,29 +126,31 @@ export const Dashboard = () => {
       </div>
 
       {/* 스토어 선택 */}
-      <Card className="mb-6">
-        <CardHeader>
-          <CardTitle>Select Store</CardTitle>
-        </CardHeader>
-        <CardContent>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-            {stores.map((store) => (
-              <div
-                key={store.storeId}
-                className={`p-4 border rounded-lg cursor-pointer transition-colors ${
-                  selectedStore?.storeId === store.storeId
-                    ? "border-indigo-500 bg-indigo-50"
-                    : "border-gray-200 hover:border-indigo-300"
-                }`}
-                onClick={() => handleStoreSelect(store)}
-              >
-                <h3 className="font-medium text-gray-900">{store.name}</h3>
-                <p className="text-sm text-gray-500">{store.location}</p>
-              </div>
-            ))}
-          </div>
-        </CardContent>
-      </Card>
+      {storeHours.length > 0 && (
+        <Card className="mb-6">
+          <CardHeader>
+            <CardTitle>Select Store</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+              {stores.map((store) => (
+                <div
+                  key={store.storeId}
+                  className={`p-4 border rounded-lg cursor-pointer transition-colors ${
+                    selectedStore?.storeId === store.storeId
+                      ? "border-indigo-500 bg-indigo-50"
+                      : "border-gray-200 hover:border-indigo-300"
+                  }`}
+                  onClick={() => handleStoreSelect(store)}
+                >
+                  <h3 className="font-medium text-gray-900">{store.name}</h3>
+                  <p className="text-sm text-gray-500">{store.location}</p>
+                </div>
+              ))}
+            </div>
+          </CardContent>
+        </Card>
+      )}
 
       {/* 영업시간 설정 */}
       {selectedStore && (
@@ -193,8 +172,9 @@ export const Dashboard = () => {
                       // ! If I set storeId as number, it would be more convenient, but I chose to set it as a string to maintain flexibility for future extensions.
 
                       value={
-                        storeHours.find((sh) => sh.storeId === selectedStore.storeId)
-                          ?.regularHours[index].open || ""
+                        storeHours.find(
+                          (sh) => sh.storeId === selectedStore.storeId
+                        )?.regularHours[index].open || ""
                       }
                       className="border-2 flex-1 rounded-md p-2"
                     />
@@ -202,8 +182,9 @@ export const Dashboard = () => {
                     <input
                       type="time"
                       value={
-                        storeHours.find((sh) => sh.storeId === selectedStore.storeId)
-                          ?.regularHours[index].close || ""
+                        storeHours.find(
+                          (sh) => sh.storeId === selectedStore.storeId
+                        )?.regularHours[index].close || ""
                       }
                       onChange={(e) =>
                         handleRegularHoursChange(
