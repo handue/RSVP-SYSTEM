@@ -162,6 +162,10 @@ export const Dashboard = () => {
   };
 
   const handleCreateSpecialDate = (specialDate: SpecialDate) => {
+    if (!specialDate.date || !specialDate.open || !specialDate.close) {
+      showError("Please fill in all fields");
+      return;
+    }
     setStoreHours((prev) =>
       prev.map((sh) =>
         sh.storeId === selectedStore?.storeId
@@ -201,7 +205,6 @@ export const Dashboard = () => {
         </p>
       </div>
 
-      
       {storeHours.length > 0 && (
         <Card className="mb-6">
           <CardHeader>
@@ -228,7 +231,6 @@ export const Dashboard = () => {
         </Card>
       )}
 
-      
       {selectedStore && (
         <Card>
           <CardHeader>
@@ -327,16 +329,19 @@ export const Dashboard = () => {
                 <input
                   type="date"
                   className="border rounded-md p-2"
+                  value={specialDate?.date}
                   onChange={(e) => handleAddSpecialDate("date", e.target.value)}
                 />
                 <input
                   type="time"
                   className="border rounded-md p-2"
+                  value={specialDate?.open}
                   onChange={(e) => handleAddSpecialDate("open", e.target.value)}
                 />
                 <input
                   type="time"
                   className="border rounded-md p-2"
+                  value={specialDate?.close}
                   onChange={(e) =>
                     handleAddSpecialDate("close", e.target.value)
                   }
@@ -361,7 +366,13 @@ export const Dashboard = () => {
                       return;
                     }
                     handleCreateSpecialDate(specialDate);
-                    showSuccess("Special date created successfully");
+                    setSpecialDate({
+                      date: "",
+                      open: "",
+                      close: "",
+                      isClosed: false,
+                    });
+                    // showSuccess("Special date created successfully");
 
                     return;
                   }}
@@ -407,6 +418,17 @@ export const Dashboard = () => {
               </div>
             </div>
           </CardContent>
+          <div className="m-6 flex justify-center items-center">
+            <Button
+              onClick={() => {
+                // TODO: Implement storeHours save logic
+                showSuccess("Store hours saved successfully");
+              }}
+              className="bg-indigo-600 hover:bg-indigo-700 text-white"
+            >
+              Save Store Hours
+            </Button>
+          </div>
         </Card>
       )}
     </div>
