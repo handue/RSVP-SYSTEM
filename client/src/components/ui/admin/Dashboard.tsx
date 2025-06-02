@@ -4,19 +4,22 @@ import { useDispatch, useSelector } from "react-redux";
 import { Button } from "../common/button";
 import { Card, CardContent, CardHeader, CardTitle } from "../common/card";
 import { AppDispatch, RootState } from "../../../store";
-import { Store } from "../../../types/store";
+import { SpecialDate, Store } from "../../../types/store";
 import { StoreHour } from "../../../types/store";
 import { stores } from "../../reservation/StoreSelection";
 import { useAppSelector } from "../../../hooks/useAppSelector";
 
 import { useStoreHours } from "../../../hooks/useStoreHours";
 import { Loading } from "../common/Loading";
+import { useNotification } from "../../../hooks/useNotification";
 
 export const Dashboard = () => {
   const dispatch = useDispatch<AppDispatch>();
   const { stores, status, error } = useAppSelector((state) => state.storeHours);
 
   const { getStoreHours } = useStoreHours();
+
+  const { showError, showSuccess } = useNotification();
 
   const days = [
     0, // * 0 = Sunday
@@ -40,6 +43,7 @@ export const Dashboard = () => {
 
   const [selectedStore, setSelectedStore] = useState<Store | null>(null);
   const [storeHours, setStoreHours] = useState<StoreHour[]>([]);
+  const [specialDate, setSpecialDate] = useState<SpecialDate | null>(null);
   //   stores.map((store) => ({
   //     storeId: store.storeId,
   //     regularHours: days.map((day) => ({
@@ -99,8 +103,6 @@ export const Dashboard = () => {
           : storeHour
       )
     );
-    // TODO: 해당 스토어의 영업시간 데이터 가져오기
-    // todo: 지금은 맨 위 데이터로 하면 될거같음.
   };
 
   const handleIsClosedChange = (day: number, isClosed: boolean) => {
@@ -143,8 +145,45 @@ export const Dashboard = () => {
     });
   };
 
-  const handleSpecialDate = (date: string, isClosed: boolean) => {
-    // TODO: 특정 날짜 휴무 설정
+  const handleAddSpecialDate = (
+    field: keyof SpecialDate,
+    value: string | boolean
+  ) => {
+    setSpecialDate((prev) => ({
+      ...prev,
+      [field]: value,
+      // 기본값 설정
+      date: field === "date" ? (value as string) : prev?.date || "",
+      open: field === "open" ? (value as string) : prev?.open || "09:00",
+      close: field === "close" ? (value as string) : prev?.close || "18:00",
+      isClosed:
+        field === "isClosed" ? (value as boolean) : prev?.isClosed || false,
+    }));
+  };
+
+  const handleCreateSpecialDate = (specialDate: SpecialDate) => {
+    setStoreHours((prev) =>
+      prev.map((sh) =>
+        sh.storeId === selectedStore?.storeId
+          ? {
+              ...sh,
+              specialDate: [...(sh.specialDate || []), specialDate],
+            }
+          : sh
+      )
+    );
+  };
+
+  const handleDeleteSpecialDate = (id: number) => {
+    const storeHour = storeHours.find(
+      (sh) => sh.storeId === selectedStore?.storeId
+    );
+    if (!storeHour) return;
+
+    storeHour.specialDate = storeHour.specialDate?.filter(
+      (_, index) => index !== id
+    );
+    setStoreHours([...storeHours]);
   };
 
   if (status === "loading") {
@@ -162,7 +201,7 @@ export const Dashboard = () => {
         </p>
       </div>
 
-      {/* 스토어 선택 */}
+      
       {storeHours.length > 0 && (
         <Card className="mb-6">
           <CardHeader>
@@ -189,7 +228,7 @@ export const Dashboard = () => {
         </Card>
       )}
 
-      {/* 영업시간 설정 */}
+      
       {selectedStore && (
         <Card>
           <CardHeader>
@@ -288,16 +327,84 @@ export const Dashboard = () => {
                 <input
                   type="date"
                   className="border rounded-md p-2"
-                  onChange={(e) => handleSpecialDate(e.target.value, true)}
+                  onChange={(e) => handleAddSpecialDate("date", e.target.value)}
                 />
+                <input
+                  type="time"
+                  className="border rounded-md p-2"
+                  onChange={(e) => handleAddSpecialDate("open", e.target.value)}
+                />
+                <input
+                  type="time"
+                  className="border rounded-md p-2"
+                  onChange={(e) =>
+                    handleAddSpecialDate("close", e.target.value)
+                  }
+                />
+                <label className="relative inline-flex items-center cursor-pointer">
+                  <input
+                    type="checkbox"
+                    onChange={(e) =>
+                      handleAddSpecialDate("isClosed", e.target.checked)
+                    }
+                    className="sr-only peer"
+                  />
+                  <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 rounded-full peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div>
+                  <span className="ml-2 text-sm text-gray-500">Closed</span>
+                </label>
                 <Button
                   variant="outline"
-                  className="bg-gray-200 border-gray-200 border-2 hover:bg-gray-400"
+                  className="bg-gray-200 border-gray-200 border-2 hover:bg-gray-400 text-sm"
+                  onClick={() => {
+                    if (!specialDate) {
+                      showError("Please select a special date");
+                      return;
+                    }
+                    handleCreateSpecialDate(specialDate);
+                    showSuccess("Special date created successfully");
+
+                    return;
+                  }}
                 >
-                  Add Closed Date
+                  Add Date
                 </Button>
               </div>
-              {/* TODO: 특별 휴무일 목록 표시 */}
+
+              {/* Special Dates List */}
+              <div className="mt-4">
+                <h3 className="text-lg font-semibold mb-2">
+                  Registered Special Dates
+                </h3>
+                <div className="space-y-2">
+                  {storeHours
+                    .find((sh) => sh.storeId === selectedStore?.storeId)
+                    ?.specialDate?.map((date, index) => (
+                      <div
+                        key={index}
+                        className="flex items-center justify-between p-3 border rounded-lg"
+                      >
+                        <div className="flex items-center gap-2">
+                          <span className="font-medium">{date.date}</span>
+                          <span className="text-sm text-gray-500">
+                            {date.isClosed
+                              ? "Closed"
+                              : `${date.open} - ${date.close}`}
+                          </span>
+                        </div>
+                        <Button
+                          variant="ghost"
+                          className="text-red-500 hover:text-red-700"
+                          onClick={() => {
+                            handleDeleteSpecialDate(index);
+                            showSuccess("Special date deleted successfully");
+                          }}
+                        >
+                          Delete
+                        </Button>
+                      </div>
+                    ))}
+                </div>
+              </div>
             </div>
           </CardContent>
         </Card>
