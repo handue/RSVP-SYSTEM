@@ -91,7 +91,6 @@ export const Dashboard = () => {
   }, [stores]);
 
   const handleStoreSelect = (store: Store) => {
-    
     setSelectedStore(store);
     setStoreHours((prev) =>
       prev.map((storeHour) =>
@@ -102,6 +101,27 @@ export const Dashboard = () => {
     );
     // TODO: 해당 스토어의 영업시간 데이터 가져오기
     // todo: 지금은 맨 위 데이터로 하면 될거같음.
+  };
+
+  const handleIsClosedChange = (day: number, isClosed: boolean) => {
+    setStoreHours((prev) => {
+      return prev.map((storeHour) =>
+        storeHour.storeId === selectedStore?.storeId
+          ? {
+              ...storeHour,
+              regularHours: storeHour.regularHours.map((hour) =>
+                hour.day === day
+                  ? {
+                      ...hour,
+                      isClosed,
+                      // 닫힌 날은 시간을 00:00으로 리셋
+                    }
+                  : hour
+              ),
+            }
+          : storeHour
+      );
+    });
   };
 
   const handleRegularHoursChange = (
@@ -184,12 +204,18 @@ export const Dashboard = () => {
                       {dayNames[day]}
                     </span>
                   </div>
-                  <div className="flex w-full items-center justify-evenly gap-2">
+
+                  <div
+                    className={`flex w-full items-center justify-evenly gap-2 ${
+                      storeHours.find(
+                        (sh) => sh.storeId === selectedStore.storeId
+                      )?.regularHours[index].isClosed
+                        ? "opacity-50 pointer-events-none"
+                        : ""
+                    }`}
+                  >
                     <input
                       type="time"
-                      // ! storeId를 number로 하면 편하겠지만, String 으로 했을때의 유연성을 갖지 않아서, 확장을 위해 우선은 String 으로 ID 셋업하고 find 함수 사용
-                      // ! If I set storeId as number, it would be more convenient, but I chose to set it as a string to maintain flexibility for future extensions.
-
                       value={
                         storeHours.find(
                           (sh) => sh.storeId === selectedStore.storeId
@@ -197,6 +223,11 @@ export const Dashboard = () => {
                       }
                       onChange={(e) =>
                         handleRegularHoursChange(day, "open", e.target.value)
+                      }
+                      disabled={
+                        storeHours.find(
+                          (sh) => sh.storeId === selectedStore.storeId
+                        )?.regularHours[index].isClosed
                       }
                       className="border-2 flex-1 rounded-md p-2"
                     />
@@ -211,8 +242,32 @@ export const Dashboard = () => {
                       onChange={(e) =>
                         handleRegularHoursChange(day, "close", e.target.value)
                       }
+                      disabled={
+                        storeHours.find(
+                          (sh) => sh.storeId === selectedStore.storeId
+                        )?.regularHours[index].isClosed
+                      }
                       className="border flex-1 rounded-md p-2"
                     />
+                  </div>
+                  {/* isClosed 토글 */}
+                  <div className="flex items-center gap-2">
+                    <label className="relative inline-flex items-center cursor-pointer">
+                      <input
+                        type="checkbox"
+                        checked={
+                          storeHours.find(
+                            (sh) => sh.storeId === selectedStore.storeId
+                          )?.regularHours[index].isClosed || false
+                        }
+                        onChange={(e) =>
+                          handleIsClosedChange(day, e.target.checked)
+                        }
+                        className="sr-only peer"
+                      />
+                      <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 rounded-full peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div>
+                      <span className="ml-2 text-sm text-gray-500">Closed</span>
+                    </label>
                   </div>
                 </div>
               ))}
