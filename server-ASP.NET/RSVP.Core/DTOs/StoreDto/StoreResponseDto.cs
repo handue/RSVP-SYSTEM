@@ -1,4 +1,5 @@
 using System.Text.Json.Serialization;
+using RSVP.Core.Models;
 
 public class StoreResponseDto
 {
@@ -16,4 +17,7 @@ public class StoreResponseDto
 
     [JsonPropertyName("storeEmail")]
     public string Email { get; set; } = string.Empty;
+
+    [JsonPropertyName("storeHour")]
+    public StoreHour? StoreHour { get; set; }
 }
