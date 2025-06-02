@@ -62,7 +62,7 @@ namespace RSVP.Infrastructure.Services
         public async Task<IEnumerable<StoreResponseDto>> GetAllStoresAsync()
         {
 
-            var stores = await _storeRepository.GetAllAsync();
+            var stores = await _storeRepository.GetStoresWithHoursAsync();
             var storeDtos = _mapper.Map<IEnumerable<StoreResponseDto>>(stores);
 
             return storeDtos;
