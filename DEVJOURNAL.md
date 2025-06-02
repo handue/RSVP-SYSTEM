@@ -421,7 +421,7 @@ This file tracks development decisions and progress for the RSVP System project.
 - Add email verification system
 - Create admin dashboard for user management
 
-## 2025-05-28: Store-Service Many-to-Many Relationship Implementation
+## 2025-05-19 ~ 2025-05-27: Store-Service Many-to-Many Relationship Implementation
 
 **Implemented:**
 
@@ -514,3 +514,94 @@ This file tracks development decisions and progress for the RSVP System project.
 - Implement comprehensive error handling in frontend
 - Add proper error display in UI components
 - Document new API contracts and update API documentation
+
+## 2025-05-29 ~ 2025-05-31: Frontend-Backend Integration and UI Improvements
+
+**Implemented:**
+
+- Enhanced store hours management
+  - Improved data structure for store hours
+  - Updated store hours management in admin dashboard
+  - Integrated store hours with backend API
+  - Added proper data synchronization
+
+- Improved UI/UX
+  - Added loading spinner component
+  - Enhanced admin dashboard layout
+  - Updated data format to match backend structure
+  - Improved user feedback during loading states
+
+- Refactored authentication system
+  - Moved login dispatch logic to custom hooks
+  - Updated dashboard URL structure
+  - Improved authentication flow
+  - Enhanced code organization
+
+- Backend improvements
+  - Updated GetAllStores route to include store hours
+  - Enhanced repository layer for store hours
+  - Improved data consistency
+  - Optimized API responses
+
+**Technical Decisions:**
+
+- Separated authentication logic into custom hooks for better reusability
+- Implemented loading states for better user experience
+- Aligned frontend data structure with backend models
+- Enhanced store hours management system
+- Improved code organization and maintainability
+
+**Next Steps:**
+
+- Implement store hours validation
+- Add reservation time slot validation
+- Enhance error handling in UI components
+- Add more admin dashboard features
+- Implement email notification system
+
+## 2025-06-01: Special Dates Management and Integration Planning
+
+**Planned Implementation:**
+
+- Special Dates Management
+  - Add special dates management UI in admin dashboard
+  - Implement frontend logic for adding/editing special dates
+  - Create batch save functionality for store hours changes
+  - Integrate with backend API for data persistence
+
+- Google Calendar and Email Integration
+  - Implement Google Calendar API integration
+  - Add email notification system using Google API
+  - Create reservation confirmation emails
+  - Add calendar event creation for reservations
+  - Implement email templates for different notification types
+
+**Technical Decisions:**
+
+- Use Google Calendar API for event management
+- Implement Google Gmail API for email notifications
+- Create reusable email templates
+- Implement batch processing for store hours updates
+- Use proper error handling for API integrations
+
+**Next Steps:**
+
+1. Special Dates Management
+   - Design and implement special dates UI components
+   - Create batch save functionality
+   - Implement validation for special dates
+   - Add error handling for save operations
+
+2. Google API Integration
+   - Set up Google Cloud Project
+   - Configure OAuth 2.0 authentication
+   - Implement Calendar API integration
+   - Add Gmail API integration
+   - Create email templates
+   - Implement notification system
+
+3. Testing and Documentation
+   - Test special dates management
+   - Verify Google API integrations
+   - Update API documentation
+   - Add integration guides
