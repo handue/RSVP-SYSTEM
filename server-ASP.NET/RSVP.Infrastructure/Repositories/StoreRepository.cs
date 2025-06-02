@@ -40,6 +40,14 @@ public class StoreRepository : Repository<Store>, IStoreRepository
             .ToListAsync();
     }
 
+    // public async Task<IEnumerable<Store>> GetAllStoresWithHoursAndServicesAsync()
+    // {
+    //     return await _dbSet
+    //         .Include(s => s.StoreHour)
+    //         .Include(s => s.StoreServices)
+    //         .ThenInclude(s => s.Service)
+    //         .ToListAsync();
+    // }
     public async Task<bool> ExistsByStoreIdAsync(string storeId)
     {
         return await _dbSet.AnyAsync(s => s.StoreId == storeId);
