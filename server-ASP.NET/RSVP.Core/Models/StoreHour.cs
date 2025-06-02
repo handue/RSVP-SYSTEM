@@ -23,6 +23,7 @@ public class StoreHour
     public List<SpecialDate>? SpecialDate { get; set; }
 
     // Navigation property
+    [JsonIgnore]
     public Store Store { get; set; } = null!;
 }
 
