@@ -1,6 +1,6 @@
 // src/services/api/storeHoursService.ts
 import { api } from './config';
-import { StoreHours } from '../../types/store';
+import { StoreHour } from '../../types/store';
 
 export const storeHoursService = {
   getStoreHours: async () => {

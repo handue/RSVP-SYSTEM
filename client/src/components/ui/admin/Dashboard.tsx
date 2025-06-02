@@ -19,13 +19,23 @@ export const Dashboard = () => {
   const { getStoreHours } = useStoreHours();
 
   const days = [
+    0, // * 0 = Sunday
+    1, // * 1 = Monday
+    2, // * 2 = Tuesday
+    3, // * 3 = Wednesday
+    4, // * 4 = Thursday
+    5, // * 5 = Friday
+    6, // * 6 = Saturday
+  ];
+
+  const dayNames = [
+    "Sunday",
     "Monday",
     "Tuesday",
     "Wednesday",
     "Thursday",
     "Friday",
     "Saturday",
-    "Sunday",
   ];
 
   const [selectedStore, setSelectedStore] = useState<Store | null>(null);
@@ -53,14 +63,13 @@ export const Dashboard = () => {
 
   useEffect(() => {
     // setStoreHours(selectedStore?.storeHours);
-    
+
     if (stores.length > 0) {
-      
       setStoreHours(
         stores.map((store, index) => ({
           id: store.id ? store.id : index,
           storeId: store.storeId,
-          regularHours: days.map((day: string) => ({
+          regularHours: days.map((day: number) => ({
             day,
             open:
               store.storeHour?.regularHours.find(
@@ -82,19 +91,27 @@ export const Dashboard = () => {
   }, [stores]);
 
   const handleStoreSelect = (store: Store) => {
+    
     setSelectedStore(store);
+    setStoreHours((prev) =>
+      prev.map((storeHour) =>
+        storeHour.storeId === store.storeId
+          ? { ...storeHour, storeId: store.storeId }
+          : storeHour
+      )
+    );
     // TODO: 해당 스토어의 영업시간 데이터 가져오기
     // todo: 지금은 맨 위 데이터로 하면 될거같음.
   };
 
   const handleRegularHoursChange = (
-    day: string,
+    day: number,
     field: "open" | "close",
     value: string
   ) => {
     setStoreHours((prev) => {
       return prev.map((storeHour) =>
-        storeHour.regularHours.find((hour) => hour.day === day)
+        storeHour.storeId === selectedStore?.storeId
           ? {
               ...storeHour,
               regularHours: storeHour.regularHours.map((hour) =>
@@ -163,7 +180,9 @@ export const Dashboard = () => {
               {days.map((day, index) => (
                 <div key={index} className="flex items-center gap-4">
                   <div className="w-32">
-                    <span className="font-medium text-gray-700">{day}</span>
+                    <span className="font-medium text-gray-700">
+                      {dayNames[day]}
+                    </span>
                   </div>
                   <div className="flex w-full items-center justify-evenly gap-2">
                     <input
@@ -176,6 +195,9 @@ export const Dashboard = () => {
                           (sh) => sh.storeId === selectedStore.storeId
                         )?.regularHours[index].open || ""
                       }
+                      onChange={(e) =>
+                        handleRegularHoursChange(day, "open", e.target.value)
+                      }
                       className="border-2 flex-1 rounded-md p-2"
                     />
                     <span>to</span>
@@ -187,13 +209,7 @@ export const Dashboard = () => {
                         )?.regularHours[index].close || ""
                       }
                       onChange={(e) =>
-                        handleRegularHoursChange(
-                          storeHours.find(
-                            (sh) => sh.storeId === selectedStore.storeId
-                          )?.regularHours[index].day || "",
-                          "close",
-                          e.target.value
-                        )
+                        handleRegularHoursChange(day, "close", e.target.value)
                       }
                       className="border flex-1 rounded-md p-2"
                     />

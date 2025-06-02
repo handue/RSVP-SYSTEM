@@ -19,7 +19,7 @@ export interface Store {
 export interface RegularHours {
   id?: number;
   storeHourId?: number;
-  day: string;
+  day: number;
   open: string;
   close: string;
   isClosed: boolean;
