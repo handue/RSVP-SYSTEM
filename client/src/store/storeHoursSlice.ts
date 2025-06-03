@@ -24,6 +24,13 @@ export const fetchStoreHours = createAsyncThunk(
   }
 );
 
+export const saveStoreHours = createAsyncThunk(
+  "storeHours/saveStoreHours",
+  async (stores: Store[]) => {
+    const result = await storeHoursService.saveStoreHours(stores);
+    return result;
+  }
+);
 export const updateRegularHours = createAsyncThunk(
   "storeHours/updateRegularHours",
   async ({
@@ -92,29 +99,41 @@ const storeHoursSlice = createSlice({
         state.status = "failed";
         state.error = action.error.message || "Failed to fetch store hours";
       })
-
-      // todo: Implementation needed
-      .addCase(updateRegularHours.fulfilled, (state, action) => {
-        const updatedStore = action.payload;
-        let store = state.stores.find((e) => e.id === updatedStore.id);
-        if (store) {
-          store = updatedStore;
-        }
+      .addCase(saveStoreHours.pending, (state) => {
+        state.status = "loading";
+        state.error = null;
       })
-      .addCase(updateSpecialDate.fulfilled, (state, action) => {
-        const updatedStore = action.payload;
-        let store = state.stores.find((e) => e.id === updatedStore.id);
-        if (store) {
-          store = updatedStore;
-        }
+      .addCase(saveStoreHours.fulfilled, (state, action) => {
+        state.status = "succeeded";
+        state.stores = action.payload;
       })
-      .addCase(deleteSpecialDate.fulfilled, (state, action) => {
-        const updatedStore = action.payload;
-        let store = state.stores.find((e) => e.id === updatedStore.id);
-        if (store) {
-          store = updatedStore;
-        }
+      .addCase(saveStoreHours.rejected, (state, action) => {
+        state.status = "failed";
+        state.error = action.error.message || "Failed to save store hours";
       });
+
+    // todo: Implementation needed, Not planned yet.
+    // .addCase(updateRegularHours.fulfilled, (state, action) => {
+    //   const updatedStore = action.payload;
+    //   let store = state.stores.find((e) => e.id === updatedStore.id);
+    //   if (store) {
+    //     store = updatedStore;
+    //   }
+    // })
+    // .addCase(updateSpecialDate.fulfilled, (state, action) => {
+    //   const updatedStore = action.payload;
+    //   let store = state.stores.find((e) => e.id === updatedStore.id);
+    //   if (store) {
+    //     store = updatedStore;
+    //   }
+    // })
+    // .addCase(deleteSpecialDate.fulfilled, (state, action) => {
+    //   const updatedStore = action.payload;
+    //   let store = state.stores.find((e) => e.id === updatedStore.id);
+    //   if (store) {
+    //     store = updatedStore;
+    //   }
+    // });
   },
 });
 

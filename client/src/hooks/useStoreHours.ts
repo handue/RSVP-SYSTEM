@@ -7,8 +7,10 @@ import {
   updateRegularHours,
   updateSpecialDate,
   deleteSpecialDate,
+  saveStoreHours,
 } from "../store/storeHoursSlice";
 import { useNotification } from "./useNotification";
+import { Store } from "@/types/store";
 
 export const useStoreHours = () => {
   const dispatch = useAppDispatch();
@@ -26,6 +28,17 @@ export const useStoreHours = () => {
     } catch (error) {
       console.error("Failed to fetch store hours:", error);
       showError("Failed to fetch store hours");
+      throw error;
+    }
+  }, [dispatch]);
+
+  const saveStoreHourHook = useCallback(async (stores: Store[]) => {
+    try {
+      await dispatch(saveStoreHours(stores)).unwrap();
+      showSuccess("Store hours saved successfully");
+    } catch (error) {
+      console.error("Failed to save store hours:", error);
+      showError("Failed to save store hours");
       throw error;
     }
   }, [dispatch]);
@@ -78,6 +91,7 @@ export const useStoreHours = () => {
     status,
     error,
     getStoreHours,
+    saveStoreHourHook,
     updateHours,
     updateSpecial,
     deleteSpecial,
