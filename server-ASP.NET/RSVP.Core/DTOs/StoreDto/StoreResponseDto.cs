@@ -19,5 +19,6 @@ public class StoreResponseDto
     public string Email { get; set; } = string.Empty;
 
     [JsonPropertyName("storeHour")]
-    public StoreHour? StoreHour { get; set; }
+    public StoreHourDto? StoreHour { get; set; }
 }
+
