@@ -12,13 +12,13 @@ import { useAppSelector } from "../../../hooks/useAppSelector";
 import { useStoreHours } from "../../../hooks/useStoreHours";
 import { Loading } from "../common/Loading";
 import { useNotification } from "../../../hooks/useNotification";
-import { saveStoreHours } from "../../../store/storeHoursSlice";
+
 
 export const Dashboard = () => {
   const dispatch = useDispatch<AppDispatch>();
   const { stores, status, error } = useAppSelector((state) => state.storeHours);
 
-  const { getStoreHours } = useStoreHours();
+  const { getStoreHours, saveStoreHourHook } = useStoreHours();
 
   const { showError, showSuccess } = useNotification();
 
@@ -251,7 +251,7 @@ export const Dashboard = () => {
           </CardContent>
         </Card>
       )}
-
+      {/* TODO: mobile responsive implement needed */}
       {selectedStore && (
         <Card>
           <CardHeader>
@@ -428,7 +428,6 @@ export const Dashboard = () => {
                           className="text-red-500 hover:text-red-700"
                           onClick={() => {
                             handleDeleteSpecialDate(index);
-                            showSuccess("Special date deleted successfully");
                           }}
                         >
                           Delete
@@ -443,8 +442,7 @@ export const Dashboard = () => {
             <Button
               onClick={async () => {
                 const updatedStores = mergeStoreHoursWithStores();
-                await saveStoreHours(updatedStores);
-                showSuccess("Store hours saved successfully");
+                await saveStoreHourHook(updatedStores);
               }}
               className="bg-indigo-600 hover:bg-indigo-700 text-white"
             >
