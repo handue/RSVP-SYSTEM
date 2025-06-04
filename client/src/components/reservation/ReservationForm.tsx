@@ -61,6 +61,17 @@ export function ReservationForm({
     }));
   };
 
+  const formatPhoneNumber = (value: string) => {
+    const cleaned = value.replace(/\D/g, "");
+    if (cleaned.length <= 3) return cleaned;
+    if (cleaned.length <= 6)
+      return `${cleaned.slice(0, 3)}-${cleaned.slice(3)}`;
+    return `${cleaned.slice(0, 3)}-${cleaned.slice(3, 6)}-${cleaned.slice(
+      6,
+      10
+    )}`;
+  };
+
   return (
     <div className="max-w-2xl mx-auto">
       {onBack && (
@@ -155,11 +166,21 @@ export function ReservationForm({
               id="phone"
               name="phone"
               type="tel"
-              value={formData.phone || ""}
-              onChange={handleInputChange}
+              value={formData.phone ? formatPhoneNumber(formData.phone) : ""}
+              onChange={(e) => {
+                const rawValue = e.target.value.replace(/\D/g, "");
+                if (rawValue.length <= 10) {
+                  handleInputChange({
+                    target: {
+                      name: "phone",
+                      value: rawValue,
+                    },
+                  } as React.ChangeEvent<HTMLInputElement>);
+                }
+              }}
               required
               className="w-full border-gray-300 focus:ring-indigo-500 focus:border-indigo-500 rounded-md shadow-sm"
-              placeholder="(123) 456-7890"
+              placeholder="123-456-7890"
             />
           </div>
 
