@@ -416,11 +416,11 @@ export const Dashboard = () => {
                         className="flex items-center justify-between p-3 border rounded-lg"
                       >
                         <div className="flex items-center gap-2">
-                          <span className="font-medium">{date.date}</span>
+                          <span className="font-medium">{new Date(date.date).toISOString().split('T')[0]}</span>
                           <span className="text-sm text-gray-500">
                             {date.isClosed
                               ? "Closed"
-                              : `${date.open} - ${date.close}`}
+                              : `${date.open.substring(0, 5)} - ${date.close.substring(0, 5)}`}
                           </span>
                         </div>
                         <Button
