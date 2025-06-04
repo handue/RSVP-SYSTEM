@@ -27,5 +27,17 @@ public class MappingProfile : Profile
 
         CreateMap<CreateStoreDto, Store>();
         CreateMap<Store, StoreResponseDto>();
+        CreateMap<StoreResponseDto, Store>();
+
+
+        CreateMap<StoreHour, StoreHourDto>();
+        CreateMap<StoreHourDto, StoreHour>();
+
+
+        CreateMap<RegularHour, RegularHourDto>();
+        CreateMap<RegularHourDto, RegularHour>();
+
+        CreateMap<SpecialDate, SpecialDateDto>();
+        CreateMap<SpecialDateDto, SpecialDate>();
     }
 }
