@@ -5,3 +5,4 @@ sqlite3 RSVP.db
 SELECT * FROM Stores;  -- 매장 데이터 확인 / Store Data Check
 SELECT * FROM Services;  -- 서비스 데이터 확인 / Service Data Check
 SELECT * FROM Reservations;  -- 예약 데이터 확인 / Reservation Data Check
+

@@ -14,7 +14,7 @@ namespace RSVP.Core.Interfaces.Services
 
         Task<IEnumerable<StoreResponseDto>> GetAllStoresAsync();
 
-
+        Task<IEnumerable<StoreResponseDto>> SaveAllStoresAsync(IEnumerable<StoreResponseDto> storeResponseDtos);
 
         // * It's only for backend testing.
         // * Not Implemented into frontend 

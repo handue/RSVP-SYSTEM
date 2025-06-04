@@ -38,13 +38,15 @@ namespace RSVP.API.Middleware
             {
                 if (context.Request.ContentLength > 0)
                 {
+                    // * to Check the request body
                     context.Request.EnableBuffering();
                     var buffer = new byte[context.Request.ContentLength.Value];
                     await context.Request.Body.ReadAsync(buffer, 0, buffer.Length);
                     var bodyText = System.Text.Encoding.UTF8.GetString(buffer);
-                    Console.WriteLine($"[Middleware] Request body: {bodyText}");
+                    // Console.WriteLine($"[Middleware] Request body: {bodyText}");
 
-                    // 중요: Body 스트림 위치를 처음으로 되돌려야 함
+                    // ? 중요: Body 스트림 위치를 처음으로 되돌려야 함. 원래 스트림은 한 번 밖에 읽읈 수 없는데, 내가 이렇게 임의로 읽어버리면 다음 로직이나, 미들웨어에서 읽을 수가 없음. 노드나 자바의 경우에는 자체적으로 이런 기능을 제공하지만, ASP.NET의 경우에는 사용자에게 좀 더 자유도를 부여함. 
+                    // * important: need to reset the body stream position to the beginning. You can read the body stream only once. If you read it, you can't read it again in the next logic or middleware. that's why we need to reset the body stream position to the beginning(= code below)
                     context.Request.Body.Position = 0;
                 }
 
@@ -77,7 +79,7 @@ namespace RSVP.API.Middleware
           context.Request.Path,
           context.Request.Method);
 
-
+        
 
             var apiResponse = ApiResponse<object>.CreateError(errorResponse);
             await response.WriteAsJsonAsync(apiResponse);

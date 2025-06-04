@@ -26,7 +26,7 @@ namespace RSVP.Infrastructure.Services
             _mapper = mapper;
         }
 
-        
+
 
         public async Task<StoreResponseDto> CreateStoreAsync(CreateStoreDto storeDto)
         {
@@ -66,6 +66,13 @@ namespace RSVP.Infrastructure.Services
             var storeDtos = _mapper.Map<IEnumerable<StoreResponseDto>>(stores);
 
             return storeDtos;
+        }
+
+        public async Task<IEnumerable<StoreResponseDto>> SaveAllStoresAsync(IEnumerable<StoreResponseDto> storeResponseDtos)
+        {
+            var stores = _mapper.Map<IEnumerable<Store>>(storeResponseDtos);
+            await _storeRepository.SaveAllAsync(stores);
+            return storeResponseDtos;
         }
 
         public async Task<IEnumerable<StoreResponseDto>> GetStoresByLocationAsync(string location)

@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using RSVP.Core.Exceptions;
 using System.Text.Json;
+using Microsoft.AspNetCore.Authorization;
 
 namespace RSVP.API.Controllers
 {
@@ -16,12 +17,15 @@ namespace RSVP.API.Controllers
     {
         private readonly IStoreService _storeService;
         private readonly IMapper _mapper;
+        private readonly ILogger<StoreController> _logger;
 
-        public StoreController(IStoreService storeService, IMapper mapper)
+        public StoreController(IStoreService storeService, IMapper mapper, ILogger<StoreController> logger)
         {
             _storeService = storeService;
             _mapper = mapper;
+            _logger = logger;
         }
+
 
         [HttpPost]
         public async Task<ActionResult<StoreResponseDto>> CreateStore([FromBody] CreateStoreDto createStoreDto)
@@ -30,6 +34,18 @@ namespace RSVP.API.Controllers
             var result = await _storeService.CreateStoreAsync(createStoreDto);
 
             return CreatedAtAction(nameof(GetStoreById), new { id = result.StoreId }, ApiResponse<StoreResponseDto>.CreateSuccess(result));
+        }
+
+        [HttpPost("saveAll")]
+        public async Task<ActionResult<IEnumerable<StoreResponseDto>>> SaveStores([FromBody] StoreResponseDto[] storeResponseDtos)
+        {
+            _logger.LogInformation("SaveStoresBeforeSaving: " + JsonSerializer.Serialize(storeResponseDtos, new JsonSerializerOptions { WriteIndented = true }));
+
+            var result = await _storeService.SaveAllStoresAsync(storeResponseDtos);
+
+            _logger.LogInformation("SaveStoresAfterSaving: " + JsonSerializer.Serialize(result, new JsonSerializerOptions { WriteIndented = true }));
+
+            return Ok(ApiResponse<IEnumerable<StoreResponseDto>>.CreateSuccess(result));
         }
 
         [HttpGet("{id}")]

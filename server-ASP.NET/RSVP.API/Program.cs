@@ -109,7 +109,6 @@ builder.Services.AddCors(options =>
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 // api 엔드포인트 정보 생성
 builder.Services.AddEndpointsApiExplorer();
-// * api 문서 생성 서비스 (아직 사용 안하는중)
 builder.Services.AddSwaggerGen();
 
 // 등록된 서비스와 설정으로 웹 애플리케이션 빌드
