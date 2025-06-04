@@ -9,7 +9,9 @@ export const storeHoursService = {
   },
 
   saveStoreHours: async (stores: Store[]) => {
-    const response = await api.post("/store-hours/save", { stores });
+    // console.log("Sending data to backend:", JSON.stringify(stores, null, 2));
+    const response = await api.post("/store/saveAll", stores);
+    // console.log("response: 확인" + JSON.stringify(response.data.data));
     return response.data.data;
   },
 

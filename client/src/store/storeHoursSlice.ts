@@ -19,7 +19,7 @@ export const fetchStoreHours = createAsyncThunk(
   "storeHours/fetchStoreHours",
   async () => {
     const stores = await storeHoursService.getStoreHours();
-    console.log("받아온 스토어 값 확인:" + JSON.stringify(stores));
+    // console.log("받아온 스토어 값 확인:" + JSON.stringify(stores));
     return stores;
   }
 );
@@ -27,6 +27,7 @@ export const fetchStoreHours = createAsyncThunk(
 export const saveStoreHours = createAsyncThunk(
   "storeHours/saveStoreHours",
   async (stores: Store[]) => {
+    // console.log("저장할 스토어 값 확인:" + JSON.stringify(stores));
     const result = await storeHoursService.saveStoreHours(stores);
     return result;
   }
