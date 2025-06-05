@@ -1,14 +1,22 @@
 import { useEffect, useState } from "react";
 import { ReservationData } from "../../types/reservation";
 import { ReservationDetail } from "../../components/reservation/ReservationDetail";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { Button } from "../../components/ui/common/button";
 import { reservationService } from "../../services/api/reservationService";
+import { Loading } from "../../components/ui/common/Loading";
+import { useReservation } from "../../hooks/useReservation";
+import { useNotification } from "../../hooks/useNotification";
+import { useConfirmDialog } from "../../components/ui/common/ConfirmDialog";
 
 export const ReservationDetailPage = () => {
   const { id } = useParams();
   const [reservation, setReservation] = useState<ReservationData | null>(null);
   const [loading, setLoading] = useState(true);
+  const { cancelReservationHook } = useReservation();
+  const { showError, showSuccess } = useNotification();
+  const { showConfirm } = useConfirmDialog();
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchReservation = async () => {
@@ -31,7 +39,7 @@ export const ReservationDetailPage = () => {
   }, [id]);
 
   if (loading) {
-    return <div>Loading...</div>;
+    return <Loading />;
   }
 
   if (!reservation) {
@@ -69,10 +77,43 @@ export const ReservationDetailPage = () => {
         <ReservationDetail
           reservation={reservation}
           onEdit={() => {
-            console.log("edit");
+            showConfirm({
+              title: "Confirm to Edit",
+              message:
+                "Are you sure you want to edit this reservation? Once you agree, you will be redirected to the new reservation page after deleting the current reservation.",
+              confirmText: "Yes",
+              cancelText: "No",
+              variant: "default",
+              onConfirm: async () => {
+                if (reservation.id) {
+                  await cancelReservationHook(reservation.id);
+                  // showSuccess("Reservation cancelled");
+                  navigate("/reservation");
+                  return;
+                } else {
+                  showError("Reservation ID not found");
+                }
+              },
+            });
           }}
-          onCancel={() => {
-            console.log("cancel");
+          onCancel={async () => {
+            showConfirm({
+              title: "Confirm to Cancel",
+              message: "Are you sure you want to cancel this reservation?",
+              confirmText: "Yes",
+              cancelText: "No",
+              variant: "destructive",
+              onConfirm: async () => {
+                if (reservation.id) {
+                  await cancelReservationHook(reservation.id);
+                  // showSuccess("Reservation cancelled");
+                  navigate("/reservation");
+                  return;
+                } else {
+                  showError("Reservation ID not found");
+                }
+              },
+            });
           }}
         />
       </div>

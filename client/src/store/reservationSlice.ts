@@ -27,15 +27,11 @@ export const reserveSchedule = createAsyncThunk(
   }
 );
 
-export const sendEmail = createAsyncThunk(
-  "reservation/sendEmail",
-  async (emailData: {
-    email: string;
-    name: string;
-    reservationDetails: any;
-  }) => {
-    const response = await reservationService.sendEmail(emailData);
-    return response.status;
+export const cancelReservation = createAsyncThunk(
+  "reservation/cancelReservation",
+  async (id: number) => {
+    const response = await reservationService.cancelReservation(id);
+    return response;
   }
 );
 
@@ -63,13 +59,6 @@ const reservationSlice = createSlice({
         state.status = "failed";
 
         state.error = action.error.message || "Failed to make reservation";
-      })
-      .addCase(sendEmail.fulfilled, (state) => {
-        // todo: 이메일 전송 성공 시 추가 처리
-        // todo: Add additional processing when email is sent successfully
-      })
-      .addCase(sendEmail.rejected, (state, action) => {
-        state.error = action.error.message || "Failed to send email";
       });
   },
 });

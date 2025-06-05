@@ -8,19 +8,13 @@ export const reservationService = {
     return response.data;
   },
 
+  cancelReservation: async (id: number) => {
+    const response = await api.delete(`/reservation/${id}`);
+    return response.data;
+  },
+
   getReservationById: async (id: number) => {
     const response = await api.get(`/reservation/${id}`);
     return response.data;
   },
-
-  sendEmail: async (emailData: {
-    email: string;
-    name: string;
-    reservationDetails: any;
-  }) => {
-    const response = await api.post("/reservation/send", emailData);
-    return response.data;
-  },
-
-
 };
