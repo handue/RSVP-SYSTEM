@@ -3,6 +3,7 @@ import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { ReservationData, ReservationResponse } from "../types/reservation";
 import { api } from "../services/api/config";
 import { useNotification } from "../hooks/useNotification";
+import { reservationService } from "../services/api/reservationService";
 interface ReservationState {
   status: "idle" | "loading" | "succeeded" | "failed";
   error: string | null;
@@ -18,7 +19,10 @@ const initialState: ReservationState = {
 export const reserveSchedule = createAsyncThunk(
   "reservation/reserveSchedule",
   async (reservationData: ReservationData) => {
-    const response = await api.post("/reservation", reservationData);
+    const response = await reservationService.createReservation(
+      reservationData
+    );
+    // const response = await api.post("/reservation", reservationData);
     return response;
   }
 );
@@ -30,7 +34,7 @@ export const sendEmail = createAsyncThunk(
     name: string;
     reservationDetails: any;
   }) => {
-    const response = await api.post("/reservation/send", emailData);
+    const response = await reservationService.sendEmail(emailData);
     return response.status;
   }
 );

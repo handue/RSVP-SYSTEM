@@ -5,29 +5,28 @@ import { useAppSelector } from "./useAppSelector";
 import { reserveSchedule, sendEmail } from "../store/reservationSlice";
 import { ReservationData } from "../types/reservation";
 import { useNotification } from "./useNotification";
+import { useNavigate } from "react-router-dom";
+import { reservationService } from "../services/api/reservationService";
+
 export const useReservation = () => {
   const dispatch = useAppDispatch();
   const { status, error, response } = useAppSelector(
     (state) => state.reservation
   );
+
   const { showError, showSuccess } = useNotification();
 
-  const makeReservation = useCallback(
-    async (reservationData: ReservationData) => {
-      try {
-        const result = await dispatch(
-          reserveSchedule(reservationData)
-        ).unwrap();
-        showSuccess("Reservation successful");
-        return result;
-      } catch (error) {
-        console.error("Failed to make reservation:", error);
-        showError("Failed to make reservation");
-        throw error;
-      }
-    },
-    [dispatch]
-  );
+  const makeReservation = async (data: ReservationData) => {
+    try {
+      const response = await dispatch(reserveSchedule(data)).unwrap();
+      showSuccess("Reservation created successfully");
+      return response.data.data;
+    } catch (error) {
+      showError("Failed to create reservation");
+      throw error;
+    }
+  };
+
 
   const sendReservationEmail = useCallback(
     async (emailData: {

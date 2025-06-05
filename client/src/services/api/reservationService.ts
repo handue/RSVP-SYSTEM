@@ -4,9 +4,12 @@ import { ReservationData } from "../../types/reservation";
 
 export const reservationService = {
   createReservation: async (reservationData: ReservationData) => {
-    const response = await api.post("/reservation/calendar", {
-      reservationData,
-    });
+    const response = await api.post("/reservation", reservationData);
+    return response.data;
+  },
+
+  getReservationById: async (id: number) => {
+    const response = await api.get(`/reservation/${id}`);
     return response.data;
   },
 
@@ -18,4 +21,6 @@ export const reservationService = {
     const response = await api.post("/reservation/send", emailData);
     return response.data;
   },
+
+
 };
