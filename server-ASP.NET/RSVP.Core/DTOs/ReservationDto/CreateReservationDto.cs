@@ -41,7 +41,7 @@ public class CreateReservationDto
     public string? Notes { get; set; }
 
     [Required]
-    [JsonPropertyName("agreed_to_terms")]
+    [JsonPropertyName("agreedToTerms")]
     public bool AgreedToTerms { get; set; }
 }
 
