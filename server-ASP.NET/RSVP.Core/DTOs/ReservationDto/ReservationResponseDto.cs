@@ -33,6 +33,6 @@ public class ReservationResponseDto
     [JsonPropertyName("comments")]
     public string? Notes { get; set; }
 
-    [JsonPropertyName("agreed_to_terms")]
+    [JsonPropertyName("agreedToTerms")]
     public bool AgreedToTerms { get; set; }
 }
