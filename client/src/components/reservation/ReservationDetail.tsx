@@ -1,5 +1,6 @@
 import { Button } from "../ui/common/button";
 import { ReservationData } from "../../types/reservation";
+import { stores } from "./StoreSelection";
 
 interface ReservationDetailProps {
   reservation: ReservationData;
@@ -89,7 +90,7 @@ export function ReservationDetail({
                 <Button
                   variant="destructive"
                   onClick={onCancel}
-                  className="bg-white border-red-200 text-red-500 border-2 hover:bg-red-50"
+                  className="bg-white border-red-300 text-red-500 border-2 hover:bg-red-50"
                 >
                   Cancel
                 </Button>
@@ -167,9 +168,14 @@ export function ReservationDetail({
               />
             </svg>
             <div>
-              <p className="font-medium text-gray-900">{reservation.store}</p>
+              <p className="font-medium text-gray-900">
+                {stores.find((store) => store.storeId === reservation.store_id)
+                  ?.name || "No Store Selected"}
+              </p>
               <p className="text-gray-600 text-sm mt-1">
-                Contact: {reservation.store_email}
+                Contact:{" "}
+                {stores.find((store) => store.storeId === reservation.store_id)
+                  ?.storeEmail || "No Store Email"}
               </p>
             </div>
           </div>

@@ -2,7 +2,6 @@ import { Store } from "../../types/store";
 
 interface StoreSelectionProps {
   onSelect: (store: Store) => void;
-  
 }
 
 export const stores: Partial<Store>[] = [
@@ -26,10 +25,7 @@ export const stores: Partial<Store>[] = [
   },
 ];
 
-
 export const StoreSelection = ({ onSelect }: StoreSelectionProps) => {
-  // Mock stores data
-
   return (
     <div>
       <h2 className="text-xl font-semibold mb-4 text-gray-800">

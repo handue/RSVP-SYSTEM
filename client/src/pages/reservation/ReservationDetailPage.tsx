@@ -17,7 +17,7 @@ export const ReservationDetailPage = () => {
           const response = await reservationService.getReservationById(
             parseInt(id)
           );
-          console.log('데이터 확인:' , JSON.stringify(response.data))
+          // console.log('Data Check:' , JSON.stringify(response.data))
           setReservation(response.data);
         }
       } catch (error) {
