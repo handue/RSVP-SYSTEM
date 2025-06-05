@@ -19,7 +19,7 @@ interface ReservationFormProps {
   storeEmail: Store["storeEmail"];
   serviceId: Service["serviceId"];
   serviceName: Service["name"];
-  onSuccess?: () => void;
+  onSuccess?: (reservationId: number) => void;
   onBack?: () => void;
 }
 
@@ -46,8 +46,10 @@ export function ReservationForm({
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      await makeReservation(formData as ReservationData);
-      onSuccess?.();
+
+      console.log("formData 확인", JSON.stringify(formData, null, 2));
+      const result = await makeReservation(formData as ReservationData);
+      onSuccess?.(result.id);
     } catch (error) {
       console.error("Failed to submit reservation:", error);
     }

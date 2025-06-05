@@ -12,18 +12,18 @@ export function ReservationDetail({
   onEdit,
   onCancel,
 }: ReservationDetailProps) {
-  const getStatusColor = (status: ReservationData["status"]) => {
-    switch (status) {
-      case "pending":
-        return "bg-yellow-100 text-yellow-800 border-yellow-200";
-      case "confirmed":
-        return "bg-emerald-100 text-emerald-800 border-emerald-200";
-      case "cancelled":
-        return "bg-gray-100 text-gray-800 border-gray-200";
-      default:
-        return "bg-gray-100 text-gray-800 border-gray-200";
-    }
-  };
+  // const getStatusColor = (status: ReservationData["status"]) => {
+  //   switch (status) {
+  //     case "pending":
+  //       return "bg-yellow-100 text-yellow-800 border-yellow-200";
+  //     case "confirmed":
+  //       return "bg-emerald-100 text-emerald-800 border-emerald-200";
+  //     case "cancelled":
+  //       return "bg-gray-100 text-gray-800 border-gray-200";
+  //     default:
+  //       return "bg-gray-100 text-gray-800 border-gray-200";
+  //   }
+  // };
 
   const formatDate = (dateString: string) => {
     const options: Intl.DateTimeFormatOptions = {
@@ -63,7 +63,7 @@ export function ReservationDetail({
           </div>
 
           <div className="flex flex-col justify-between gap-y-4">
-            <div className="text-center">
+            {/* <div className="text-center">
               <h3 className="text-sm font-medium text-indigo-700 mb-1">
                 Status:{" "}
                 <span
@@ -75,13 +75,13 @@ export function ReservationDetail({
                     reservation.status.slice(1)}
                 </span>
               </h3>
-            </div>
+            </div> */}
 
             <div className="flex justify-end mt-4 md:mt-0 space-x-3">
               <Button
                 variant="outline"
                 onClick={onEdit}
-                className="border-indigo-200 text-indigo-700 hover:bg-indigo-100"
+                className="border-indigo-200 border-2 text-indigo-700 hover:bg-indigo-100"
               >
                 Edit
               </Button>
@@ -89,7 +89,7 @@ export function ReservationDetail({
                 <Button
                   variant="destructive"
                   onClick={onCancel}
-                  className="border-red-200 text-red-500 border-2 hover:bg-red-50"
+                  className="bg-white border-red-200 text-red-500 border-2 hover:bg-red-50"
                 >
                   Cancel
                 </Button>
@@ -104,36 +104,36 @@ export function ReservationDetail({
         <h3 className="text-lg font-semibold text-gray-800 mb-4">
           Customer Information
         </h3>
-        <div className="bg-white border border-gray-200 rounded-lg overflow-hidden">
-          <div className="grid grid-cols-1 md:grid-cols-2 divide-y md:divide-y-0 md:divide-x divide-gray-200">
+        <div className="bg-white border border- shadow-sm rounded-lg overflow-hidden">
+          <div className="grid grid-cols-1 md:grid-cols-2 divide-y md:divide-y-0 md:divide-x divide-gray-300 border border-gray-300">
             <div className="p-4">
               <h4 className="text-sm font-medium text-gray-500 mb-1">
                 Full Name
               </h4>
-              <p className="text-gray-900 font-medium">{reservation.name}</p>
+              <p className="text-gray-800 font-semibold">{reservation.name}</p>
             </div>
 
             <div className="p-4">
               <h4 className="text-sm font-medium text-gray-500 mb-1">
                 Phone Number
               </h4>
-              <p className="text-gray-900">{reservation.phone}</p>
+              <p className="text-gray-800 font-semibold">{reservation.phone}</p>
             </div>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 divide-y md:divide-y-0 md:divide-x divide-gray-200 border-t border-gray-200">
+          <div className="grid grid-cols-1 md:grid-cols-2 divide-y md:divide-y-0 md:divide-x divide-gray-300 border border-gray-300">
             <div className="p-4">
               <h4 className="text-sm font-medium text-gray-500 mb-1">
                 Email Address
               </h4>
-              <p className="text-gray-900">{reservation.email}</p>
+              <p className="text-gray-800 font-semibold">{reservation.email}</p>
             </div>
 
             <div className="p-4">
               <h4 className="text-sm font-medium text-gray-500 mb-1">
                 Agreed to Terms
               </h4>
-              <p className="text-gray-900">
+              <p className="text-gray-800 font-semibold">
                 {reservation.agreedToTerms ? "Yes" : "No"}
               </p>
             </div>
@@ -144,7 +144,7 @@ export function ReservationDetail({
       {/* Location Section */}
       <div>
         <h3 className="text-lg font-semibold text-gray-800 mb-4">Location</h3>
-        <div className="bg-white border border-gray-200 rounded-lg p-4">
+        <div className="bg-white border border-gray-300 shadow-sm rounded-lg p-4">
           <div className="flex items-start">
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -182,7 +182,7 @@ export function ReservationDetail({
           <h3 className="text-lg font-semibold text-gray-800 mb-4">
             Additional Requests
           </h3>
-          <div className="bg-white border border-gray-200 rounded-lg p-4">
+          <div className="bg-white border border-gray-300 shadow-sm rounded-lg p-4">
             <p className="text-gray-700">{reservation.comments}</p>
           </div>
         </div>
