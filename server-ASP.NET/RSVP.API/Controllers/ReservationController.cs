@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using System.Collections.Generic;
 using RSVP.Core.Models;
 using RSVP.Core.Exceptions;
+using System.Text.Json;
 
 namespace RSVP.API.Controllers
 {
@@ -26,9 +27,11 @@ namespace RSVP.API.Controllers
         public async Task<ActionResult<ApiResponse<ReservationResponseDto>>> CreateReservation([FromBody] CreateReservationDto reservationDto)
         {
 
-            // Console.WriteLine($"[Controller] CreateReservation: {dto}");
+
+            // Console.WriteLine($"예약값 확인: {JsonSerializer.Serialize(reservationDto, new JsonSerializerOptions { WriteIndented = true })}");
 
             var result = await _reservationService.CreateReservationAsync(reservationDto);
+            // Console.WriteLine($"예약이후 반환 값 확인: {JsonSerializer.Serialize(result, new JsonSerializerOptions { WriteIndented = true })}");
 
             // CreatedAtAction: HTTP 201 Created 응답을 반환하면서 새로 생성된 리소스의 위치를 Location 헤더에 포함시킵니다.
             // CreatedAtAction: Returns an HTTP 201 Created response and includes the location of the newly created resource in the Location header.
@@ -36,6 +39,7 @@ namespace RSVP.API.Controllers
             // nameof(GetReservationById): Gets the name of the GetReservationById method as a string.
             // new { id = result.Id }: 라우트 파라미터로 사용될 값을 지정합니다.
             // new { id = result.Id }: Specifies the value to be used as a route parameter.
+
             return CreatedAtAction(nameof(GetReservationById), new { id = result.Id }, ApiResponse<ReservationResponseDto>.CreateSuccess(result));
         }
 
@@ -56,44 +60,44 @@ namespace RSVP.API.Controllers
             return Ok(ApiResponse<IEnumerable<ReservationResponseDto>>.CreateSuccess(reservations));
         }
 
-        [HttpGet("service/{serviceId}")]
-        public async Task<ActionResult<ApiResponse<IEnumerable<ReservationResponseDto>>>> GetReservationsByServiceId(string serviceId)
-        {
-            var reservations = await _reservationService.GetReservationsByServiceIdAsync(serviceId);
+        // [HttpGet("service/{serviceId}")]
+        // public async Task<ActionResult<ApiResponse<IEnumerable<ReservationResponseDto>>>> GetReservationsByServiceId(string serviceId)
+        // {
+        //     var reservations = await _reservationService.GetReservationsByServiceIdAsync(serviceId);
 
-            return Ok(ApiResponse<IEnumerable<ReservationResponseDto>>.CreateSuccess(reservations));
-        }
+        //     return Ok(ApiResponse<IEnumerable<ReservationResponseDto>>.CreateSuccess(reservations));
+        // }
 
 
-        [HttpGet("date/{date}")]
-        public async Task<ActionResult<ApiResponse<IEnumerable<ReservationResponseDto>>>> GetReservationsByDate(DateTime date)
-        {
-            var reservations = await _reservationService.GetReservationsByDateAsync(date);
+        // [HttpGet("date/{date}")]
+        // public async Task<ActionResult<ApiResponse<IEnumerable<ReservationResponseDto>>>> GetReservationsByDate(DateTime date)
+        // {
+        //     var reservations = await _reservationService.GetReservationsByDateAsync(date);
 
-            return Ok(ApiResponse<IEnumerable<ReservationResponseDto>>.CreateSuccess(reservations));
-        }
+        //     return Ok(ApiResponse<IEnumerable<ReservationResponseDto>>.CreateSuccess(reservations));
+        // }
 
-        [HttpGet("customer/{email}")]
-        public async Task<ActionResult<ApiResponse<IEnumerable<ReservationResponseDto>>>> GetReservationsByCustomerEmail(string email)
-        {
-            var reservations = await _reservationService.GetReservationsByCustomerEmailAsync(email);
+        // [HttpGet("customer/{email}")]
+        // public async Task<ActionResult<ApiResponse<IEnumerable<ReservationResponseDto>>>> GetReservationsByCustomerEmail(string email)
+        // {
+        //     var reservations = await _reservationService.GetReservationsByCustomerEmailAsync(email);
 
-            return Ok(ApiResponse<IEnumerable<ReservationResponseDto>>.CreateSuccess(reservations));
-        }
+        //     return Ok(ApiResponse<IEnumerable<ReservationResponseDto>>.CreateSuccess(reservations));
+        // }
 
-        [HttpPut("{id}")]
-        public async Task<ActionResult<ApiResponse<ReservationResponseDto>>> UpdateReservation(int id, [FromBody] UpdateReservationDto reservationDto)
-        {
+        // [HttpPut("{id}")]
+        // public async Task<ActionResult<ApiResponse<ReservationResponseDto>>> UpdateReservation(int id, [FromBody] UpdateReservationDto reservationDto)
+        // {
 
-            if (id != reservationDto.Id)
-            {
-                throw new ArgumentException("Invalid reservation ID");
-            }
+        //     if (id != reservationDto.Id)
+        //     {
+        //         throw new ArgumentException("Invalid reservation ID");
+        //     }
 
-            var result = await _reservationService.UpdateReservationAsync(reservationDto);
-            var responseDto = _mapper.Map<ReservationResponseDto>(result);
-            return Ok(ApiResponse<ReservationResponseDto>.CreateSuccess(responseDto));
-        }
+        //     var result = await _reservationService.UpdateReservationAsync(reservationDto);
+        //     var responseDto = _mapper.Map<ReservationResponseDto>(result);
+        //     return Ok(ApiResponse<ReservationResponseDto>.CreateSuccess(responseDto));
+        // }
 
         [HttpDelete("{id}")]
         public async Task<ActionResult> DeleteReservation(int id)
@@ -103,24 +107,16 @@ namespace RSVP.API.Controllers
             return NoContent();
         }
 
-        [HttpPut("{id}/confirm")]
-        public async Task<ActionResult<ApiResponse<ReservationResponseDto>>> ConfirmReservation(int id)
-        {
-            var reservation = await _reservationService.GetReservationByIdAsync(id);
+        // [HttpPut("{id}/confirm")]
+        // public async Task<ActionResult<ApiResponse<ReservationResponseDto>>> ConfirmReservation(int id)
+        // {
+        //     var reservation = await _reservationService.GetReservationByIdAsync(id);
 
-            reservation.Status = ReservationStatus.Confirmed.ToString();
-            var confirmedReservation = await _reservationService.ConfirmReservationAsync(id);
+        //     reservation.Status = ReservationStatus.Confirmed.ToString();
+        //     var confirmedReservation = await _reservationService.ConfirmReservationAsync(id);
 
-            return Ok(ApiResponse<ReservationResponseDto>.CreateSuccess(confirmedReservation));
-        }
+        //     return Ok(ApiResponse<ReservationResponseDto>.CreateSuccess(confirmedReservation));
+        // }
 
-        [HttpPut("{id}/cancel")]
-        public async Task<ActionResult<ApiResponse<ReservationResponseDto>>> CancelReservation(int id)
-        {
-
-            var result = await _reservationService.ConfirmReservationAsync(id);
-            var responseDto = _mapper.Map<ReservationResponseDto>(result);
-            return Ok(ApiResponse<ReservationResponseDto>.CreateSuccess(responseDto));
-        }
     }
 }

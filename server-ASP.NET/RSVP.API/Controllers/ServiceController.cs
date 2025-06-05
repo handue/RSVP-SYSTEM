@@ -57,17 +57,17 @@ namespace RSVP.API.Controllers
             return Ok(ApiResponse<IEnumerable<ServiceResponseDto>>.CreateSuccess(services));
         }
 
-        [HttpPut("{id}")]
-        public async Task<ActionResult<ServiceResponseDto>> UpdateService(string id, [FromBody] CreateServiceDto CreateServiceDto)
-        {
+        // [HttpPut("{id}")]
+        // public async Task<ActionResult<ServiceResponseDto>> UpdateService(string id, [FromBody] CreateServiceDto CreateServiceDto)
+        // {
 
-            CreateServiceDto.ServiceId = id;
+        //     CreateServiceDto.ServiceId = id;
 
-            var updatedServiceDto = await _serviceService.UpdateServiceAsync(CreateServiceDto);
+        //     var updatedServiceDto = await _serviceService.UpdateServiceAsync(CreateServiceDto);
 
 
-            return Ok(ApiResponse<ServiceResponseDto>.CreateSuccess(updatedServiceDto));
-        }
+        //     return Ok(ApiResponse<ServiceResponseDto>.CreateSuccess(updatedServiceDto));
+        // }
 
         [HttpDelete("{id}")]
         public async Task<ActionResult> DeleteService(string id)
