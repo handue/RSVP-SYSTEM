@@ -1,7 +1,7 @@
 import { useState } from "react";
 import reactLogo from "./assets/react.svg";
 import viteLogo from "/vite.svg";
-import { Route, Routes } from "react-router-dom";
+import { Navigate, Route, Routes } from "react-router-dom";
 import { BrowserRouter } from "react-router-dom";
 import { Notifications } from "./components/ui/notification/Notification";
 import { ReservationList } from "./components/reservation/ReservationList";
@@ -31,8 +31,12 @@ function App() {
         <Notifications />
         <CenteredLayout>
           <Routes>
+            <Route path="*" element={<Navigate to="/" />} />
             <Route path="/login" element={<LoginPage />} />
-
+            <Route
+              path="/reservation/:id"
+              element={<ReservationDetailPage />}
+            />
             <Route
               path="/admin/*"
               element={

@@ -5,6 +5,7 @@ import { ServiceSelection } from "../../components/reservation/ServiceSelection"
 import { ReservationForm } from "../../components/reservation/ReservationForm";
 import { Store } from "../../types/store";
 import { Service } from "../../types/service";
+import { useNavigate } from "react-router-dom";
 
 export const ReservationPage = () => {
   const [step, setStep] = useState<"store" | "service" | "details">("store");
@@ -17,7 +18,7 @@ export const ReservationPage = () => {
   );
   const [selectedStore, setSelectedStore] = useState<Store | null>(null);
   const [selectedService, setSelectedService] = useState<Service | null>(null);
-
+  const navigate = useNavigate();
   return (
     <div className="container mx-auto p-4">
       <h1 className="text-2xl font-bold mb-4">Make a Reservation</h1>
@@ -97,6 +98,9 @@ export const ReservationPage = () => {
           storeEmail={selectedStore.storeEmail}
           serviceId={selectedService.serviceId}
           serviceName={selectedService.name}
+          onSuccess={(reservationId) => {
+            navigate(`/reservations/${reservationId}`);
+          }}
           onBack={() => {
             setStep("service");
             setCompletedSteps({
