@@ -89,7 +89,10 @@ export function ReservationDetail({
               {reservation.status !== "cancelled" && (
                 <Button
                   variant="destructive"
-                  onClick={onCancel}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    onCancel?.();
+                  }}
                   className="bg-white border-red-300 text-red-500 border-2 hover:bg-red-50"
                 >
                   Cancel
@@ -170,7 +173,10 @@ export function ReservationDetail({
             <div>
               <p className="font-medium text-gray-900">
                 {stores.find((store) => store.storeId === reservation.store_id)
-                  ?.name || "No Store Selected"}
+                  ?.name +
+                  " - " +
+                  stores.find((store) => store.storeId === reservation.store_id)
+                    ?.location || "No Store Selected"}
               </p>
               <p className="text-gray-600 text-sm mt-1">
                 Contact:{" "}
