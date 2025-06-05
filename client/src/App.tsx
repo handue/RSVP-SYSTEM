@@ -13,6 +13,7 @@ import { store } from "./store";
 import { ProtectedRoute } from "./pages/auth/ProtectedRoute";
 import { LoginPage } from "./pages/auth/LoginPage";
 import { Dashboard } from "./components/ui/admin/Dashboard";
+import { ConfirmDialogProvider } from "./components/ui/common/ConfirmDialog";
 
 const CenteredLayout = ({ children }: { children: React.ReactNode }) => {
   return (
@@ -27,8 +28,10 @@ const CenteredLayout = ({ children }: { children: React.ReactNode }) => {
 function App() {
   return (
     <Provider store={store}>
+      <ConfirmDialogProvider />
       <BrowserRouter>
         <Notifications />
+
         <CenteredLayout>
           <Routes>
             <Route path="*" element={<Navigate to="/" />} />
