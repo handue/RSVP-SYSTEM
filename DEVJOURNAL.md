@@ -605,3 +605,65 @@ This file tracks development decisions and progress for the RSVP System project.
    - Verify Google API integrations
    - Update API documentation
    - Add integration guides
+
+## 2025-06-02 ~ 2025-06-04: Reservation Detail Page Implementation and Data Handling
+
+**Implemented:**
+
+- Enhanced reservation detail page
+  - Implemented API integration for fetching reservation details
+  - Added loading and error states
+  - Improved UI styling and layout
+  - Added back navigation functionality
+
+- Updated reservation data handling
+  - Fixed agreedToTerms property mapping in DTO
+  - Added AgreedToTerms configuration in ApplicationDbContext
+  - Updated default reservation status to Confirmed
+  - Improved data consistency between frontend and backend
+
+- Improved component structure
+  - Updated ReservationDetail component styling
+  - Enhanced ReservationForm navigation flow
+  - Improved StoreSelection component type handling
+  - Added proper error handling in components
+
+- Enhanced API integration
+  - Added getReservationById endpoint
+  - Updated reservation service with proper API endpoints
+  - Modified useReservation hook for better error handling
+  - Updated reservation slice to use service methods
+
+**Technical Decisions:**
+
+- Used proper JSON property naming for consistent data handling
+- Implemented proper loading states for better UX
+- Enhanced error handling across components
+- Improved type safety with proper TypeScript types
+- Maintained clean architecture principles
+
+**Next Steps:**
+
+1. Reservation Management Enhancement
+   - Refactor reservation detail page for better UX
+   - Implement reservation cancellation feature
+   - Add reservation modification flow (cancel and rebook)
+   - Improve error handling and user feedback
+
+2. Google Calendar Integration
+   - Set up Google Calendar API integration
+   - Implement calendar event creation for reservations
+   - Add calendar event updates for modifications
+   - Handle calendar event deletion for cancellations
+
+3. Email Service Implementation
+   - Set up email notification system
+   - Create email templates for different scenarios
+   - Implement email sending for reservations
+   - Add email notifications for modifications and cancellations
+
+4. Testing and Documentation
+   - Test all new features
+   - Update API documentation
+   - Add integration guides
+   - Create user guides for new features
