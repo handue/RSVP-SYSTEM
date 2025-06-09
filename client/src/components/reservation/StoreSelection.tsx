@@ -4,6 +4,9 @@ interface StoreSelectionProps {
   onSelect: (store: Store) => void;
 }
 
+// todo: need to get the data from the backend
+// todo: * but i didn't set up store name on DB, so keep it as mock data just for location, name, storeEmail.
+// ! Not a big part of the project
 export const stores: Partial<Store>[] = [
   {
     storeId: "store-1",
