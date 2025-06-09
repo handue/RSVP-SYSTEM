@@ -57,6 +57,7 @@ builder.Services.AddScoped<IStoreService, Store_Service>();
 builder.Services.AddScoped<IServiceService, Service_Service>();
 builder.Services.AddScoped<IReservationService, ReservationService>();
 builder.Services.AddScoped<IAuthService, AuthService>();
+builder.Services.AddScoped<GoogleAuthService>();
 
 // Add JWT Authentication
 builder.Services.AddAuthentication(options =>
@@ -114,9 +115,29 @@ builder.Services.AddSwaggerGen();
 // 등록된 서비스와 설정으로 웹 애플리케이션 빌드
 var app = builder.Build();
 
+
+
+
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
+    try
+    {
+        using var scope = app.Services.CreateScope();
+        var googleAuthService = scope.ServiceProvider.GetRequiredService<GoogleAuthService>();
+
+        var gmailService = await googleAuthService.GetGmailServiceAsync();
+        var profile = await gmailService.Users.GetProfile("me").ExecuteAsync();
+        Console.WriteLine($"✅ Gmail Connection Success! Email: {profile.EmailAddress}");
+
+        var calendarService = await googleAuthService.GetCalendarServiceAsync();
+        var events = await calendarService.Events.List("primary").ExecuteAsync();
+        Console.WriteLine($"✅ Calendar Connection Success! Events: {events.Items?.Count ?? 0}개");
+    }
+    catch (Exception ex)
+    {
+        Console.WriteLine($"❌ Google API Connection Failed: {ex.Message}");
+    }
     app.UseSwagger();
     app.UseSwaggerUI();
 
