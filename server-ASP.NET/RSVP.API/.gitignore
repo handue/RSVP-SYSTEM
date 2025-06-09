@@ -9,3 +9,7 @@
 *.db
 .env
 *.env
+google-credentials.json
+
+appsettings.Development.json
+GoogleTokens/*
