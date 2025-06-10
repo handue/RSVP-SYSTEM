@@ -47,6 +47,10 @@ public class Reservation
     // Server automatically converts from string sent by client
     public TimeSpan ReservationTime { get; set; }
 
+    [JsonIgnore]
+    [StringLength(100)]
+    public string? GoogleCalendarEventId { get; set; }
+
     // [Required]
     // [JsonPropertyName("start_time")]
     // public TimeSpan StartTime { get; set; }
