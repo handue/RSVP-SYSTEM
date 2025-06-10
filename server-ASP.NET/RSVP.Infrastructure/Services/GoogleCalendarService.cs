@@ -55,7 +55,9 @@ namespace RSVP.Infrastructure.Services
                 ? storeTimeZones[reservation.StoreId]
                 : storeTimeZones[reservation.StoreName ?? throw new InvalidOperationException("Invalid store ID or name")];
 
-            var startDateTime = DateTime.Parse($"{reservation.ReservationDate:yyyy-MM-dd} {reservation.ReservationTime:HH:mm:ss}");
+            var startDate = reservation.ReservationDate.ToString("yyyy-MM-dd");
+            var startTime = reservation.ReservationTime.ToString(@"hh\:mm\:ss");
+            var startDateTime = DateTime.Parse($"{startDate} {startTime}");
 
             var endDateTime = startDateTime.AddMinutes(30);
 
