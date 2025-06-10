@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using RSVP.Core.Models;
 using RSVP.Core.Exceptions;
 using System.Text.Json;
+using RSVP.Core.Interfaces;
 
 namespace RSVP.API.Controllers
 {
@@ -16,11 +17,14 @@ namespace RSVP.API.Controllers
     {
         private readonly IReservationService _reservationService;
         private readonly IMapper _mapper;
+        private readonly ICalendarService _calendarService;
+        private readonly IEmailService _emailService;
 
-        public ReservationController(IReservationService reservationService, IMapper mapper)
+        public ReservationController(IReservationService reservationService, IMapper mapper, IEmailService emailService)
         {
             _reservationService = reservationService;
             _mapper = mapper;
+
         }
 
         [HttpPost]
@@ -31,6 +35,10 @@ namespace RSVP.API.Controllers
             // Console.WriteLine($"예약값 확인: {JsonSerializer.Serialize(reservationDto, new JsonSerializerOptions { WriteIndented = true })}");
 
             var result = await _reservationService.CreateReservationAsync(reservationDto);
+
+
+
+
             // Console.WriteLine($"예약이후 반환 값 확인: {JsonSerializer.Serialize(result, new JsonSerializerOptions { WriteIndented = true })}");
 
             // CreatedAtAction: HTTP 201 Created 응답을 반환하면서 새로 생성된 리소스의 위치를 Location 헤더에 포함시킵니다.
@@ -47,7 +55,6 @@ namespace RSVP.API.Controllers
         public async Task<ActionResult<ApiResponse<ReservationResponseDto>>> GetReservationById(int id)
         {
             var responseDto = await _reservationService.GetReservationByIdAsync(id);
-
 
             return Ok(ApiResponse<ReservationResponseDto>.CreateSuccess(responseDto));
         }
