@@ -8,9 +8,14 @@ public class ReservationResponseDto
 
     [JsonPropertyName("store_id")]
     public string StoreId { get; set; } = string.Empty;
+    [JsonPropertyName("store_name")]
+    public string? StoreName { get; set; }
 
     [JsonPropertyName("service_id")]
     public string ServiceId { get; set; } = string.Empty;
+
+    [JsonPropertyName("service_name")]
+    public string? ServiceName { get; set; }
 
     [JsonPropertyName("name")]
     public string CustomerName { get; set; } = string.Empty;
@@ -35,4 +40,7 @@ public class ReservationResponseDto
 
     [JsonPropertyName("agreedToTerms")]
     public bool AgreedToTerms { get; set; }
+
+    [JsonIgnore]
+    public string? GoogleCalendarEventId { get; set; }
 }
