@@ -20,7 +20,6 @@ namespace RSVP.Infrastructure.Services
         CalendarService.Scope.Calendar,
         GmailService.Scope.GmailSend,
 
-
     };
 
         public GoogleAuthService(IConfiguration configuration)
@@ -87,8 +86,8 @@ namespace RSVP.Infrastructure.Services
             catch (Exception ex)
             {
 
-                Console.WriteLine($"❌ 에러 발생: {ex.Message}");
-                Console.WriteLine($"❌ 스택 트레이스: {ex.StackTrace}");
+                Console.WriteLine($"❌ Error occurred: {ex.Message}");
+                Console.WriteLine($"❌ Stack trace: {ex.StackTrace}");
                 throw;
             }
 
@@ -112,7 +111,7 @@ namespace RSVP.Infrastructure.Services
                 return new UserCredential(_flow, "user", tokenResponse);
             }
 
-            throw new UnauthorizedAccessException("Google 토큰이 설정되지 않았습니다.");
+            throw new UnauthorizedAccessException("Google token is not set.");
         }
 
         public async Task<CalendarService> GetCalendarServiceAsync()
