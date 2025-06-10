@@ -10,6 +10,8 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using DotNetEnv;
+using RSVP.Core.Interfaces;
+using Google.Apis.Calendar.v3;
 
 
 Env.Load();
@@ -58,6 +60,8 @@ builder.Services.AddScoped<IServiceService, Service_Service>();
 builder.Services.AddScoped<IReservationService, ReservationService>();
 builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<GoogleAuthService>();
+builder.Services.AddScoped<ICalendarService, GoogleCalendarService>();
+builder.Services.AddScoped<IEmailService, EmailService>();
 
 // Add JWT Authentication
 builder.Services.AddAuthentication(options =>
