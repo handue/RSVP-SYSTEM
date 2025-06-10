@@ -12,17 +12,23 @@ namespace RSVP.Infrastructure.Services
         private readonly IStoreRepository _storeRepository;
         private readonly IServiceRepository _serviceRepository;
         private readonly IMapper _mapper;
+        private readonly IEmailService _emailService;
+        private readonly ICalendarService _calendarService;
 
         public ReservationService(
             IReservationRepository reservationRepository,
             IStoreRepository storeRepository,
             IServiceRepository serviceRepository,
-            IMapper mapper)
+            IMapper mapper,
+            IEmailService emailService,
+            ICalendarService calendarService)
         {
             _reservationRepository = reservationRepository;
             _storeRepository = storeRepository;
             _serviceRepository = serviceRepository;
             _mapper = mapper;
+            _emailService = emailService;
+            _calendarService = calendarService;
         }
 
         public async Task<ReservationResponseDto> CreateReservationAsync(CreateReservationDto reservationDto)
@@ -30,7 +36,7 @@ namespace RSVP.Infrastructure.Services
 
             var reservation = _mapper.Map<Reservation>(reservationDto);
 
-            // 1. 매장과 서비스가 존재하는지 확인
+            // 1. check if the store and service exist
             var store = await _storeRepository.GetByStoreIdAsync(reservation.StoreId);
 
             if (store == null)
@@ -40,15 +46,21 @@ namespace RSVP.Infrastructure.Services
             if (service == null)
                 throw new KeyNotFoundException($"Service with ID {reservation.ServiceId} not found.");
 
-            // 2. 예약 가능 시간인지 확인
+            // 2. check if the time slot is available
             // if (!await IsTimeSlotAvailableAsync(reservation.StoreId, reservation.ServiceId, 
             //     reservation.Date, reservation.Time))
             //     throw new InvalidOperationException("The selected time slot is not available.");
 
-            // 3. 예약 생성
+            // 3. reservation creation 
+            var googleCalendarEventId = await _calendarService.CreateCalendarEventAsync(reservationDto);
+            reservation.GoogleCalendarEventId = googleCalendarEventId.EventId;
             var result = await _reservationRepository.AddAsync(reservation);
-            var responseDto = _mapper.Map<ReservationResponseDto>(result)
-            ;
+            var responseDto = _mapper.Map<ReservationResponseDto>(result);
+
+
+            // todo: need to make calendar event
+            await _emailService.SendBookingConfirmationAsync(responseDto, googleCalendarEventId.HtmlLink);
+            
             return responseDto;
         }
 
@@ -145,7 +157,16 @@ namespace RSVP.Infrastructure.Services
             if (reservation == null)
                 throw new KeyNotFoundException("Reservation Not Found");
 
+            if (reservation.GoogleCalendarEventId != null)
+                await _calendarService.DeleteCalendarEventAsync(reservation.GoogleCalendarEventId);
+
+
             await _reservationRepository.RemoveAsync(reservation);
+
+            var responseDto = _mapper.Map<ReservationResponseDto>(reservation);
+
+            await _emailService.SendBookingCancellationAsync(responseDto);
+
             return true;
         }
 
