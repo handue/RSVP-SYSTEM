@@ -41,11 +41,11 @@ namespace RSVP.Infrastructure.Services
         {
             var storeTimeZones = new Dictionary<string, string>
             {
-              {"store-1", "America/Los_Angeles"},
-              {"store-2", "America/Texas"},
-              {"store-3", "America/New_York"},
+                {"store-1", "America/Los_Angeles"},
+                {"store-2", "America/Chicago"},
+                {"store-3", "America/New_York"},
                 {"Los Angeles", "America/Los_Angeles"},
-                {"Texas", "America/Texas"},
+                {"Texas", "America/Chicago"},
                 {"New York", "America/New_York"}
             };
 
