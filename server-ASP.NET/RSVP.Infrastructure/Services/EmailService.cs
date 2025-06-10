@@ -113,7 +113,7 @@ namespace RSVP.Infrastructure.Services
                         <p style='margin: 10px 0;'><strong>Store:</strong> {reservation.StoreName}</p>
                         <p style='margin: 10px 0;'><strong>Service:</strong> {reservation.ServiceName}</p>
                         <p style='margin: 10px 0;'><strong>Date:</strong> {reservation.ReservationDate:MMM dd, yyyy}</p>
-                        <p style='margin: 10px 0;'><strong>Time:</strong> {reservation.ReservationTime:hh\\:mm tt}</p>
+                        <p style='margin: 10px 0;'><strong>Time:</strong> {reservation.ReservationTime:hh\\:mm}</p>
                     </div>
 
                     <div style='text-align: center; margin: 30px 0;'>
@@ -141,7 +141,7 @@ namespace RSVP.Infrastructure.Services
                         <p style='margin: 10px 0;'><strong>Store:</strong> {reservation.StoreName}</p>
                         <p style='margin: 10px 0;'><strong>Service:</strong> {reservation.ServiceName}</p>
                         <p style='margin: 10px 0;'><strong>Date:</strong> {reservation.ReservationDate:MMM dd, yyyy}</p>
-                        <p style='margin: 10px 0;'><strong>Time:</strong> {reservation.ReservationTime:hh\\:mm tt}</p>
+                        <p style='margin: 10px 0;'><strong>Time:</strong> {reservation.ReservationTime:hh\\:mm}</p>
                         <p style='margin: 10px 0;'><strong>Customer Name:</strong> {reservation.CustomerName}</p>
                     </div>
 
