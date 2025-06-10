@@ -26,7 +26,7 @@ namespace RSVP.Infrastructure.Services
             _mapper = mapper;
         }
 
-
+        
 
         public async Task<StoreResponseDto> CreateStoreAsync(CreateStoreDto storeDto)
         {
