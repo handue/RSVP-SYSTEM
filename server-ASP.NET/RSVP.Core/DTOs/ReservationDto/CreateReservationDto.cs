@@ -4,13 +4,22 @@ using System.Text.Json.Serialization;
 
 public class CreateReservationDto
 {
+
+
     [Required]
     [JsonPropertyName("store_id")]
     public string StoreId { get; set; } = string.Empty;
 
+    [JsonPropertyName("store_name")]
+    public string? StoreName { get; set; }
+
+
     [Required]
     [JsonPropertyName("service_id")]
     public string ServiceId { get; set; } = string.Empty;
+
+    [JsonPropertyName("service_name")]
+    public string? ServiceName { get; set; }
 
     [Required]
     [StringLength(100)]
@@ -43,6 +52,9 @@ public class CreateReservationDto
     [Required]
     [JsonPropertyName("agreedToTerms")]
     public bool AgreedToTerms { get; set; }
+
+    [JsonIgnore]
+    public string? GoogleCalendarEventId { get; set; }
 }
 
 
