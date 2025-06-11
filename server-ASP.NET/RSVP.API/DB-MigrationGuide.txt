@@ -68,8 +68,12 @@ dotnet ef database update --project RSVP.API
 # Create new migration (새 마이그레이션 생성)
 dotnet ef migrations add MigrationName --project RSVP.API
 
+ex - dotnet ef migrations add AddGoogleCalendarEventId --project RSVP.API
+
 # Apply migrations (마이그레이션 적용)
 dotnet ef database update --project RSVP.API
+
+ex - dotnet ef database update --project RSVP.API
 
 # Remove last migration (마지막 마이그레이션 제거)
 dotnet ef migrations remove --project RSVP.API

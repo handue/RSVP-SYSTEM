@@ -41,21 +41,25 @@ src/
 ### Installation
 
 1. Clone the repository and navigate to the client directory
+
 ```bash
 cd client
 ```
 
 2. Install dependencies
+
 ```bash
 npm install
 ```
 
 3. Create a `.env` file in the client directory with the following variables
+
 ```
 VITE_API_URL=http://localhost:5173/api
 ```
 
 4. Start the development server
+
 ```bash
 npm run dev
 ```
@@ -73,6 +77,7 @@ The application will be available at `http://localhost:5173`.
 ## Features
 
 ### User Reservation Flow
+
 - Store selection
 - Service type selection
 - Date and time slot selection
@@ -80,6 +85,7 @@ The application will be available at `http://localhost:5173`.
 - Confirmation system
 
 ### Admin Management
+
 - Store hours configuration
 - Special dates management
 - Regular hours scheduling
@@ -89,6 +95,7 @@ The application will be available at `http://localhost:5173`.
 The frontend communicates with the backend through the following endpoints:
 
 - Store Hours:
+
   - `GET /api/store-hours`
   - `PUT /api/store-hours/regular-hours/:storeId`
   - `PUT /api/store-hours/special-date/:storeId`
@@ -112,3 +119,8 @@ npm run build
 ```
 
 The build artifacts will be stored in the `dist/` directory.
+
+## Admin Account
+
+"ID": "admin@test.com",
+"password": "test1234!!",
