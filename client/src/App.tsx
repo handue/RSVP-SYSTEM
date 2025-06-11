@@ -43,7 +43,7 @@ function App() {
             <Route
               path="/admin/*"
               element={
-                <ProtectedRoute requiredRole="admin">
+                <ProtectedRoute requiredRole="Admin">
                   {/* <AdminLayout> */}
                   <Routes>
                     <Route path="/" element={<Dashboard />} />
