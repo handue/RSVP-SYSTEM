@@ -45,6 +45,7 @@ namespace RSVP.Infrastructure.Services
             await _context.SaveChangesAsync();
 
             var token = GenerateJwtToken(user);
+
             return new AuthResponseDto
             {
                 Token = token,
@@ -53,7 +54,7 @@ namespace RSVP.Infrastructure.Services
                     Id = user.Id,
                     Email = user.Email,
                     FullName = user.FullName,
-                    Role = user.Role
+                    Role = user.Role.ToLower()
                 }
             };
         }
