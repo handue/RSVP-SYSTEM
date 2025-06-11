@@ -103,7 +103,7 @@ namespace RSVP.Infrastructure.Services
 
         private string GenerateBookingConfirmationHtml(ReservationResponseDto reservation, string calendarLink)
         {
-            var modifyLink = $"{_configuration["Kestrel:Endpoints:Http:Url"]}/reservation/{reservation.Id}";
+            var modifyLink = $"{_configuration["FrontEnd:Url"]}/reservation/{reservation.Id}";
 
             return $@"
                 <div style='font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; border: 1px solid #e0e0e0; border-radius: 8px;'>
@@ -121,7 +121,7 @@ namespace RSVP.Infrastructure.Services
                             Modify Reservation
                         </a>
                         <a href='{calendarLink}' style='background-color: #4285f4; color: white; padding: 12px 25px; text-decoration: none; border-radius: 5px; display: inline-block;'>
-                            Add to Google Calendar
+                            Check Google Calendar
                         </a>
                     </div>
 
