@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { useReservation } from "../../hooks/useReservation";
 import { ReservationData } from "../../types/reservation";
 import { Button } from "../ui/common/button";
@@ -12,6 +12,8 @@ import {
 } from "../ui/common/select";
 import { Store } from "../../types/store";
 import { Service } from "../../types/service";
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
 
 interface ReservationFormProps {
   storeId: Store["storeId"];
@@ -19,6 +21,7 @@ interface ReservationFormProps {
   storeEmail: Store["storeEmail"];
   serviceId: Service["serviceId"];
   serviceName: Service["name"];
+  storeHours: Store["storeHour"];
   onSuccess?: (reservationId: number) => void;
   onBack?: () => void;
 }
@@ -29,10 +32,12 @@ export function ReservationForm({
   storeEmail,
   serviceId,
   serviceName,
+  storeHours,
   onBack,
   onSuccess,
 }: ReservationFormProps) {
   const { makeReservation, status } = useReservation();
+
   //   Partial = make every field in type to optional type
   const [formData, setFormData] = useState<Partial<ReservationData>>({
     store: storeName,
@@ -46,7 +51,6 @@ export function ReservationForm({
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-
       console.log("formData 확인", JSON.stringify(formData, null, 2));
       const result = await makeReservation(formData as ReservationData);
       onSuccess?.(result.id);
@@ -72,6 +76,141 @@ export function ReservationForm({
       6,
       10
     )}`;
+  };
+
+  const isDateAvailable = (date: Date) => {
+    const selectedDate = new Date(
+      date.getFullYear(),
+      date.getMonth(),
+      date.getDate()
+    );
+    const dayOfWeek = selectedDate.getDay();
+    console.log("스페셜데이트 확인:" + JSON.stringify(storeHours, null, 2));
+
+    const specialDate = storeHours.specialDate?.find((sd) => {
+      const specialDateDate = new Date(sd.date);
+      return (
+        specialDateDate.getFullYear() === selectedDate.getFullYear() &&
+        specialDateDate.getMonth() === selectedDate.getMonth() &&
+        specialDateDate.getDate() === selectedDate.getDate()
+      );
+    });
+
+    // const specialDate = storeHours.specialDate?.find((sd) => sd.date === date);
+
+    if (specialDate) {
+      return !specialDate.isClosed;
+    }
+
+    const regularHours = storeHours.regularHours.find(
+      (rh) => rh.day === dayOfWeek
+    );
+
+    return regularHours && !regularHours.isClosed;
+  };
+
+  const getAvailableTimeSlots = useMemo(() => {
+    if (!formData.reservation_date) return false;
+
+    const selectedDate = new Date(formData.reservation_date);
+    const dayOfWeek = selectedDate.getDay();
+
+    const special = storeHours.specialDate?.find((sd) => {
+      const d = new Date(sd.date);
+      return (
+        d.getFullYear() === selectedDate.getFullYear() &&
+        d.getMonth() === selectedDate.getMonth() &&
+        d.getDate() === selectedDate.getDate()
+      );
+    });
+
+    let open = "";
+    let close = "";
+
+    if (special && !special.isClosed) {
+      open = special.open;
+      close = special.close;
+    } else {
+      const regular = storeHours.regularHours?.find(
+        (rh) => rh.day === dayOfWeek
+      );
+      if (regular && !regular.isClosed) {
+        open = regular.open;
+        close = regular.close;
+      }
+    }
+
+    if (!open || !close) return [];
+
+    const slots: string[] = [];
+    let [h, m] = open.split(":").map(Number);
+    const [endH, endM] = close.split(":").map(Number);
+
+    while (h < endH || (h === endH && m < endM)) {
+      const time = `${h.toString().padStart(2, "0")}:${m
+        .toString()
+        .padStart(2, "0")}`;
+      slots.push(time);
+      m += 30;
+      if (m >= 60) {
+        h += 1;
+        m = 0;
+      }
+    }
+
+    return slots;
+  }, [formData.reservation_date, storeHours]);
+
+  const TimeSlotPicker = () => {
+    const timeSlots = getAvailableTimeSlots;
+
+    if (!timeSlots) {
+      return (
+        <div className="text-sm text-black-500 border p-2 rounded-md">
+          Choose the date first.
+        </div>
+      );
+    }
+
+    if (timeSlots.length === 0) {
+      return (
+        <div className="text-sm text-gray-500">
+          This date is not available for reservation.
+        </div>
+      );
+    }
+
+    return (
+      <div className="grid grid-cols-4 gap-2">
+        {timeSlots.map((time) => (
+          <button
+            key={time}
+            type="button"
+            onClick={() =>
+              setFormData((prev) => ({ ...prev, reservation_time: time }))
+            }
+            className={`p-2 text-sm rounded-md transition-colors ${
+              formData.reservation_time === time
+                ? "bg-indigo-600 text-white"
+                : "bg-gray-100 hover:bg-gray-200 text-gray-700"
+            }`}
+          >
+            {time}
+          </button>
+        ))}
+      </div>
+    );
+  };
+
+  const handleDateChange = (date: Date | null) => {
+    if (date) {
+      const dateString = date.toISOString().split("T")[0];
+      setFormData((prev) => ({
+        ...prev,
+        reservation_date: dateString,
+        reservation_time: "",
+      }));
+    }
   };
 
   return (
@@ -194,15 +333,34 @@ export function ReservationForm({
               >
                 Reservation Date
               </label>
-              <Input
-                id="reservation_date"
-                name="reservation_date"
-                type="date"
-                value={formData.reservation_date || ""}
-                onChange={handleInputChange}
-                required
-                className="w-full border-gray-300 focus:ring-indigo-500 focus:border-indigo-500 rounded-md shadow-sm"
-              />
+              <div className="relative">
+                <DatePicker
+                  selected={
+                    formData.reservation_date
+                      ? new Date(formData.reservation_date)
+                      : null
+                  }
+                  onChange={handleDateChange}
+                  filterDate={(date) => {
+                    const available = isDateAvailable(date);
+
+                    return available !== undefined ? available : false;
+                  }}
+                  minDate={new Date()}
+                  dateFormat="yyyy-MM-dd"
+                  className="!w-full focus:ring-indigo-500 focus:border-indigo-500 rounded-md shadow-sm p-2 border border-gray-200 text-sm"
+                  placeholderText="Select a date"
+                  wrapperClassName="!w-full [&>*]:!w-full [&_input]:!w-full"
+                  required
+                />
+
+                <span className="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none">
+                  <i
+                    className="lucid-calendar-icon h-5 w-5 text-gray-400"
+                    aria-hidden="true"
+                  ></i>
+                </span>
+              </div>
             </div>
 
             <div className="space-y-2">
@@ -212,15 +370,7 @@ export function ReservationForm({
               >
                 Reservation Time
               </label>
-              <Input
-                id="reservation_time"
-                name="reservation_time"
-                type="time"
-                value={formData.reservation_time || ""}
-                onChange={handleInputChange}
-                required
-                className="w-full border-gray-300 focus:ring-indigo-500 focus:border-indigo-500 rounded-md pr-10 shadow-sm"
-              />
+              <TimeSlotPicker />
             </div>
           </div>
 
