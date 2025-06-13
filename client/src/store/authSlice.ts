@@ -21,7 +21,7 @@ export const login = createAsyncThunk(
   "auth/login",
   async (credentials: LoginCredentials, { rejectWithValue }) => {
     const response = await authService.login(credentials);
-    // console.log("return value check:" + JSON.stringify(response, null, 2));
+    console.log("return value check:" + JSON.stringify(response, null, 2));
 
     return response;
 

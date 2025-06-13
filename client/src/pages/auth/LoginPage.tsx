@@ -1,6 +1,6 @@
 // src/pages/auth/LoginPage.tsx
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { useAppDispatch } from "../../hooks/useAppDispatch";
 import { login } from "../../store/authSlice";
 import { Button } from "../../components/ui/common/button";
@@ -12,6 +12,7 @@ export const LoginPage = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
+  const location = useLocation();
   const { loginHook } = useLogin();
   const { status } = useAppSelector((state) => state.auth);
 
@@ -19,7 +20,8 @@ export const LoginPage = () => {
     e.preventDefault();
     try {
       const result = await loginHook(email, password);
-      navigate("/admin");
+      const from = location.state?.from?.pathname || "/admin";
+      navigate(from, { replace: true });
     } catch (error) {
       console.error("Login failed:", error);
     }
