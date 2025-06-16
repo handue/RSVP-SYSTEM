@@ -13,9 +13,15 @@ public class Reservation
     [JsonPropertyName("store_Id")]
     public string StoreId { get; set; } = string.Empty;
 
+    [JsonPropertyName("store_name")]
+    public string? StoreName { get; set; }
+
     [Required]
     [JsonPropertyName("service_id")]
     public string ServiceId { get; set; } = string.Empty;
+
+    [JsonPropertyName("service_name")]
+    public string? ServiceName { get; set; }
 
     [Required]
     [StringLength(100)]
