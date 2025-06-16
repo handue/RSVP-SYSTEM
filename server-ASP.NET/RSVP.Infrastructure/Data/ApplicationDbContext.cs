@@ -273,6 +273,8 @@ public class ApplicationDbContext : DbContext
             entity.Property(e => e.CustomerEmail).HasMaxLength(100);
             entity.Property(e => e.GoogleCalendarEventId).HasMaxLength(100);
             entity.Property(e => e.AgreedToTerms).IsRequired();
+            entity.Property(e => e.StoreName).HasMaxLength(100);
+            entity.Property(e => e.ServiceName).HasMaxLength(100);
             entity.HasOne(e => e.Store)
                 .WithMany(s => s.Reservations)
                 .HasForeignKey(e => e.StoreId)
