@@ -388,12 +388,14 @@ This file tracks development decisions and progress for the RSVP System project.
 **Implemented:**
 
 - Added authentication system
+
   - Implemented JWT-based authentication
   - Created User model and database table
   - Added AuthService and AuthController
   - Configured JWT settings in Program.cs
 
 - Updated database configuration
+
   - Moved database connection string to .env file
   - Added DotNetEnv package for environment variable management
   - Recreated database migrations with User table
@@ -426,6 +428,7 @@ This file tracks development decisions and progress for the RSVP System project.
 **Implemented:**
 
 - Implemented many-to-many relationship between Store and Service
+
   - Created StoreService model for relationship management
   - Updated Store and Service models with navigation properties
   - Configured entity relationships in ApplicationDbContext
@@ -433,6 +436,7 @@ This file tracks development decisions and progress for the RSVP System project.
   - Added restrict delete behavior for Service-StoreService relationship
 
 - Updated database schema
+
   - Recreated database migrations
   - Added StoreServices table with composite key
   - Configured proper foreign key constraints
@@ -465,12 +469,14 @@ This file tracks development decisions and progress for the RSVP System project.
 **Implemented:**
 
 - Enhanced DTO structure and validation
+
   - Added UpdateReservationDto and UpdateStoreDto
   - Added required field validations
   - Improved JSON property naming
   - Added proper type constraints and default values
 
 - Updated service interfaces and implementation
+
   - Modified service interfaces to accept and return DTOs instead of entities
   - Added new methods for specific operations (e.g., ConfirmReservation)
   - Updated method signatures to reflect DTO usage
@@ -481,6 +487,7 @@ This file tracks development decisions and progress for the RSVP System project.
   - Improved error messages and exception types
 
 - Updated controllers and error handling
+
   - Removed entity mapping from controllers
   - Implemented consistent response handling
   - Added proper HTTP status codes
@@ -520,18 +527,21 @@ This file tracks development decisions and progress for the RSVP System project.
 **Implemented:**
 
 - Enhanced store hours management
+
   - Improved data structure for store hours
   - Updated store hours management in admin dashboard
   - Integrated store hours with backend API
   - Added proper data synchronization
 
 - Improved UI/UX
+
   - Added loading spinner component
   - Enhanced admin dashboard layout
   - Updated data format to match backend structure
   - Improved user feedback during loading states
 
 - Refactored authentication system
+
   - Moved login dispatch logic to custom hooks
   - Updated dashboard URL structure
   - Improved authentication flow
@@ -564,6 +574,7 @@ This file tracks development decisions and progress for the RSVP System project.
 **Planned Implementation:**
 
 - Special Dates Management
+
   - Add special dates management UI in admin dashboard
   - Implement frontend logic for adding/editing special dates
   - Create batch save functionality for store hours changes
@@ -587,12 +598,14 @@ This file tracks development decisions and progress for the RSVP System project.
 **Next Steps:**
 
 1. Special Dates Management
+
    - Design and implement special dates UI components
    - Create batch save functionality
    - Implement validation for special dates
    - Add error handling for save operations
 
 2. Google API Integration
+
    - Set up Google Cloud Project
    - Configure OAuth 2.0 authentication
    - Implement Calendar API integration
@@ -611,18 +624,21 @@ This file tracks development decisions and progress for the RSVP System project.
 **Implemented:**
 
 - Enhanced reservation detail page
+
   - Implemented API integration for fetching reservation details
   - Added loading and error states
   - Improved UI styling and layout
   - Added back navigation functionality
 
 - Updated reservation data handling
+
   - Fixed agreedToTerms property mapping in DTO
   - Added AgreedToTerms configuration in ApplicationDbContext
   - Updated default reservation status to Confirmed
   - Improved data consistency between frontend and backend
 
 - Improved component structure
+
   - Updated ReservationDetail component styling
   - Enhanced ReservationForm navigation flow
   - Improved StoreSelection component type handling
@@ -645,18 +661,21 @@ This file tracks development decisions and progress for the RSVP System project.
 **Next Steps:**
 
 1. Reservation Management Enhancement
+
    - Refactor reservation detail page for better UX
    - Implement reservation cancellation feature
    - Add reservation modification flow (cancel and rebook)
    - Improve error handling and user feedback
 
 2. Google Calendar Integration
+
    - Set up Google Calendar API integration
    - Implement calendar event creation for reservations
    - Add calendar event updates for modifications
    - Handle calendar event deletion for cancellations
 
 3. Email Service Implementation
+
    - Set up email notification system
    - Create email templates for different scenarios
    - Implement email sending for reservations
@@ -673,18 +692,21 @@ This file tracks development decisions and progress for the RSVP System project.
 **Implemented:**
 
 - Google API Integration Setup
+
   - Added Google API packages for Gmail and Calendar
   - Configured Google Cloud Project settings
   - Set up OAuth 2.0 authentication
   - Added Google API credentials management
 
 - Gmail API Integration
+
   - Implemented Gmail service for email notifications
   - Added email template handling
   - Configured email sending functionality
   - Set up proper error handling for email operations
 
 - Google Calendar Integration
+
   - Implemented Calendar service for event management
   - Added event creation for reservations
   - Configured event update functionality
@@ -707,12 +729,14 @@ This file tracks development decisions and progress for the RSVP System project.
 **Next Steps:**
 
 1. Email Notification System
+
    - Create email templates for different scenarios
    - Implement email sending for reservations
    - Add email notifications for modifications
    - Handle email notifications for cancellations
 
 2. Calendar Event Management
+
    - Implement calendar event updates for modifications
    - Add calendar event deletion for cancellations
    - Handle calendar event conflicts
@@ -724,3 +748,146 @@ This file tracks development decisions and progress for the RSVP System project.
    - Test calendar event management
    - Update API documentation
    - Add integration guides
+
+## 2025-06-09 ~ 2025-06-10: Google Calendar and Email Service Implementation
+
+**Implemented:**
+
+- Google Calendar Integration
+
+  - Created ICalendarService interface for calendar operations
+  - Implemented GoogleCalendarService for event management
+  - Added GoogleCalendarEventId to Reservation model
+  - Created DTOs for calendar event handling
+  - Added event creation/deletion for reservations
+
+- Email Service Implementation
+
+  - Created Gmail service interface
+  - Implemented EmailService for reservation notifications
+  - Added MimeKit for email handling
+  - Integrated email service with reservation system
+
+- Database Updates
+
+  - Added GoogleCalendarEventId column to reservations
+  - Added service and store name fields to DTOs
+  - Updated reservation model with new fields
+
+- Code Cleanup and Fixes
+  - Fixed timezone handling (Texas -> Chicago)
+  - Updated TimeSpan formatting
+  - Improved log messages
+  - Cleaned up code formatting
+
+**Technical Decisions:**
+
+- Used dependency injection for service interfaces
+- Implemented proper event handling for calendar operations
+- Added comprehensive email notification system
+- Maintained clean architecture principles
+- Enhanced error handling for external services
+
+## 2025-06-11: Authentication and Routing Improvements
+
+**Implemented:**
+
+- Authentication System Enhancement
+
+  - Updated user role handling
+  - Improved login and authentication logic
+  - Enhanced interface types for roles
+  - Fixed ProtectedRoute component
+
+- Routing Updates
+
+  - Updated admin and protected page routing
+  - Improved login redirect flow
+  - Enhanced route protection logic
+
+- Documentation and Configuration
+  - Updated project documentation
+  - Enhanced configuration settings
+  - Improved email templates
+
+**Technical Decisions:**
+
+- Standardized role handling
+- Enhanced route protection
+- Improved authentication flow
+- Updated documentation
+
+## 2025-06-12: Reservation System Enhancement
+
+**Implemented:**
+
+- Reservation Form Improvements
+
+  - Enhanced store hours validation
+  - Updated react-datepicker to v8.4.0
+  - Improved form field handling
+  - Enhanced validation logic
+
+- Authentication Updates
+  - Standardized admin role type
+  - Improved login redirect flow
+  - Enhanced role-based access control
+
+**Technical Decisions:**
+
+- Updated date picker library
+- Enhanced form validation
+- Improved role management
+- Maintained consistent UI/UX
+
+## 2025-06-16: Final System Integration and Cleanup
+
+**Implemented:**
+
+- Reservation System Updates
+
+  - Updated reservation type field names
+  - Improved store hours fetching logic
+  - Enhanced reservation response handling
+  - Updated form field names
+
+- Backend Enhancements
+
+  - Added store and service names to reservation model
+  - Added new columns to reservation table
+  - Improved Google auth token handling
+  - Enhanced error handling
+
+- API Documentation
+
+  - Implemented Swagger/OpenAPI documentation
+  - Added detailed API endpoint descriptions
+  - Documented request/response models
+  - Added authentication requirements
+
+- Code Cleanup
+  - Added documentation for unused components
+  - Improved code organization
+  - Enhanced error handling
+  - Updated type definitions
+
+**Technical Decisions:**
+
+- Standardized field naming
+- Enhanced data consistency
+- Improved token handling
+- Maintained clean architecture
+- Enhanced error handling
+- Used Swagger for API documentation
+
+**Project Completion:**
+
+- Basic reservation system implementation complete
+- Google Calendar and Email integration working
+- Authentication system in place
+- Store hours management implemented
+- API documentation with Swagger
+- Core functionality ready for production use
+
+**Note:**
+The project has successfully implemented all core features required for the basic reservation system. While there are potential areas for future enhancement (such as advanced admin features, comprehensive testing, and additional security measures), the current implementation provides a solid foundation for the reservation system's primary functionality.

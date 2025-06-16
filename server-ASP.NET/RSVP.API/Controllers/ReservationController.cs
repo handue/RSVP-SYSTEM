@@ -36,9 +36,6 @@ namespace RSVP.API.Controllers
 
             var result = await _reservationService.CreateReservationAsync(reservationDto);
 
-
-
-
             // Console.WriteLine($"예약이후 반환 값 확인: {JsonSerializer.Serialize(result, new JsonSerializerOptions { WriteIndented = true })}");
 
             // CreatedAtAction: HTTP 201 Created 응답을 반환하면서 새로 생성된 리소스의 위치를 Location 헤더에 포함시킵니다.

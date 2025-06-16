@@ -29,25 +29,45 @@ This project uses a simplified Git workflow:
 ### Scope:
 
 - `client`: Frontend code
-- `server`: Backend code (future)
+- `server`: Backend code
+- `auth`: Authentication related
+- `email`: Email service related
+- `calendar`: Google Calendar integration
+- `db`: Database related
 - Empty: affects multiple parts
 
 ### Examples:
 
 feat(client): add reservation form component
 fix(client): resolve date picker validation issue
-docs: update project README
+feat(server): implement Google Calendar integration
+feat(email): add reservation confirmation emails
+feat(db): add store and service name columns
+docs: update API documentation with Swagger
 chore: update dependencies
 
 ## Project Organization
 
 - `/client`: Frontend React application
   - `/src/components/ui`: Reusable UI components
+  - `/src/components/reservation`: Reservation related components
   - `/src/pages`: Page components
   - `/src/types`: TypeScript type definitions
   - `/src/services`: API services
   - `/src/store`: Redux store configuration
-- `/spring-server`: Backend Spring application (planned)
+  - `/src/hooks`: Custom React hooks
+  - `/src/middleware`: Authentication middleware
+  - `/src/utils`: Utility functions
+  - `/src/lib`: Third-party library configurations
+  - `/src/styles`: Global styles and CSS
+  - `/src/assets`: Static assets
+
+- `/server-ASP.NET`: Backend ASP.NET Core application
+  - `/RSVP.API`: API controllers and endpoints
+  - `/RSVP.Core`: Domain models and interfaces
+  - `/RSVP.Infrastructure`: Data access and external services
+  - `/RSVP.Tests`: Unit and integration tests
+  - `/GoogleAuthTool`: Google API authentication tools
 
 ## Development Process
 
@@ -64,6 +84,7 @@ chore: update dependencies
 - Keep type definitions in the types directory
 - Follow naming conventions: PascalCase for interfaces
 - Document complex type structures
+- Use proper type guards and assertions
 
 ## API Configuration Guidelines
 
@@ -72,6 +93,8 @@ chore: update dependencies
 - Configure CORS and credentials properly
 - Implement proper error handling
 - Use interceptors for common request/response handling
+- Document APIs using Swagger/OpenAPI
+- Handle token refresh and authentication
 
 ## Redux Slice Guidelines
 
@@ -81,6 +104,7 @@ chore: update dependencies
 - Use TypeScript for type safety
 - Keep slices focused and single-purpose
 - Add state reset functionality when needed
+- Handle API response data properly
 
 ## Custom Hooks Guidelines
 
@@ -89,3 +113,44 @@ chore: update dependencies
 - Keep hooks focused and single-purpose
 - Use TypeScript for type safety
 - Document complex hook logic
+- Handle loading and error states
+- Implement proper cleanup in useEffect
+
+## External Service Integration Guidelines
+
+- Use environment variables for API keys
+- Implement proper error handling
+- Add retry logic for failed requests
+- Handle token refresh when needed
+- Document integration points
+- Add proper logging for debugging
+- Implement proper error recovery
+
+## Database Guidelines
+
+- Use migrations for schema changes
+- Follow naming conventions for tables and columns
+- Implement proper relationships
+- Use appropriate data types
+- Add proper indexes
+- Handle data consistency
+- Implement proper error handling
+
+## Security Guidelines
+
+- Use environment variables for sensitive data
+- Implement proper authentication
+- Handle authorization properly
+- Use HTTPS for all communications
+- Implement proper input validation
+- Handle sensitive data properly
+- Follow security best practices
+
+## Documentation Guidelines
+
+- Keep API documentation up to date with Swagger
+- Document all environment variables
+- Maintain setup guidelines
+- Keep README.md updated
+- Document external service configurations
+- Maintain API documentation in APidocs-standard-guide.txt
