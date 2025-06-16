@@ -4,6 +4,7 @@ using Google.Apis.Auth.OAuth2.Flows;
 using Google.Apis.Calendar.v3;
 using Google.Apis.Gmail.v1;
 using Google.Apis.Services;
+using Google.Apis.Util;
 using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
@@ -99,16 +100,32 @@ namespace RSVP.Infrastructure.Services
         {
 
             var tokenSection = _configuration.GetSection("GoogleToken");
+
             if (tokenSection.Exists())
             {
+                Console.WriteLine($"refresh token check: {tokenSection["refresh_token"]}");
                 var tokenResponse = new Google.Apis.Auth.OAuth2.Responses.TokenResponse
                 {
                     AccessToken = tokenSection["access_token"],
                     RefreshToken = tokenSection["refresh_token"],
                     TokenType = tokenSection["token_type"] ?? "Bearer"
+
+
                 };
 
-                return new UserCredential(_flow, "user", tokenResponse);
+                var credential = new UserCredential(_flow, "user", tokenResponse);
+
+                if (credential.Token.IsStale)
+                {
+                    Console.WriteLine("token is not valid, try to refresh it");
+                    bool refreshed = await credential.RefreshTokenAsync(CancellationToken.None);
+
+                    Console.WriteLine($"token refreshed: {refreshed}");
+                }
+
+
+
+                return credential;
             }
 
             throw new UnauthorizedAccessException("Google token is not set.");
@@ -133,5 +150,6 @@ namespace RSVP.Infrastructure.Services
                 ApplicationName = "RSVP System"
             });
         }
+
     }
 }
