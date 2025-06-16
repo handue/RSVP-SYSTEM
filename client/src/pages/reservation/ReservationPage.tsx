@@ -32,13 +32,22 @@ export const ReservationPage = () => {
   const { stores } = useAppSelector((state) => state.storeHours);
 
   useEffect(() => {
-    const fetchStoreHours = async () => {
-      await getStoreHours();
-      const store = stores.find((s) => s.storeId === selectedStore?.storeId);
+    if (selectedStore) {
+      
+      const store = stores.find((s) => s.storeId === selectedStore.storeId);
       if (store) {
         setStoreHours(store.storeHour);
       }
+    }
+  }, [stores, selectedStore]);
+
+  useEffect(() => {
+    const fetchStoreHours = async () => {
+      if (selectedStore) {
+        await getStoreHours();
+      }
     };
+
     fetchStoreHours();
   }, [getStoreHours, selectedStore]);
 
@@ -123,7 +132,7 @@ export const ReservationPage = () => {
           serviceId={selectedService.serviceId}
           serviceName={selectedService.name}
           onSuccess={(reservationId) => {
-            navigate(`/reservations/${reservationId}`);
+            navigate(`/reservation/${reservationId}`);
           }}
           onBack={() => {
             setStep("service");
