@@ -40,10 +40,10 @@ export function ReservationForm({
 
   //   Partial = make every field in type to optional type
   const [formData, setFormData] = useState<Partial<ReservationData>>({
-    store: storeName,
+    store_name: storeName,
     store_id: storeId,
     store_email: storeEmail,
-    service: serviceName,
+    service_name: serviceName,
     service_id: serviceId,
     agreedToTerms: false,
   });
@@ -53,6 +53,7 @@ export function ReservationForm({
     try {
       console.log("formData 확인", JSON.stringify(formData, null, 2));
       const result = await makeReservation(formData as ReservationData);
+      console.log("result check:", JSON.stringify(result, null, 2));
       onSuccess?.(result.id);
     } catch (error) {
       console.error("Failed to submit reservation:", error);
