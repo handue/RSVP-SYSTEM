@@ -6,9 +6,9 @@ export interface ReservationData {
   email: string;
   name: string;
   phone: string;
-  store: Store['name'];
+  store_name: Store['name'];
   store_id: Store['storeId'];
-  service: Service['name'];
+  service_name: Service['name'];
   service_id: Service['serviceId'];
   store_email: Store["storeEmail"];
   reservation_date: string;
