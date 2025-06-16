@@ -22,7 +22,7 @@ export const useReservation = () => {
     try {
       const response = await dispatch(reserveSchedule(data)).unwrap();
       showSuccess("Reservation created successfully");
-      return response.data.data;
+      return response.data;
     } catch (error) {
       showError("Failed to create reservation");
       throw error;
