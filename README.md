@@ -23,22 +23,22 @@ A modern reservation management system with a React/TypeScript frontend and ASP.
 ### 1. Store Selection
 Select a store to begin your reservation.
 
-![Store Selection](./images/1-Reservation-first-page-Store-Selection.png)
+![Store Selection](./images/1-reservation_first.png)
 
 ### 2. Service Selection
 Choose a service offered by the selected store.
 
-![Service Selection](./images/2-Reservation-second-page-Service-Selection.png)
+![Service Selection](./images/2-service_select.png)
 
 ### 3. Enter Reservation Details
 Fill in your information, select a date and time, and add any notes.
 
-![Reservation Details](./images/3-Reservation-thrid-page-Reservation-detail.png)
+![Reservation Details](./images/3-reservation_detail.png)
 
 ### 4. Reservation Confirmation
 Check your reservation details after submission.
 
-![Reservation Check](./images/4-Reservation-check-page.png)
+![Reservation Check](./images/4-reservation_checkpage.png)
 
 ---
 
@@ -46,9 +46,9 @@ Check your reservation details after submission.
 You can edit or cancel your reservation from the details page.
 
 - **Edit Reservation:**
-  ![Edit Button](./images/5-Reservation-check-page-edit-button.png)
+  ![Edit Button](./images/5-reservation_checkpage_edit.png)
 - **Cancel Reservation:**
-  ![Cancel Button](./images/6-Reservation-check-page-delete-button.png)
+  ![Cancel Button](./images/6-reservation_checkpage_close.png)
 - **Cancel Success Message:**
   ![Cancel Success](./images/6.1-reservation-delete-status-message.png)
 
@@ -56,35 +56,35 @@ You can edit or cancel your reservation from the details page.
 
 ## Email & Google Calendar Integration
 - **Reservation Confirmation Email:**
-  ![Confirmation Email](./images/7-Reservation-confirm-email.png)
+  ![Confirmation Email](./images/7-reservation_email.png)
 - **Google Calendar Event:**
-  ![Google Calendar](./images/8-Reservation-google-calendar.png)
+  ![Google Calendar](./images/8-reservation_google_calendar.png)
 - **Reservation Cancellation Email:**
-  ![Cancel Email](./images/9-Reservation-cancel-confirmation-email.png)
+  ![Cancel Email](./images/9-reservation_cancel_confirmation_email.png)
 
 ---
 
 ## Admin Dashboard
 
 ### Admin Login
-![Admin Login](./images/10-Dashboard-admin-login-page.png)
+![Admin Login](./images/10-dashboard_admin_login_page.png)
 
 ### Dashboard Main
-![Dashboard Main](./images/11-Dashboard-main-page-login-successful.png)
+![Dashboard Main](./images/11-dashboard_main_page.png)
 
 ### Store Hours Management
 - **Select Store:**
-  ![Store Hour Management](./images/12-Store-Hour-management-page.png)
+  ![Store Hour Management](./images/12-store_hour_management_page.png)
 - **Special Dates Management:**
-  ![Special Dates](./images/13-Store-date-is-from-store-hour-management-page.png)
+  ![Special Dates](./images/13-store_date_is_from_store_hour_management_page.png)
 - **Regular Hours Management:**
-  ![Regular Hours](./images/14-Store-hour-is-from-store-hour-management-page.png)
+  ![Regular Hours](./images/14-store_hour_is_from_store_hour_management_page.png)
 
 ---
 
 ## Database & API Documentation
 - **Database Check (SQLite):**
-  ![DB Check](./images/15-DB-Check.png)
+  ![DB Check](./images/15-db_check.png)
 - **Swagger API Docs:**
   ![Swagger Docs](./images/16-swagger_api_DOCS.png)
 
