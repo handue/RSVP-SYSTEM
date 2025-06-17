@@ -46,47 +46,47 @@ Check your reservation details after submission.
 You can edit or cancel your reservation from the details page.
 
 - **Edit Reservation:**
-  ![Edit Button](./images/5-reservation_checkpage_edit.png)
+  ![Edit Button](./Images/5-reservation_checkpage_edit.png)
 - **Cancel Reservation:**
-  ![Cancel Button](./images/6-reservation_checkpage_close.png)
+  ![Cancel Button](./Images/6-reservation_checkpage_close.png)
 - **Cancel Success Message:**
-  ![Cancel Success](./images/6.1-reservation-delete-status-message.png)
+  ![Cancel Success](./Images/6.1-reservation-delete-status-message.png)
 
 ---
 
 ## Email & Google Calendar Integration
 - **Reservation Confirmation Email:**
-  ![Confirmation Email](./images/7-reservation_email.png)
+  ![Confirmation Email](./Images/7-reservation_email.png)
 - **Google Calendar Event:**
-  ![Google Calendar](./images/8-reservation_google_calendar.png)
+  ![Google Calendar](./Images/8-reservation_google_calendar.png)
 - **Reservation Cancellation Email:**
-  ![Cancel Email](./images/9-reservation_cancel_confirmation_email.png)
+  ![Cancel Email](./Images/9-reservation_cancel_confirmation_email.png)
 
 ---
 
 ## Admin Dashboard
 
 ### Admin Login
-![Admin Login](./images/10-dashboard_admin_login_page.png)
+![Admin Login](./Images/10-dashboard_admin_login_page.png)
 
 ### Dashboard Main
-![Dashboard Main](./images/11-dashboard_main_page.png)
+![Dashboard Main](./Images/11-dashboard_main_page.png)
 
 ### Store Hours Management
 - **Select Store:**
-  ![Store Hour Management](./images/12-store_hour_management_page.png)
+  ![Store Hour Management](./Images/12-store_hour_management_page.png)
 - **Special Dates Management:**
-  ![Special Dates](./images/13-store_date_is_from_store_hour_management_page.png)
+  ![Special Dates](./Images/13-store_date_is_from_store_hour_management_page.png)
 - **Regular Hours Management:**
-  ![Regular Hours](./images/14-store_hour_is_from_store_hour_management_page.png)
+  ![Regular Hours](./Images/14-store_hour_is_from_store_hour_management_page.png)
 
 ---
 
 ## Database & API Documentation
 - **Database Check (SQLite):**
-  ![DB Check](./images/15-db_check.png)
+  ![DB Check](./Images/15-db_check.png)
 - **Swagger API Docs:**
-  ![Swagger Docs](./images/16-swagger_api_DOCS.png)
+  ![Swagger Docs](./Images/16-swagger_api_DOCS.png)
 
 ---
 
