@@ -13,6 +13,8 @@ The frontend application for the RSVP System, built with React, TypeScript, and 
 - Lucide React (icons)
 - Axios for API requests
 - Vite (build tool)
+- Google Calendar API integration
+- Email notification system
 
 ## Project Structure
 
@@ -56,6 +58,8 @@ npm install
 
 ```
 VITE_API_URL=http://localhost:5173/api
+VITE_GOOGLE_CLIENT_ID=your_google_client_id
+VITE_GOOGLE_API_KEY=your_google_api_key
 ```
 
 4. Start the development server
@@ -83,19 +87,22 @@ The application will be available at `http://localhost:5173`.
 - Date and time slot selection
 - Form validation
 - Confirmation system
+- Google Calendar integration
+- Email notifications
 
 ### Admin Management
 
 - Store hours configuration
 - Special dates management
 - Regular hours scheduling
+- Reservation management
+- User management
 
 ## API Integration
 
 The frontend communicates with the backend through the following endpoints:
 
 - Store Hours:
-
   - `GET /api/store-hours`
   - `PUT /api/store-hours/regular-hours/:storeId`
   - `PUT /api/store-hours/special-date/:storeId`
@@ -104,6 +111,13 @@ The frontend communicates with the backend through the following endpoints:
 - Reservations:
   - `POST /api/reservation/calendar`
   - `POST /api/reservation/send`
+  - `GET /api/reservation/:id`
+  - `PUT /api/reservation/:id`
+  - `DELETE /api/reservation/:id`
+
+- Authentication:
+  - `POST /api/auth/login`
+  - `POST /api/auth/refresh`
 
 ## Contributing
 

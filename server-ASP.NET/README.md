@@ -82,6 +82,14 @@ dotnet restore
 {
   "ConnectionStrings": {
     "DefaultConnection": "Data Source=RSVP.db"
+  },
+  "JWT": {
+    "Secret": "your_jwt_secret",
+    "ExpiryInMinutes": 60
+  },
+  "Google": {
+    "ClientId": "your_google_client_id",
+    "ClientSecret": "your_google_client_secret"
   }
 }
 ```
@@ -147,15 +155,15 @@ The frontend communicates with the backend through the following endpoints:
 
 ### Authentication
 
-- JWT 기반 인증 (JWT-based authentication)
-- 역할 기반 인가 (Role-based authorization)
-- 토큰 갱신 메커니즘 (Token refresh mechanism)
+- JWT-based authentication
+- Role-based authorization
+- Token refresh mechanism
 
 ### Database
 
-- Entity Framework Core Code First (Similar to JPA/Hibernate in Spring Boot or Mongoose in Node.js)
-- SQLite 데이터베이스 (Similar to MySQL/PostgreSQL in Spring Boot or MongoDB in Node.js)
-- 마이그레이션 기반 스키마 관리 (Migration-based schema management)
+- Entity Framework Core Code First
+- SQLite database
+- Migration-based schema management
 
 ## Contributing
 

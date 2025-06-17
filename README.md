@@ -1,151 +1,173 @@
 # RSVP System
 
-A reservation management system with React/TypeScript frontend and ASP.NET Core backend.
+A modern reservation management system with a React/TypeScript frontend and ASP.NET Core backend, featuring Google Calendar and Email integration, admin dashboard, and robust API.
 
-## Project Structure
-
-This project is organized as a monorepo with the following structure:
-
-- `client/`: React/TypeScript frontend application
-- `ASP.NET-server/`: ASP.NET Core backend server (current implementation)
-- `spring-server/`: Spring Boot backend server (planned for future development)
-
-## Current Development Focus
-
-The project is being developed in phases:
-
-- **Phase 1**: Frontend implementation with React/TypeScript
-- **Phase 2 (Current)**: Backend implementation with ASP.NET Core
-- **Phase 3 (Planned)**: Alternative backend implementation with Spring Boot
+---
 
 ## Features
+- 3-step user reservation flow
+- Store and service selection
+- Date/time slot selection with validation
+- Reservation confirmation, edit, and cancel
+- Google Calendar event creation
+- Email notifications (confirmation/cancellation)
+- Admin dashboard for store hours and special dates
+- JWT authentication
+- Swagger/OpenAPI API documentation
+- SQLite database
 
-### Current Features (Frontend)
+---
 
-- User-friendly reservation interface
-  - 3-step reservation process (Store → Service → Details)
-  - Progress tracking with Steps component
-  - Store and service selection interface
-- Date and time slot selection
-- Store hours management
-- Admin dashboard for reservation management
-- Mock API integration for development
+## User Reservation Flow
 
-### Current Features (Backend - ASP.NET Core)
+### 1. Store Selection
+Select a store to begin your reservation.
 
-- RESTful API endpoints
-- Entity Framework Core for data access
-- Repository pattern implementation
-- Service layer with business logic
-- Domain models with validation
-- Clean architecture principles
+![Store Selection](./images/1-Reservation-first-page-Store-Selection.png)
 
-### Planned Features (Backend - Spring Boot)
+### 2. Service Selection
+Choose a service offered by the selected store.
 
-- Alternative RESTful API implementation
-- Spring Data JPA for data access
-- Spring Security for authentication
-- Email notification system
-- Integration with Google APIs
+![Service Selection](./images/2-Reservation-second-page-Service-Selection.png)
 
-## Technology Stack
+### 3. Enter Reservation Details
+Fill in your information, select a date and time, and add any notes.
 
-### Frontend
+![Reservation Details](./images/3-Reservation-thrid-page-Reservation-detail.png)
 
-- React 18
-- TypeScript
-- Redux Toolkit for state management
-- React Router for navigation
-- Tailwind CSS for styling
-- Vite as build tool
+### 4. Reservation Confirmation
+Check your reservation details after submission.
 
-### Backend (Current - ASP.NET Core)
+![Reservation Check](./images/4-Reservation-check-page.png)
 
-- ASP.NET Core 8
-- Entity Framework Core
-- SQL Server
-- Repository Pattern
-- Clean Architecture
-- JWT Authentication
+---
 
-### Backend (Planned - Spring Boot)
+## Reservation Edit & Cancel
+You can edit or cancel your reservation from the details page.
 
-- Spring Boot
-- PostgreSQL or MySQL
-- Spring Security (JWT)
-- Lombok
-- Maven
-- Google API Client (Gmail, Calendar, Sheets)
+- **Edit Reservation:**
+  ![Edit Button](./images/5-Reservation-check-page-edit-button.png)
+- **Cancel Reservation:**
+  ![Cancel Button](./images/6-Reservation-check-page-delete-button.png)
+- **Cancel Success Message:**
+  ![Cancel Success](./images/6.1-reservation-delete-status-message.png)
+
+---
+
+## Email & Google Calendar Integration
+- **Reservation Confirmation Email:**
+  ![Confirmation Email](./images/7-Reservation-confirm-email.png)
+- **Google Calendar Event:**
+  ![Google Calendar](./images/8-Reservation-google-calendar.png)
+- **Reservation Cancellation Email:**
+  ![Cancel Email](./images/9-Reservation-cancel-confirmation-email.png)
+
+---
+
+## Admin Dashboard
+
+### Admin Login
+![Admin Login](./images/10-Dashboard-admin-login-page.png)
+
+### Dashboard Main
+![Dashboard Main](./images/11-Dashboard-main-page-login-successful.png)
+
+### Store Hours Management
+- **Select Store:**
+  ![Store Hour Management](./images/12-Store-Hour-management-page.png)
+- **Special Dates Management:**
+  ![Special Dates](./images/13-Store-date-is-from-store-hour-management-page.png)
+- **Regular Hours Management:**
+  ![Regular Hours](./images/14-Store-hour-is-from-store-hour-management-page.png)
+
+---
+
+## Database & API Documentation
+- **Database Check (SQLite):**
+  ![DB Check](./images/15-DB-Check.png)
+- **Swagger API Docs:**
+  ![Swagger Docs](./images/16-swagger_api_DOCS.png)
+
+---
 
 ## Getting Started
 
-### Running the Frontend
+### Prerequisites
+- Node.js 16+ and npm
+- .NET 8.0 SDK
+- SQLite
 
+### Installation
+
+#### Frontend
 ```bash
-# Navigate to client directory
 cd client
-
-# Install dependencies
 npm install
-
-# Start development server
+cp .env.example .env # Edit with your API and Google credentials
 npm run dev
 ```
 
-The frontend will be available at `http://localhost:5173`.
-
-### Running the Backend (ASP.NET Core)
-
+#### Backend
 ```bash
-# Navigate to ASP.NET-server directory
-cd ASP.NET-server
-
-# Run the application
+cd server-ASP.NET
+cp .env.example .env # Edit with your DB and Google credentials
+dotnet restore
+dotnet ef database update # Run migrations
 dotnet run --project RSVP.API
 ```
 
-The backend API will be available at `http://localhost:5000`.
+### Environment Variables
+#### Frontend (.env)
+```
+VITE_API_URL=http://localhost:5173/api
+VITE_GOOGLE_CLIENT_ID=your_google_client_id
+VITE_GOOGLE_API_KEY=your_google_api_key
+```
+#### Backend (.env)
+```
+DB_CONNECTION=Data Source=RSVP.db
+JWT__Secret=your_jwt_secret
+JWT__ExpiryInMinutes=60
+Google__ClientId=your_google_client_id
+Google__ClientSecret=your_google_client_secret
+```
 
-## Frontend Architecture
+---
 
-The client application follows a feature-based architecture:
+## Tech Stack & Architecture
 
-- **Components**: 
-  - `/components/ui/common`: Common UI components (Steps, Button, etc.)
-  - `/components/ui/reservation`: Reservation-related components
-  - `/components/ui/admin`: Admin dashboard components
-- **Pages**: 
-  - `/pages/reservation`: Reservation-related pages
-  - `/pages/admin`: Admin dashboard pages
-- **Services**: API service functions for data fetching
-- **Hooks**: Custom React hooks for shared logic
-- **Types**: TypeScript type definitions
-  - Reservation types
-  - Store types
-  - Service types
-- **Utils**: Utility functions for common operations
+### Frontend
+- React 18, TypeScript, Redux Toolkit, React Router, Tailwind CSS, Vite
+- Google Calendar & Gmail API integration
 
-## Backend Architecture (ASP.NET Core)
+### Backend
+- ASP.NET Core 8, Entity Framework Core, SQLite
+- Clean Architecture (API/Core/Infrastructure)
+- JWT Authentication, Google API Client, Swagger/OpenAPI
 
-The backend follows clean architecture principles:
+### Project Structure
+```
+client/
+  src/components/
+  src/pages/
+  src/services/
+  ...
+server-ASP.NET/
+  RSVP.API/
+  RSVP.Core/
+  RSVP.Infrastructure/
+  ...
+```
 
-- **API Layer**: Controllers and API endpoints
-- **Core Layer**: Domain models and interfaces
-- **Infrastructure Layer**: Repository implementations and data access
-- **Service Layer**: Business logic implementation
+---
 
-## Development Workflow
+## Contributing
+1. Fork and clone the repository
+2. Create a feature branch from `main`
+3. Make your changes and commit with semantic messages
+4. Push and create a pull request
 
-This project follows a simplified Git workflow:
+---
 
-- `main` branch contains the stable version
-- Feature branches are used for new features and bug fixes
-- Semantic commit messages are used for better readability
-
-## Steps
-
-- Complete the ASP.NET Core backend implementation
-- Integrate frontend with ASP.NET Core backend
-- Implement authentication and authorization
-- Deploy the application
-- Develop alternative Spring Boot backend (future)
+## License
+MIT

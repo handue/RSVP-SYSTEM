@@ -126,6 +126,19 @@ chore: update dependencies
 - Add proper logging for debugging
 - Implement proper error recovery
 
+### Google API Integration Guidelines
+
+- Set up Google Cloud Project and enable required APIs
+- Configure OAuth 2.0 credentials
+- Store credentials securely in environment variables
+- Implement proper token management
+- Handle API rate limits
+- Add proper error handling for API failures
+- Implement retry mechanism for failed requests
+- Add logging for API operations
+- Handle token refresh automatically
+- Implement proper cleanup for resources
+
 ## Database Guidelines
 
 - Use migrations for schema changes
@@ -141,10 +154,18 @@ chore: update dependencies
 - Use environment variables for sensitive data
 - Implement proper authentication
 - Handle authorization properly
-- Use HTTPS for all communications
+- Use HTTPS for all communications (only in production)
 - Implement proper input validation
 - Handle sensitive data properly
 - Follow security best practices
+- Secure API keys and credentials
+- Implement proper token management
+- Add rate limiting for API endpoints
+- Use secure password hashing
+- Implement proper session management
+- Add request validation
+- Use secure headers
+- Implement CORS properly
 
 ## Documentation Guidelines
 
