@@ -23,22 +23,22 @@ A modern reservation management system with a React/TypeScript frontend and ASP.
 ### 1. Store Selection
 Select a store to begin your reservation.
 
-![Store Selection](./images/1-reservation_first.png)
+![Store Selection](./Images/1-reservation_first.png)
 
 ### 2. Service Selection
 Choose a service offered by the selected store.
 
-![Service Selection](./images/2-service_select.png)
+![Service Selection](./Images/2-service_select.png)
 
 ### 3. Enter Reservation Details
 Fill in your information, select a date and time, and add any notes.
 
-![Reservation Details](./images/3-reservation_detail.png)
+![Reservation Details](./Images/3-reservation_detail.png)
 
 ### 4. Reservation Confirmation
 Check your reservation details after submission.
 
-![Reservation Check](./images/4-reservation_checkpage.png)
+![Reservation Check](./Images/4-reservation_checkpage.png)
 
 ---
 
